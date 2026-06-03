@@ -1,15 +1,33 @@
 import AncestorCard from "../Components/AncestorCard";
 import { useState, useEffect } from "react";
+import { getTrees, getAncestors } from "../middleware/api";
 
 function Home() {
     const [searchQuery, setSearchQuery] = useState("");
 
+    const [trees, setTrees] = useState([]);
+    const [ancestors, setAncestors] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const ancestors = [
-        { id: 0, name: 'Benjamin Martel Cantrall', description: 'WOWZERS' },
-        { id: 1, name: 'James Robert Cantrall', description: 'WOWZERS' },
-        { id: 2, name: 'Sharon Marie Cantrall (Evans)', description: 'WOWZERS' }
-    ];
+    useEffect(() => {
+        const loadFamilyTrees = async () => {
+            try {
+                const familyTrees = await getTrees();
+                setTrees(familyTrees);
+            } catch (err) {
+                console.log(err);
+                setError("Failed to load family trees");
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+
+        loadFamilyTrees();
+    }, []);
+
+
 
     const handleSearch = (e) => {
         e.preventDefault();

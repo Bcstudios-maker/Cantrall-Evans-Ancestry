@@ -7,14 +7,26 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-export const getTrees = async () => {
-    app.get("/getTrees", (req, res) => {
-        pool.query(`SELECT * FROM trees`).then((response) => {
-            console.log(response);
-        })
-    })
-}
-export const searchAncestors = async () => {
-    app.get("/")
-}
+app.get("/getTrees", async (req, res) => {
+    try {
+        const result = await pool.query(`SELECT * FROM trees`);
+
+        res.json(result.rows)
+    } catch (err){
+        console.log('THERE WAS AN ERROR: ' + err);
+        res.status(500).json({body: err.message });
+    }
+})
+
+app.get("/getAncestors", async (req, res) => {
+    try {
+        const result = await pool.query(`SELECT * FROM ancestors`);
+        res.json(result.rows);
+    } catch (err){
+        console.log(err);
+        res.status(500).json({body: err.message});
+    }
+})
+
+
 app.listen(4000, () => console.log("server on localhost:4000"));
