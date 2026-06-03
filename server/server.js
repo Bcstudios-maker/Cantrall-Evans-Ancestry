@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/getTrees", async (req, res) => {
+app.get("/api/getTrees", async (req, res) => {
     try {
         const result = await pool.query(`SELECT * FROM trees`);
 
@@ -18,7 +18,7 @@ app.get("/getTrees", async (req, res) => {
     }
 })
 
-app.get("/getAncestors", async (req, res) => {
+app.get("/api/getAncestors", async (req, res) => {
     try {
         const result = await pool.query(`SELECT * FROM ancestors`);
         res.json(result.rows);

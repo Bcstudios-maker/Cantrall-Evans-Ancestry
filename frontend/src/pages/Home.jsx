@@ -1,6 +1,7 @@
 import AncestorCard from "../Components/AncestorCard";
 import { useState, useEffect } from "react";
 import { getTrees, getAncestors } from "../middleware/api";
+import NavBar from "../Components/NavBar";
 
 function Home() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -49,15 +50,20 @@ function Home() {
     };
 
     return (
-        <div className="home">
-            <form onSubmit={handleSearch} className="search-form">
-                <input type="text" placeholder="Search for ancestor..." className="search-input" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
-                <button type="submit" className="search-button">Search</button>
-            </form>
-            <div className="ancestors-grid">
-                {ancestors.map((ancestor) => (<AncestorCard ancestor={ancestor} key={ancestor.ancestor_id}/>))}
-            </div>
-        </div>
+        <>
+            <NavBar />
+            <main className="home-content">
+                <div className="home">
+                    <form onSubmit={handleSearch} className="search-form">
+                        <input type="text" placeholder="Search for ancestor..." className="search-input" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                        <button type="submit" className="search-button">Search</button>
+                    </form>
+                    <div className="ancestors-grid">
+                        {ancestors.map((ancestor) => (<AncestorCard ancestor={ancestor} key={ancestor.ancestor_id}/>))}
+                    </div>
+                </div>
+            </main>
+        </>
     );
 
 }

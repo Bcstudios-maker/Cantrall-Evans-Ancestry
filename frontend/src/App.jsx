@@ -8,16 +8,13 @@ import {Routes, Route} from 'react-router-dom';
 function App() {
 
   return (
-    <div>
-      <NavBar/>
-      <main className='main-content'>
-        <Routes>
-          <Route path='/' element={<Login/>}/>
-          <Route path='/Home' element={<Home/>}/>
-          <Route path='/Ancestors' element={<Ancestors/>}/>
-        </Routes>
-      </main>
-    </div>
+    <main className='main-content'>
+      <Routes>
+        <Route path='/' element={<Login/>}/>
+        <Route path='/Home' element={<Home/>}/>
+        <Route path='/Ancestors' element={<Ancestors/>}/>
+      </Routes>
+    </main>
   );
 }
 

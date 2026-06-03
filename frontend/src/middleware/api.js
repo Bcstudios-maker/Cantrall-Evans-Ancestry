@@ -1,5 +1,5 @@
 export const getTrees = async () => {
-    const response = await fetch('http://localhost:4000/getTrees');
+    const response = await fetch('http://localhost:4000/api/getTrees');
 
     if(!response.ok){
         throw new Error('Failed to fetch family trees.');
@@ -9,7 +9,7 @@ export const getTrees = async () => {
 }
 
 export const getAncestors = async () => {
-    const response = await fetch('http://localhost:4000/getAncestors');
+    const response = await fetch('http://localhost:4000/api/getAncestors');
 
     if(!response.ok){
         throw new Error('Failed to fetch family trees.');
