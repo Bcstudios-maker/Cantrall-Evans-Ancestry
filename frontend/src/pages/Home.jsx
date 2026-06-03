@@ -27,6 +27,20 @@ function Home() {
         loadFamilyTrees();
     }, []);
 
+    useEffect(() => {
+        const loadAncestors = async () => {
+            try{
+                const ancestors = await getAncestors();
+                setAncestors(ancestors);
+            } catch(err) {
+                console.log(err.message);
+                setError("Failed to load Ancestors");
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadAncestors();
+    }, []);
 
 
     const handleSearch = (e) => {
@@ -41,7 +55,7 @@ function Home() {
                 <button type="submit" className="search-button">Search</button>
             </form>
             <div className="ancestors-grid">
-                {ancestors.map((ancestor) => ancestor.name.toLowerCase().startsWith(searchQuery.toLowerCase()) && (<AncestorCard ancestor={ancestor} key={ancestor.id}/>))}
+                {ancestors.map((ancestor) => (<AncestorCard ancestor={ancestor} key={ancestor.ancestor_id}/>))}
             </div>
         </div>
     );

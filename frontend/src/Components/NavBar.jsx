@@ -4,7 +4,7 @@ function NavBar() {
     return (
         <nav className="navbar">
             <div className="navbar-brand">
-                <Link to="/" className='nav-link'>Home</Link>
+                <Link to="/Home" className='nav-link'>Home</Link>
             </div>
             <div className='navbar-links'>
                 <Link to='/Ancestors' className='nav-link'>Ancestors</Link>
