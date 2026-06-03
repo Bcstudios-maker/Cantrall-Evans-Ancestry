@@ -1,5 +1,5 @@
 import AncestorCard from "../Components/AncestorCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Home() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -13,7 +13,7 @@ function Home() {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        alert(searchQuery);
+
     };
 
     return (
@@ -23,7 +23,7 @@ function Home() {
                 <button type="submit" className="search-button">Search</button>
             </form>
             <div className="ancestors-grid">
-                {ancestors.map((ancestor) => ancestor.name.toLowerCase().startsWith(searchQuery) && (<AncestorCard ancestor={ancestor} key={ancestor.id}/>))}
+                {ancestors.map((ancestor) => ancestor.name.toLowerCase().startsWith(searchQuery.toLowerCase()) && (<AncestorCard ancestor={ancestor} key={ancestor.id}/>))}
             </div>
         </div>
     );

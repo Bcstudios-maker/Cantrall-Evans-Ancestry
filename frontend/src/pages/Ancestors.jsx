@@ -5,3 +5,4 @@ function Ancestors() {
         </div>
     )
 }
+export default Ancestors;
