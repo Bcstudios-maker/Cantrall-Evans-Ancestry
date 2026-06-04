@@ -63,8 +63,10 @@
     flex-direction: column;
 }
 
-.admin-remove-user h2 {
+#removeUsers {
     color: white;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .users-grid {

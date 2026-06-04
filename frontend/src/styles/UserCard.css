@@ -10,7 +10,8 @@
     color: white;
     background-color: rgb(54, 54, 54);
 }
-.user-card h2 {
+#user-username {
+    color: white;
     margin-bottom: 0.75vh;
     font-weight: bold;
 }

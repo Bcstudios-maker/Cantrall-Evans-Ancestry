@@ -81,4 +81,16 @@ app.post('/api/addUser', async (req,res) => {
     }
 });
 
+app.delete('/api/deleteUser/:user_id', async (req, res) => {
+    const {user_id} = req.params;
+
+    try{
+        const response = await pool.query('DELETE FROM users WHERE user_id = $1', [user_id]);
+        res.status(201).json({message: 'User deleted'});
+    } catch (err){
+        console.log(err.message);
+        res.status(401).json({error: err.message});
+    }
+})
+
 app.listen(4000, () => console.log("server on localhost:4000"));

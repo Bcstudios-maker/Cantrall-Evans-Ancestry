@@ -24,6 +24,7 @@ function Admin() {
        
     }
 
+
     useEffect(() => {
         const loadUsers = async () => {
             try {
@@ -62,7 +63,7 @@ function Admin() {
                     </div>
                 </div>
                 <div className="admin-remove-user">
-                    <h2>REMOVE USERS</h2>
+                    <h2 id="removeUsers">REMOVE USERS</h2>
                     <div className="users-grid">
                         {users.map((user) => (<UserCard user={user} key={user.user_id}/>))}
                     </div>
