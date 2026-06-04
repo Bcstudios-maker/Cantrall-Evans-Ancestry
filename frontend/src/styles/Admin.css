@@ -1,0 +1,76 @@
+.admin-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 50em;
+    width: 50em;
+    justify-self: center;
+    margin-top: 2em;
+    background-color: rgb(37, 37, 37);
+    border-radius: 20px;
+}
+
+.admin-panel h1 {
+    color: white;
+    margin-top: 1em;
+}
+
+.admin-add-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    width: 90%;
+    height: 10em;
+}
+
+.admin-add-user h2 {
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-left: 1px;
+    border-right: 1px;
+    border-bottom: 1px;
+    border-color: white;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    gap: 1em;
+    width: 90%;
+}
+
+.add-dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropdown-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 1em;
+    width: 90%;
+}
+
+/*.dropdown-form button {} */
+/* Removing users styling */
+
+.admin-remove-user{
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-remove-user h2 {
+    color: white;
+}
+
+.users-grid {
+    display: grid;
+    height: fit-content;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.5em;
+    margin: 0px 1em 0px 1em;
+}

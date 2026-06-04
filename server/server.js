@@ -32,6 +32,16 @@ app.get("/api/getAncestors", async (req, res) => {
     }
 });
 
+app.get("/api/getUsers", async (req, res) => {
+    try {
+        const result = await pool.query(`SELECT * FROM users`);
+        res.json(result.rows);
+    } catch (err){
+        console.log(err);
+        res.status(500).json({body: err.message});
+    }
+});
+
 app.post('/api/auth/login', async (req, res) => {
     const {username, password} = req.body;
     console.log(req.body);
@@ -43,7 +53,9 @@ app.post('/api/auth/login', async (req, res) => {
         }
 
         const user = result.rows[0];
-        const isValid = password === user.password;
+        const isValid = await bcrypt.compare(password, user.password);
+
+
         if(!isValid) {
             return res.status(401).json({error: 'Password is Invalid'});
         }
@@ -51,6 +63,20 @@ app.post('/api/auth/login', async (req, res) => {
         const token = jwt.sign({id: user.user_id}, "temporary-secret", { expiresIn: '1h'});
         res.json({ token, user: {id:user.user_id, username: user.username, role: user.role}});
     } catch (err){
+        res.status(500).json({error: err.message});
+    }
+});
+
+app.post('/api/addUser', async (req,res) => {
+    const {username, password, role} = req.body;
+    console.log(req.body);
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const result = await pool.query('INSERT INTO users (username, password, role) VALUES ($1,$2,$3) RETURNING *', [username, hashedPassword, role]);
+        res.status(201).json(result.rows[0]);
+    } catch(err){
+        console.log(err.message);
         res.status(500).json({error: err.message});
     }
 });
