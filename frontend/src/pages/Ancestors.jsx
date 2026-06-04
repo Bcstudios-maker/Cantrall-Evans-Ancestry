@@ -1,8 +1,7 @@
+import NavBar from "../Components/NavBar";
 function Ancestors() {
     return ( 
-        <div className="ancestors-empty">
-            <h>WOWZA</h>
-        </div>
+        <NavBar/>
     )
 }
 export default Ancestors;

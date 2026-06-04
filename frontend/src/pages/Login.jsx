@@ -15,7 +15,7 @@ function Login() {
         const response = await loginUser({username: username, password: password});
         
 
-        localStorage.setItem('user', response.user);
+        localStorage.setItem("user", JSON.stringify(response.user));
         
         if(response.user.role.toLowerCase() === 'admin'){
             navigate('/Admin')
