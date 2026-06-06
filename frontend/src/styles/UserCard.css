@@ -9,6 +9,7 @@
     height: 8em;
     color: white;
     background-color: rgb(54, 54, 54);
+    box-shadow: 0 0 15px 0 black;
 }
 #user-username {
     color: white;
@@ -27,7 +28,7 @@
     height: 30px;
     font-size: 18px;
     font-weight: bolder;
-    transition: background-color, box-shadow 0.3s;
+    transition: box-shadow 0.3s, background-color 0.3s;
 }
 
 .user-card button:hover {

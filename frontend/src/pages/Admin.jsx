@@ -45,20 +45,21 @@ function Admin() {
             <NavBar />
             <div className="admin-panel">
                 <h1>ADMINISTRATOR PANEL</h1>
+                <div className="admin-divider"></div>
                 <div className="admin-add-user">
                     <h2>ADD USERS</h2>
                     <form className="add-form">
                         <input type='text' placeholder="Enter username..." className="add-input" onChange={(e) => setUsername(e.target.value)}></input>
-                        <input type='text' placeholder="Enter password..." className="add-input" onChange={(e) => setPassword(e.target.value)}></input>
+                        <input type='password' placeholder="Enter password..." className="add-input" onChange={(e) => setPassword(e.target.value)}></input>
                     </form>
                     <div className="add-dropdown">
                         <form className="dropdown-form" onSubmit={handleAddUser} >
-                            <select onChange={(e) => setRole(e.target.value)}>
+                            <select className="dropdown-select" onChange={(e) => setRole(e.target.value)}>
                                 <option value="viewer">Viewer</option>
                                 <option value="mod">Moderator</option>
                                 <option value="admin">Administrator</option>
                             </select>
-                            <button type="submit">ADD USER</button>
+                            <button className="dropdown-button" type="submit">ADD USER</button>
                         </form>
                     </div>
                 </div>
