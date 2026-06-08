@@ -1,8 +1,8 @@
 import { useState } from "react";
 import NavBar from "../Components/NavBar";
+import UserCard from "../Components/UserCard";
 import { addUser, getUsers } from "../middleware/api";
 import '../styles/Admin.css';
-import UserCard from "../Components/UserCard";
 import { useEffect } from "react";
 
 function Admin() {

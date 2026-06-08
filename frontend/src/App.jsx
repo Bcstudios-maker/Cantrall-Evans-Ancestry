@@ -5,6 +5,7 @@ import Ancestors from './pages/Ancestors';
 import NavBar from './Components/NavBar';
 import Admin from './pages/Admin';
 import AdminRoute from './Routes/AdminRoute';
+import Trees from './pages/Trees';
 import {Routes, Route} from 'react-router-dom';
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
     <main className='main-content'>
       <Routes>
         <Route path='/' element={<Login/>}/>
-        <Route path='/Admin' element={<AdminRoute><Admin /></AdminRoute>}/>
         <Route path='/Home' element={<Home/>}/>
         <Route path='/Ancestors' element={<Ancestors/>}/>
+        <Route path='/Trees' element={<Trees/>}/>
+        <Route path='/Admin' element={<AdminRoute><Admin /></AdminRoute>}/>
       </Routes>
     </main>
   );

@@ -1,7 +1,9 @@
 import NavBar from "../Components/NavBar";
 function Ancestors() {
     return ( 
-        <NavBar/>
-    )
+        <>
+            <NavBar/>
+        </>
+    );
 }
 export default Ancestors;

@@ -24,9 +24,19 @@ app.get("/api/getTrees", async (req, res) => {
 
 app.get("/api/getAncestors", async (req, res) => {
     try {
-        const result = await pool.query(`SELECT * FROM ancestors`);
+        const result = await pool.query(`SELECT * FROM ancestors ancestor_info`);
         res.json(result.rows);
     } catch (err){
+        console.log(err);
+        res.status(500).json({body: err.message});
+    }
+});
+
+
+app.get("/api/getDocuments", async (req, res) => {
+    try {
+        const result = await pool.query(`SELECT * FROM`)
+    } catch(err) {
         console.log(err);
         res.status(500).json({body: err.message});
     }
