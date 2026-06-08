@@ -3,7 +3,7 @@ import NavBar from "../Components/NavBar";
 
 import  Document  from '../Components/Document'
 import { useState, useEffect } from "react";
-import { getTrees, getAncestors } from "../middleware/api";
+import { getTrees, getAncestors, getDocuments } from "../middleware/api";
 
 
 function Home() {
@@ -11,7 +11,24 @@ function Home() {
     const [ searchQuery, setSearchQuery ] = useState("");
 
     const [ documents, setDocuments ] = useState([]);
+    const [ loading, setLoading ] = useState(true);
+    const [ error, setError ] = useState(null);
 
+    useEffect(() => {
+        const loadDocuments = async () => {
+            try {
+                const documents = await getDocuments();
+                setDocuments(documents);
+            } catch (err) {
+                console.log(err.message);
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadDocuments();
+    }
+    , [])
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -29,7 +46,7 @@ function Home() {
                     </form>
                 </div>
                 <div className="documents-grid">
-                    {documents.map(documents => <Document document={documents}/>)}
+                    {documents.map((document) => (searchQuery.startsWith) && <Document document={document} key={document.info_id}/>)}
                 </div>
             </main>
         </>

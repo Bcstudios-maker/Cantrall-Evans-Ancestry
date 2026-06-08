@@ -24,7 +24,7 @@ app.get("/api/getTrees", async (req, res) => {
 
 app.get("/api/getAncestors", async (req, res) => {
     try {
-        const result = await pool.query(`SELECT * FROM ancestors ancestor_info`);
+        const result = await pool.query(`SELECT * FROM ancestors`);
         res.json(result.rows);
     } catch (err){
         console.log(err);
@@ -35,7 +35,8 @@ app.get("/api/getAncestors", async (req, res) => {
 
 app.get("/api/getDocuments", async (req, res) => {
     try {
-        const result = await pool.query(`SELECT * FROM`)
+        const result = await pool.query(`SELECT * FROM ancestor_info WHERE date_added >= CURRENT_DATE - INTERVAL '7 days'`)
+        res.json(result.rows);
     } catch(err) {
         console.log(err);
         res.status(500).json({body: err.message});
