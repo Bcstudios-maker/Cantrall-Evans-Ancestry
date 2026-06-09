@@ -53,6 +53,36 @@ app.get("/api/getUsers", async (req, res) => {
     }
 });
 
+
+app.get("/api/getRelationships/:tree_id", async (req,res) => {
+    const { tree_id } = req.params;
+    try {
+        const ancestors = await pool.query(
+            `
+            SELECT a.*
+            FROM ancestors AS a
+            JOIN tree_members AS tm ON a.ancestor_id = tm.ancestor_id
+            WHERE  tm.tree_id = $1
+            `
+        , [tree_id]);
+
+        const relationships = await pool.query(
+            `
+            SELECT r.*
+            FROM relationships AS r
+            JOIN tree_members AS tm ON r.ancestor_id = tm.ancestor_id
+            WHERE tm.tree_id = $1
+            `
+        , [tree_id]);
+
+        res.json({ ancestors: ancestors.rows, relationships: relationships.rows });
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({body: err.message});
+    }
+});
+
 app.post('/api/auth/login', async (req, res) => {
     const {username, password} = req.body;
     console.log(req.body);

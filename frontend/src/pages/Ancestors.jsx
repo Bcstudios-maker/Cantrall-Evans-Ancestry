@@ -1,7 +1,10 @@
+import '../styles/Ancestors.css'
+
 import { useEffect, useState } from "react";
 import NavBar from "../Components/NavBar";
 import { getAncestors } from "../middleware/api";
 import AncestorCard from "../Components/AncestorCard";
+import AncestryTree from '../Components/AncestryTree';
 function Ancestors() {
 
     const [ ancestors, setAncestors ] = useState([]);
@@ -30,8 +33,8 @@ function Ancestors() {
     return ( 
         <>
             <NavBar/>
-            <div className="ancestors-content">
-                {ancestors.map((ancestor) => (<AncestorCard ancestor={ancestor} key={ancestor.ancestor_id}/>))}
+            <div className="ancestors-tree">
+                <AncestryTree rootAncestorId={1}/>
             </div>
         </>
     );

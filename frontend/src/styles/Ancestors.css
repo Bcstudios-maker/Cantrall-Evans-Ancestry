@@ -1,0 +1,7 @@
+.ancestors-content {
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    gap: 1em;
+    margin-top: 2em;
+}

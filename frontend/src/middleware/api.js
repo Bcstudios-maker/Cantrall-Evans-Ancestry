@@ -34,6 +34,15 @@ export const getDocuments = async () => {
     return await response.json();
 }
 
+export const getRelationships = async({tree_id}) => {
+    const response = await fetch(`http://localhost:4000/api/getRelationships/${tree_id}`);
+
+    console.log(response.json)
+    if(!response.ok) {
+        throw new Error('Failed to fetch ancestor relationships.');
+    }
+    return await response.json();
+}
 
 export const loginUser = async ({username, password, role}) => {
     const response = await fetch('http://localhost:4000/api/auth/login', {method:'POST', headers: {'Content-Type': 'application/json'}, body:JSON.stringify({username, password, role})});

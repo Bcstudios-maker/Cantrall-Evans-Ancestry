@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import '../styles/NavBar.css';
+import '../styles/component_styles/NavBar.css';
 function NavBar() {
     const user = JSON.parse(localStorage.getItem('user'));
     

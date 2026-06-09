@@ -1,5 +1,5 @@
 import { deleteUser } from '../middleware/api';
-import '../styles/UserCard.css';
+import '../styles/component_styles/UserCard.css';
 import {useState} from 'react';
 
 function UserCard({user}) {
