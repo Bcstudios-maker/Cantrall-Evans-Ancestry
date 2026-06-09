@@ -1,20 +1,22 @@
+import { useEffect } from 'react';
 import '../styles/component_styles/AncestorCard.css'
+import { Handle, Position } from '@xyflow/react';
 
-const AncestorCard = ({ancestor}) => {
+const AncestorCard = ({data}) => {
+
     return (
-        <div className="ancestor-card">
+        <div className="ancestor-card" > 
+            <Handle type='source' position={Position.Top} id='bottom' />
+            <Handle type='target' position={Position.Bottom} id='top'/>
+           
             <div className="ancestor-image">
-                <img src={ancestor.url} alt={ancestor.first_name}/>
+                
             </div>
             <div className="ancestor-description">
-                <h3>{ancestor.first_name} {ancestor.last_name}</h3>
-                <h2>ID: {ancestor.ancestor_id}</h2>
+                <h3>{data.first_name} {data.last_name}</h3>
+                <h2>ID: {data.ancestor_id}</h2>
             </div>
-            { ancestor.parents?.length > 0 && (
-                <div className="ancestor-parents">
-                    { ancestor.parents.map(a => (<AncestorCard ancestor={a} key={a.ancestor_id} />))}
-                </div>
-            )};
+
         </div>
     );
 }

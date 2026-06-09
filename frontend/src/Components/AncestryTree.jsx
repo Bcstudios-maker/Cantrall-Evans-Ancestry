@@ -3,17 +3,17 @@ import { useEffect } from "react";
 
 import AncestorCard from "./AncestorCard";
 import { buildTree } from "../utils/buildTree";
+import {  buildNodesAndEdges } from "../utils/buildNodes";
 import { getRelationships } from "../middleware/api";
-
+import { ReactFlow, Background, Controls } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
 function AncestryTree ({rootAncestorId}) {
 
-    const [ tree, setTree ] = useState([]);
+    const [ tree, setTree ] = useState(null);
 
     useEffect(() => {
         const loadTree = async () => {
-            console.log('tree_id:', 0);
-            console.log('rootAncestorId:', rootAncestorId);
             try{
                 const data = await getRelationships({tree_id: 0}); 
                 const { ancestors, relationships } = data;
@@ -29,7 +29,20 @@ function AncestryTree ({rootAncestorId}) {
 
 
     if(!tree) return (<p>LOADING...</p>);
-    return (<AncestorCard ancestor={tree}/>);
+
+    const { nodes, edges } = buildNodesAndEdges(tree);
+    const nodeTypes = {
+        ancestor: AncestorCard,
+    };
+
+    return (
+        <div className="ancestry-tree" style={{width: '100%', height: '50em'}}>
+            <ReactFlow nodeTypes={nodeTypes} nodes={nodes} edges={edges} fitView>
+         
+            </ReactFlow>
+        </div>
+        
+    );
 
 }
 

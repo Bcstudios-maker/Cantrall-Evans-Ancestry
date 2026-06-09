@@ -1,5 +1,7 @@
 .ancestor-card {
-    background-color: black;
+    position: relative;
+    background-color: grey;
+    padding-bottom: 1px;
 }
 
 .ancestor-description {
