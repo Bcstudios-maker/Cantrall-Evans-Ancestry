@@ -2,13 +2,16 @@ import { useEffect } from 'react';
 import '../styles/component_styles/AncestorCard.css'
 import { Handle, Position } from '@xyflow/react';
 
-const AncestorCard = ({data}) => {
-
+const AncestorCard = ({data, isChild = false}) => {
+    if(!data) return null;
     return (
-        <div className="ancestor-card" > 
-            <Handle type='source' position={Position.Top} id='bottom' />
-            <Handle type='target' position={Position.Bottom} id='top'/>
-           
+        <div className="ancestor-card" >
+            {!isChild && (
+                <>
+                    <Handle type='source' position={Position.Top} id='bottom' />
+                    <Handle type='target' position={Position.Bottom} id='top'/>
+                </>
+            )}
             <div className="ancestor-image">
                 
             </div>

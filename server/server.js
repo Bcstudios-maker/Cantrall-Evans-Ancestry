@@ -66,7 +66,7 @@ app.get("/api/getRelationships/:tree_id", async (req,res) => {
             `
         , [tree_id]);
 
-        const relationships = await pool.query(
+        const parentRelationships = await pool.query(
             `
             SELECT r.*
             FROM relationships AS r
@@ -75,7 +75,17 @@ app.get("/api/getRelationships/:tree_id", async (req,res) => {
             `
         , [tree_id]);
 
-        res.json({ ancestors: ancestors.rows, relationships: relationships.rows });
+        const spousalRelationships = await pool.query(
+            `
+            select sr.*
+            FROM relationships AS sr
+            JOIN tree_members AS tm ON sr.ancestor_id = tm.ancestor_id
+            WHERE tm.tree_id = $1 AND relation_type = 'husband'
+            `
+        , [tree_id])
+
+
+        res.json({ ancestors: ancestors.rows, relationships: parentRelationships.rows, spouses: spousalRelationships.rows});
         
     } catch (err) {
         console.log(err);

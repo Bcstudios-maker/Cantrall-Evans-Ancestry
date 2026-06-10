@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import AncestorCard from "./AncestorCard";
+import SpouseCard from "./SpouseCard";
 import { buildTree } from "../utils/buildTree";
 import {  buildNodesAndEdges } from "../utils/buildNodes";
 import { getRelationships } from "../middleware/api";
@@ -16,9 +17,11 @@ function AncestryTree ({rootAncestorId}) {
         const loadTree = async () => {
             try{
                 const data = await getRelationships({tree_id: 0}); 
-                const { ancestors, relationships } = data;
-                const build = buildTree(rootAncestorId, relationships, ancestors);
+                const { ancestors, relationships, spouses } = data;
+
+                const build = buildTree(rootAncestorId, relationships, ancestors, spouses);
                 setTree(build);
+               
             } catch (err){
                 console.log(err);
             }
@@ -33,6 +36,7 @@ function AncestryTree ({rootAncestorId}) {
     const { nodes, edges } = buildNodesAndEdges(tree);
     const nodeTypes = {
         ancestor: AncestorCard,
+        spouse: SpouseCard
     };
 
     return (
