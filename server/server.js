@@ -77,12 +77,13 @@ app.get("/api/getRelationships/:tree_id", async (req,res) => {
 
         const spousalRelationships = await pool.query(
             `
-            select sr.*
-            FROM relationships AS sr
-            JOIN tree_members AS tm ON sr.ancestor_id = tm.ancestor_id
+            select r.*
+            FROM relationships AS r
+            JOIN tree_members AS tm ON r.ancestor_id = tm.ancestor_id
             WHERE tm.tree_id = $1 AND relation_type = 'husband'
             `
         , [tree_id])
+        
 
 
         res.json({ ancestors: ancestors.rows, relationships: parentRelationships.rows, spouses: spousalRelationships.rows});
@@ -95,7 +96,6 @@ app.get("/api/getRelationships/:tree_id", async (req,res) => {
 
 app.post('/api/auth/login', async (req, res) => {
     const {username, password} = req.body;
-    console.log(req.body);
     try {
         const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
 

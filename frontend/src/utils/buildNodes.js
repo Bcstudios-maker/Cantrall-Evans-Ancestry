@@ -9,7 +9,12 @@ const collectSpouseIds = (ancestor, spouseIds = new Set()) => {
 
     return spouseIds;
 }
+/*
+const collectSiblingIds = (ancestor, siblingIds = new Set()){
+    if (!ancestor) return siblingIds;
 
+}
+*/
 export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0, spouseIds = undefined) => {
     if(!ancestor) return {nodes, edges};
     if(spouseIds === undefined){

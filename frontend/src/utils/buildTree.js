@@ -9,6 +9,7 @@ export const buildTree = (ancestor_id, relationships, ancestors, spouses, siblin
     const spouseRelation = spouses.find(spouse => spouse.ancestor_id === ancestor_id && (spouse.relation_type === 'husband'));
     const spouse = spouseRelation ? ancestors.find(a => a.ancestor_id === spouseRelation.relation_id) : null;
     
+    
 
     return { ...ancestor, parents, spouse};
 }
