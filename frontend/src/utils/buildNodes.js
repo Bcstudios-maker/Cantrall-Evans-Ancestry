@@ -45,6 +45,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
             }
         });
 
+
         ancestor.parents?.forEach((parent,index) => {
             edges.push({
                 id: `${sibling.ancestor_id} - ${parent.ancestor_id}`,
@@ -52,7 +53,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
                 target: parent.ancestor_id.toString()
             });
         });
-
+        buildNodesAndEdges(sibling, nodes, edges, xx, y, spouseIds);
     });
 
 
