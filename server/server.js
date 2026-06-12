@@ -82,9 +82,7 @@ app.get("/api/getRelationships/:tree_id", async (req,res) => {
             JOIN tree_members AS tm ON r.ancestor_id = tm.ancestor_id
             WHERE tm.tree_id = $1 AND relation_type = 'husband'
             `
-        , [tree_id])
-        
-
+        , [tree_id]);
 
         res.json({ ancestors: ancestors.rows, relationships: parentRelationships.rows, spouses: spousalRelationships.rows});
         

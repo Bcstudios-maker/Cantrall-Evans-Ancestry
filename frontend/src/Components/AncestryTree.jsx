@@ -17,7 +17,7 @@ function AncestryTree ({rootAncestorId}) {
         const loadTree = async () => {
             try{
                 const data = await getRelationships({tree_id: 0}); 
-                const { ancestors, relationships, spouses } = data;
+                const { ancestors, relationships, spouses} = data;
 
                 const build = buildTree(rootAncestorId, relationships, ancestors, spouses);
                 setTree(build);

@@ -1,7 +1,7 @@
 const collectSpouseIds = (ancestor, spouseIds = new Set()) => {
-    if(!ancestor) return spouseIds;
+    if (!ancestor) return spouseIds;
 
-    if(ancestor.spouse?.ancestor_id){
+    if (ancestor.spouse?.ancestor_id) {
         spouseIds.add(ancestor.spouse.ancestor_id);
     }
 
@@ -9,31 +9,57 @@ const collectSpouseIds = (ancestor, spouseIds = new Set()) => {
 
     return spouseIds;
 }
-/*
-const collectSiblingIds = (ancestor, siblingIds = new Set()){
-    if (!ancestor) return siblingIds;
 
-}
-*/
+
 export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0, spouseIds = undefined) => {
-    if(!ancestor) return {nodes, edges};
-    if(spouseIds === undefined){
+    if (!ancestor) return { nodes, edges };
+
+
+    if (spouseIds === undefined) {
         spouseIds = collectSpouseIds(ancestor);
     }
-    if(!ancestor || spouseIds.has(ancestor.ancestor_id)) return { nodes, edges };
+    if (!ancestor || spouseIds.has(ancestor.ancestor_id)) return { nodes, edges };
 
     nodes.push({
-        id: ancestor.ancestor_id.toString(),
+        id: String(ancestor.ancestor_id).trim(),
         type: ancestor.spouse?.ancestor_id ? 'spouse' : 'ancestor',
-        position: {x, y},
+        position: { x, y },
         data: {
             ...ancestor
         }
     })
 
+    ancestor.siblings?.forEach((sibling, index) => {
+        if (!sibling) return;
+        let xx = x + 250 + (index * 500);
+        if (ancestor.spouse) {
+            xx = x + 450 + (index * 500);
+        }
+
+        nodes.push({
+            id: sibling.ancestor_id.toString(),
+            type: 'ancestor',
+            position: { x: xx, y },
+            data: {
+                ...sibling
+            }
+        });
+
+        ancestor.parents?.forEach((parent,index) => {
+            edges.push({
+                id: `${sibling.ancestor_id} - ${parent.ancestor_id}`,
+                source: sibling.ancestor_id.toString(),
+                target: parent.ancestor_id.toString()
+            });
+        });
+
+    });
+
+
+
 
     ancestor.parents?.forEach((parent, index) => {
-        if(!parent) return;
+        if (!parent) return;
         const totalParents = ancestor.parents.length;
         const spacing = 300;
         const startX = x - ((totalParents - 1) * spacing) / 2;
@@ -41,12 +67,10 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
             id: `${ancestor.ancestor_id} - ${parent.ancestor_id}`,
             source: ancestor.ancestor_id.toString(),
             target: parent.ancestor_id.toString(),
-            sourceHandle: 'bottom',
-            targetHandle: 'top'
         });
         buildNodesAndEdges(parent, nodes, edges, startX + (index * spacing), y - 150, spouseIds);
     });
-    
 
-    return {nodes, edges};
+
+    return { nodes, edges };
 }
