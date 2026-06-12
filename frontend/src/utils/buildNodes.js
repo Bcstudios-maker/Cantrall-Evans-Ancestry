@@ -30,34 +30,8 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
     })
 
     ancestor.siblings?.forEach((sibling, index) => {
-        if (!sibling) return;
-        let xx = x + 250 + (index * 500);
-        let yy = y + 250 + (index * 500);
-        if (ancestor.spouse) {
-            xx = x + 450 + (index * 500);
-        }
-        if(sibling.parents){
-            console.log(sibling.parents)
-            nodes.push({
-                id: sibling.ancestor_id.toString(),
-                type: 'ancestor',
-                position: { x: xx, y},
-                data: {
-                    ...sibling
-                }
-            });
-        }
-
-
-
-        ancestor.parents?.forEach((parent,index) => {
-            edges.push({
-                id: `${sibling.ancestor_id} - ${parent.ancestor_id}`,
-                source: sibling.ancestor_id.toString(),
-                target: parent.ancestor_id.toString()
-            });
-        });
-        buildNodesAndEdges(sibling, nodes, edges, xx, y, spouseIds);
+        if(!sibling) return;
+        console.log(sibling);
     });
 
 
