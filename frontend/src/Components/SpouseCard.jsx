@@ -7,8 +7,8 @@ function SpouseCard({data}){
     return (
         <div className="spouse-card" >
             
-            <Handle type='source' position={Position.Top} id='bottom' />
-            <Handle type='target' position={Position.Bottom} id='top'/>
+            <Handle type='target' position={Position.Top} id='top' />
+            <Handle type='source' position={Position.Bottom} id='bottom'/>
             <AncestorCard data={data} isChild/>
             {data.spouse && (
                 <>

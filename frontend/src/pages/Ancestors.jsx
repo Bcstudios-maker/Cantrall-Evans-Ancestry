@@ -34,7 +34,7 @@ function Ancestors() {
         <>
             <NavBar/>
             <div className="ancestors-tree">
-                <AncestryTree rootAncestorId={1}/>
+                <AncestryTree rootAncestorId={2}/>
             </div>
         </>
     );

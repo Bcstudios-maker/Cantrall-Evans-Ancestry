@@ -17,9 +17,9 @@ function AncestryTree ({rootAncestorId}) {
         const loadTree = async () => {
             try{
                 const data = await getRelationships({tree_id: 0}); 
-                const { ancestors, relationships, spouses} = data;
+                const { ancestors, relationships } = data;
 
-                const build = buildTree(rootAncestorId, relationships, ancestors, spouses);
+                const build = buildTree(rootAncestorId, ancestors, relationships);
                 setTree(build);
                
             } catch (err){
@@ -34,6 +34,7 @@ function AncestryTree ({rootAncestorId}) {
     if(!tree) return (<p>LOADING...</p>);
 
     const { nodes, edges } = buildNodesAndEdges(tree);
+    console.log(nodes);
     const nodeTypes = {
         ancestor: AncestorCard,
         spouse: SpouseCard

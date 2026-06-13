@@ -8,8 +8,8 @@ const AncestorCard = ({data, isChild = false}) => {
         <div className="ancestor-card" >
             {!isChild && (
                 <>
-                    <Handle type='source' position={Position.Top} id='bottom' />
-                    <Handle type='target' position={Position.Bottom} id='top'/>
+                    <Handle type='target' position={Position.Top} id='top' />
+                    <Handle type='source' position={Position.Bottom} id='bottom'/>
                 </>
             )}
             <div className="ancestor-image">

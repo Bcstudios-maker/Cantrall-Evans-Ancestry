@@ -1,55 +1,32 @@
-const collectSpouseIds = (ancestor, spouseIds = new Set()) => {
-    if (!ancestor) return spouseIds;
-
-    if (ancestor.spouse?.ancestor_id) {
-        spouseIds.add(ancestor.spouse.ancestor_id);
-    }
-
-    ancestor.parents?.forEach(parent => collectSpouseIds(parent, spouseIds));
-
-    return spouseIds;
-}
 
 
-export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0, spouseIds = undefined) => {
+export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0) => {
     if (!ancestor) return { nodes, edges };
-
-
-    if (spouseIds === undefined) {
-        spouseIds = collectSpouseIds(ancestor);
-    }
-    if (!ancestor || spouseIds.has(ancestor.ancestor_id)) return { nodes, edges };
+    console.log(ancestor);
 
     nodes.push({
-        id: String(ancestor.ancestor_id).trim(),
-        type: ancestor.spouse?.ancestor_id ? 'spouse' : 'ancestor',
-        position: { x, y },
+        id: ancestor.ancestor_id.toString(),
+        type: ancestor.spouse ? 'spouse' : 'ancestor',
+        position: {x, y},
         data: {
             ...ancestor
         }
-    })
-
-    ancestor.siblings?.forEach((sibling, index) => {
-        if(!sibling) return;
-        console.log(sibling);
     });
 
-
-
-
-    ancestor.parents?.forEach((parent, index) => {
-        if (!parent) return;
-        const totalParents = ancestor.parents.length;
-        const spacing = 300;
-        const startX = x - ((totalParents - 1) * spacing) / 2;
+    ancestor.children?.forEach((child, index) => {
+        if(!child) return;
+        let spacing = 300;
+        let startX = x - 250 + (index * spacing);
         edges.push({
-            id: `${ancestor.ancestor_id} - ${parent.ancestor_id}`,
+            id: `${ancestor.ancestor_id} - ${child.ancestor_id}`,
             source: ancestor.ancestor_id.toString(),
-            target: parent.ancestor_id.toString(),
-        });
-        buildNodesAndEdges(parent, nodes, edges, startX + (index * spacing), y - 150, spouseIds);
+            target: child.ancestor_id.toString(),
+            sourceHand
+        })
+        buildNodesAndEdges(child, nodes, edges, startX, y + 150);
     });
 
+    
 
     return { nodes, edges };
 }

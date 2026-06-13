@@ -1,19 +1,16 @@
 
-export const buildTree = (ancestor_id, relationships, ancestors, spouses, visited = new Set()) => {
-    if(visited.has(ancestor_id)) return null;
+export const buildTree = (ancestor_id, ancestors, relationships, visited = new Set()) => {
+    if(visited.has(ancestor_id)) return;
     visited.add(ancestor_id);
 
     const ancestor = ancestors.find(a => a.ancestor_id === ancestor_id);
 
-    const parents = relationships.filter(relation => relation.ancestor_id === ancestor_id && (relation.relation_type === 'mother' || relation.relation_type === 'father'))
-    .map(relation => buildTree(relation.relation_id, relationships, ancestors, spouses, visited));
-
-    const spouseRelation = spouses.find(spouse => spouse.ancestor_id === ancestor_id && (spouse.relation_type === 'wife' || spouse.relation_type === 'husband'));
-    const spouse = spouseRelation ? ancestors.find(a => a.ancestor_id === spouseRelation.relation_id) : null;
+    const spouseRelations = relationships.find(r => r.ancestor_id === ancestor_id && (r.relation_type === 'husband' || r.relation_type === 'wife'));
+    const spouse = spouseRelations ? ancestors.find(a => a.ancestor_id === spouseRelations.relation_id) : null;
 
 
-    const siblings = relationships.filter(relation => relation.ancestor_id === ancestor.ancestor_id && (relation.relation_type === 'brother' || relation.relation_type === 'sister')).map(relation => buildTree(relation.relation_id, relationships, ancestors, spouses, visited));
+    let children = relationships.filter(r => r.ancestor_id === ancestor_id && (r.relation_type === 'father' || r.relation_type === 'mother')).map(r => buildTree(r.relation_id, ancestors, relationships));
+    children = children.sort((c1,c2) => new Date(c1.date_of_birth) - new Date(c2.date_of_birth));
 
-    const children = relationships.map(relation => relation.relation_id === ancestor.ancestor_id && (relation.relation_type === 'mother' || relation.relation_type === 'father'));
-    return { ...ancestor, parents, spouse, siblings, children};
+    return { ...ancestor, spouse, children};
 }
