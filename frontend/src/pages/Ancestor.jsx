@@ -1,11 +1,13 @@
 import '../styles/page_styles/Ancestor.css';
 
 import { useEffect, useState } from "react";
+import Modal from 'react-bootstrap/Modal'
 import { getAncestorDocuments } from "../middleware/api";
 import NavBar from "../Components/NavBar";
 import { useLocation, useParams } from "react-router-dom";
 import DocumentCard from "../Components/DocumentCard";
 import { structureDate } from '../utils/structureDate';
+import EditInfo from '../Components/EditInfo';
 
 function Ancestor() {
     
@@ -13,13 +15,15 @@ function Ancestor() {
     const data = location.state;
 
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log(user);
+
     const isAdmin = user?.role === 'admin' ? true : false;
     
     const {ancestor_id: ancestorId} = useParams();
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
+
 
     useEffect(() => {
         const loadDocuments = async () => {
@@ -48,16 +52,16 @@ function Ancestor() {
 
     }
     if (!data) {return (<><NavBar /><p>Ancestor not Found</p></>);}
-    console.log(documents);
+
     return (
         <>
             <NavBar />
+            
             {
                 isAdmin ?  
                 (
                     <div className='admin-buttons'>
                         <button className='admin-button' id='add-document' alt='Add Document'>+</button>
-                        <button className='admin-button' id='edit-info' alt='Edit Ancestor Info'>✎</button>
                     </div>
                 ) : null
             }
