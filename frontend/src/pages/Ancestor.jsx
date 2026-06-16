@@ -13,6 +13,7 @@ function Ancestor() {
     const data = location.state;
 
     const user = JSON.parse(localStorage.getItem('user'));
+    console.log(user);
     const isAdmin = user?.role === 'admin' ? true : false;
     
     const {ancestor_id: ancestorId} = useParams();
@@ -47,17 +48,18 @@ function Ancestor() {
 
     }
     if (!data) {return (<><NavBar /><p>Ancestor not Found</p></>);}
+    console.log(documents);
     return (
         <>
             <NavBar />
             {
-                isAdmin && 
+                isAdmin ?  
                 (
                     <div className='admin-buttons'>
                         <button className='admin-button' id='add-document' alt='Add Document'>+</button>
                         <button className='admin-button' id='edit-info' alt='Edit Ancestor Info'>✎</button>
                     </div>
-                )
+                ) : null
             }
             <div className="ancestor-info">
                 <h1 className='ancestor-name'>{data.first_name} {data.last_name}</h1>

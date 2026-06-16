@@ -6,13 +6,14 @@ import { deleteDocument } from '../middleware/api';
 
 function DocumentCard({ document, user }) {
 
+    console.log(user);
+
     const isAdmin = user?.role === 'admin' ? true : false;
 
     const dateAdded = structureDate(document.date_added);
 
-    const handleDelete = (e) => {
-        
-        alert('Are you sure you wish to delete this document?');
+    const handleDelete = () => {
+        if(!isAdmin) return;
 
         deleteDocument({info_id: document.info_id, user: user});
         window.location.reload();

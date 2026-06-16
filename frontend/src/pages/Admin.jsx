@@ -17,11 +17,8 @@ function Admin() {
     const [loading, setLoading] = useState(true);
 
     const handleAddUser = async (e) => {
-        e.preventDefault();
-        console.log({username,password,role});
-
         await addUser({username: username, password: password, role: role});
-       
+       window.location.reload;
     }
 
 
