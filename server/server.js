@@ -47,10 +47,10 @@ app.get("/api/getDocuments", async (req, res) => {
     }
 });
 
-app.get("/api/getAncestor/:ancestor_id", async (req, res) => {
+app.get("/api/getAncestorDocuments/:ancestor_id", async (req, res) => {
     const {ancestor_id} = req.params;
     try {
-        const result = await pool.query(`SELECT * from ancestors WHERE ancestor_id = $1`, [ancestor_id]);
+        const result = await pool.query(`SELECT * from ancestor_info WHERE ancestor_id = $1`, [ancestor_id]);
         res.json(result.rows);
     } catch(err) {
         console.log(err);
