@@ -140,6 +140,18 @@ app.post('/api/addUser', async (req,res) => {
     }
 });
 
+app.delete('/api/deleteDocument/:info_id', async(req, res) => {
+    const {info_id} = req.params;
+
+    try{
+        const response = await pool.query('DELETE FROM ancestor_info WHERE info_id = $1', [info_id]);
+        res.status(201).json({message: 'Document Deleted'});
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({error: err.message});
+    }
+});
+
 app.delete('/api/deleteUser/:user_id', async (req, res) => {
     const {user_id} = req.params;
 

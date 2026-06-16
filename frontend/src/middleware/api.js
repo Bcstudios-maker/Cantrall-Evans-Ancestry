@@ -86,3 +86,16 @@ export const deleteUser = async ({user_id}) => {
         return 'Not Admin :(';
     }
 }
+
+export const deleteDocument = async ({info_id, user}) => {
+    const isAdmin = user?.role === 'admin' ? true : false;
+
+    if(isAdmin) {
+        try {
+            const response = await fetch(`http://localhost:4000/api/deleteDocument/${info_id}`, {method:'DELETE', headers: {'Content-Type': 'applicaiton/json'}, body: JSON.stringify({ info_id })});
+            return await response.json();
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
+}

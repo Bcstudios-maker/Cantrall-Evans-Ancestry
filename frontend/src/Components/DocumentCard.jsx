@@ -2,6 +2,7 @@ import '../styles/component_styles/DocumentCard.css'
 
 import { useLoaderData } from "react-router-dom";
 import { structureDate } from "../utils/structureDate";
+import { deleteDocument } from '../middleware/api';
 
 function DocumentCard({ document, user }) {
 
@@ -10,8 +11,11 @@ function DocumentCard({ document, user }) {
     const dateAdded = structureDate(document.date_added);
 
     const handleDelete = (e) => {
-        e.preventDefault();
-        alert('Are you sure you wish to delete this document?')
+        
+        alert('Are you sure you wish to delete this document?');
+
+        deleteDocument({info_id: document.info_id, user: user});
+        window.location.reload();
     }
     return (
 
