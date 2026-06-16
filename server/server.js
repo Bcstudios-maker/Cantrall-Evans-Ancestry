@@ -140,6 +140,17 @@ app.post('/api/addUser', async (req,res) => {
     }
 });
 
+app.post('/api/ancestor/editDocuments', async (req, res) => {
+    const {filename, filepath, ancestor_id, info_id} = req.body;
+
+    try{
+        const response = await pool.query('UPDATE ancestor_info SET filename = $1, filepath = $2, ancestor_id = $3 WHERE info_id = $4', [filename, filepath, ancestor_id, info_id]);
+        res.status(201).json({message: 'Document edited'});
+    } catch(err) {
+        res.status(500).json({error: err.message});
+    }
+});
+
 app.delete('/api/deleteDocument/:info_id', async(req, res) => {
     const {info_id} = req.params;
 
