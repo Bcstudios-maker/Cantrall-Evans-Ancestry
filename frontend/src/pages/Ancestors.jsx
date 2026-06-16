@@ -1,4 +1,4 @@
-import '../styles/Ancestors.css'
+import '../styles/page_styles/Ancestors.css'
 
 import { useEffect, useState } from "react";
 import NavBar from "../Components/NavBar";

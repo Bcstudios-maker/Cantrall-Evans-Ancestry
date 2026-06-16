@@ -1,15 +1,19 @@
+import '../styles/component_styles/DocumentCard.css'
+
+import { useLoaderData } from "react-router-dom";
 import { structureDate } from "../utils/structureDate";
 
-function DocumentCard({document}){
+function DocumentCard({ document, user }) {
 
 
     const dateAdded = structureDate(document.date_added);
     return (
-        <div className="document-content">
-            <h2>{document.filename}</h2>
-            <a href={document.filepath}>{document.filename}</a>
-            <p>{dateAdded}</p>
-        </div>
+        <a className='document-link' href={document.filepath}>
+            <div className="document-content">
+                <h2 className='document-name'>{document.filename}</h2>
+                <p className='document-date'>{dateAdded}</p>
+            </div>
+        </a>
     );
 }
 

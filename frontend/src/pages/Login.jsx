@@ -1,4 +1,4 @@
-import '../styles/Login.css'
+import '../styles/page_styles/Login.css'
 import { useState } from 'react';
 import { loginUser } from '../middleware/api'
 import { Navigate, useNavigate } from 'react-router-dom';
