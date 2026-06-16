@@ -1,7 +1,7 @@
 import AncestorCard from "../Components/AncestorCard";
 import NavBar from "../Components/NavBar";
 
-import  Document  from '../Components/Document'
+import  DocumentCard  from '../Components/DocumentCard'
 import { useState, useEffect } from "react";
 import { getTrees, getAncestors, getDocuments } from "../middleware/api";
 
@@ -46,7 +46,10 @@ function Home() {
                     </form>
                 </div>
                 <div className="documents-grid">
-                    {documents.map((document) => (searchQuery.startsWith) && <Document document={document} key={document.info_id}/>)}
+                    <ul>
+                        {documents.map((document) => (searchQuery.startsWith) && <li><DocumentCard document={document} key={document.info_id}/></li>)}
+
+                    </ul>
                 </div>
             </main>
         </>

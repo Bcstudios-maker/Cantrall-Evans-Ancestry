@@ -1,4 +1,4 @@
-function Document({document}){
+function DocumentCard({document}){
     return (
         <div className="document-content">
             <h1>{document.filename}</h1>
@@ -8,4 +8,4 @@ function Document({document}){
     );
 }
 
-export default Document;
+export default DocumentCard;

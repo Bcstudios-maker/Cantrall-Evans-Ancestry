@@ -2,40 +2,46 @@ import { useEffect, useState } from "react";
 import { getAncestorDocuments } from "../middleware/api";
 import NavBar from "../Components/NavBar";
 import { useLocation, useParams } from "react-router-dom";
+import DocumentCard from "../Components/DocumentCard";
 
 function Ancestor() {
     const location = useLocation();
     const data = location.state;
 
-    const ancestorId = useParams();
-    
-    if(!data) return (<><NavBar/><p>Ancestor not Found</p></>);
+    const {ancestor_id: ancestorId} = useParams();
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if(!data) return;
-        try {
-            const documentData = getAncestorDocuments(ancestorId);
-            setDocuments(documentData);
-        } catch (err) {
-            setError(err);
-            console.log(err);
-        } finally {
-            setLoading(false);
+        const loadDocuments = async () => {
+            try {
+                const documentData = await getAncestorDocuments({ancestor_id: ancestorId});
+
+                console.log(documentData);
+                setDocuments(documentData);
+            } catch (err) {
+                setError(err);
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
         }
-    }, [data]);
+        if(ancestorId){
+            loadDocuments();
+        }
+    }, [ancestorId]);
 
     const birth = data.date_of_birth.toString();
     const birthDate = birth.substring(0, birth.indexOf('T'));
 
     let deathDate = null;
-    if(data.date_of_death){
+    if (data.date_of_death) {
         const death = data.date_of_death.toString();
         deathDate = death.substring(0, death.indexOf('T'));
 
     }
+    if (!data) {return (<><NavBar /><p>Ancestor not Found</p></>);}
     return (
         <>
             <NavBar />
@@ -44,7 +50,10 @@ function Ancestor() {
                 <h2>Born: {birthDate}</h2>
                 <h2>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
                 <div className='ancestor-data'>
-                    {documents.map((document) => (<Document document={document}/>))}
+                    <ul>
+                        {documents?.map((document) => (<li><DocumentCard document={document} key={document.info_id}/></li>))}
+                    </ul>
+                    
                 </div>
             </div>
         </>
