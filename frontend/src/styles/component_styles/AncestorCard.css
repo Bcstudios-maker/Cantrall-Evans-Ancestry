@@ -1,7 +1,13 @@
 .ancestor-card {
     position: relative;
     background-color: grey;
-    padding-bottom: 1px;
+    padding: 5px;
+    border-radius: 15px;
+    width: 13em;
+}
+
+.ancestor-card:hover {
+    cursor: pointer;
 }
 
 .ancestor-description {

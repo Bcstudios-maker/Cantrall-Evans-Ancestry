@@ -17,6 +17,14 @@ export const getAncestors = async () => {
     return await response.json();
 }
 
+export const getAncestor = async({ancestor_id}) => {
+    const response = await fetch(`http://localhost:4000/api/getAncestor/${ancestor_id}`);
+
+    if(!response.ok){
+        throw new Error('Failed to fetch ancestor with ancestor_id: ' + ancestor_id);
+    }
+    return await response.json();
+}
 export const getUsers = async () => {
     const response = await fetch('http://localhost:4000/api/getUsers');
 

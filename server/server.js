@@ -11,6 +11,11 @@ app.use(cors());
 
 require('dotenv').config();
 
+
+/* 
+    finds all trees. returns the resulting rows
+*/
+
 app.get("/api/getTrees", async (req, res) => {
     try {
         const result = await pool.query(`SELECT * FROM trees`);
@@ -32,15 +37,29 @@ app.get("/api/getAncestors", async (req, res) => {
     }
 });
 
-
 app.get("/api/getDocuments", async (req, res) => {
     try {
-        const result = await pool.query(`SELECT * FROM ancestor_info WHERE date_added >= CURRENT_DATE - INTERVAL '7 days'`)
+        const result = await pool.query(`SELECT * FROM ancestor_info WHERE date_added >= CURRENT_DATE - INTERVAL '7 days'`);
         res.json(result.rows);
     } catch(err) {
         console.log(err);
         res.status(500).json({body: err.message});
     }
+});
+
+app.get("/api/getAncestor/:ancestor_id", async (req, res) => {
+    const {ancestor_id} = req.params;
+    try {
+        const result = await pool.query(`SELECT * from ancestors WHERE ancestor_id = $1`, [ancestor_id]);
+        res.json(result.rows);
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({body: err.message});
+    }
+});
+
+app.get("/api/getAncestorInfo", async(req, res) =>{
+    const { ancestor_id } = req.params;
 });
 
 app.get("/api/getUsers", async (req, res) => {

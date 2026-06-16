@@ -2,7 +2,6 @@
 
 export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0) => {
     if (!ancestor) return { nodes, edges };
-    console.log(ancestor);
 
     nodes.push({
         id: ancestor.ancestor_id.toString(),
@@ -22,7 +21,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
             source: ancestor.ancestor_id.toString(),
             target: child.ancestor_id.toString(),
         });
-        buildNodesAndEdges(child, nodes, edges, startX, y + 250);
+        buildNodesAndEdges(child, nodes, edges, startX, y + 350);
     });
 
     
