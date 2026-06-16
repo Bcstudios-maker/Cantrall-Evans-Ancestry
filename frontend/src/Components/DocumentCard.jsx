@@ -1,9 +1,14 @@
+import { structureDate } from "../utils/structureDate";
+
 function DocumentCard({document}){
+
+
+    const dateAdded = structureDate(document.date_added);
     return (
         <div className="document-content">
-            <h1>{document.filename}</h1>
+            <h2>{document.filename}</h2>
             <a href={document.filepath}>{document.filename}</a>
-            <p>{document.date_added}</p>
+            <p>{dateAdded}</p>
         </div>
     );
 }

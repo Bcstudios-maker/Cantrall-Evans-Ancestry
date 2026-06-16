@@ -2,18 +2,15 @@ import { useEffect } from 'react';
 import '../styles/component_styles/AncestorCard.css'
 import { Handle, Position } from '@xyflow/react';
 import { Link } from 'react-router-dom';
+import { structureDate } from '../utils/structureDate';
 const AncestorCard = ({data, isChild = false}) => {
     if(!data) return null;
 
-    const birth = data.date_of_birth.toString();
-    const birthDate = birth.substring(0, birth.indexOf('T'));
-
-
+    const birthDate = structureDate(data.date_of_birth);
 
     let deathDate = null;
     if(data.date_of_death){
-        const death = data.date_of_death.toString();
-        deathDate = death.substring(0, death.indexOf('T'));
+        deathDate = structureDate(data.date_of_death);
 
     }
 
