@@ -65,7 +65,7 @@ function Ancestor() {
                 <h2 className='ancestor-dates'>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
                 <div className='ancestor-documents'>
                     <ul className="document-grid">
-                        {documents?.map((document) => (<li><DocumentCard document={document} key={document.info_id}/></li>))}
+                        {documents?.map((document) => (<li><DocumentCard document={document} user={user} key={document.info_id}/></li>))}
                     </ul>
                     
                 </div>
