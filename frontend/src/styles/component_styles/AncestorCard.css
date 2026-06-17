@@ -3,7 +3,7 @@
     background-color: grey;
     padding: 5px;
     border-radius: 15px;
-    width: 13em;
+    width: 25em;
 }
 
 .ancestor-card:hover {
@@ -12,4 +12,43 @@
 
 .ancestor-description {
     color: white;
+}
+
+.ancestor-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-right: 10px;
+}
+
+.ancestor-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background: black;
+    color: white;
+    font-weight: bolder;
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+    transition: background-color 0.5s, box-shadow 0.5s;
+}
+
+#edit-ancestor:hover {
+    background-color: rgba(0, 255, 213, 0.583);
+    box-shadow: 0 0 10px 0 rgba(0, 255, 213, 0.583);
+}
+
+#add-ancestor:hover {
+    cursor: pointer;
+    background-color: rgba(21, 255, 0, 0.365);
+    box-shadow: 0 0 10px 0 rgba(21, 255, 0, 0.365);
+}
+
+#remove-ancestor:hover {
+    cursor: pointer;
+    background-color: rgba(255, 0, 0, 0.583);
+    box-shadow: 0 0 10px 0 rgba(255, 0, 0, 0.583);
 }
