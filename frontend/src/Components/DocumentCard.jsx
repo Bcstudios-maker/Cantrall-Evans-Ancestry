@@ -4,7 +4,7 @@ import { useLoaderData } from "react-router-dom";
 import { structureDate } from "../utils/structureDate";
 import { deleteDocument } from '../middleware/api';
 import { useState } from 'react';
-import EditInfo from './EditInfo';
+import EditInfo from './Popups/EditInfo';
 function DocumentCard({ document, user }) {
 
 

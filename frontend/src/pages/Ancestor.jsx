@@ -3,12 +3,12 @@ import '../styles/page_styles/Ancestor.css';
 import { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import { getAncestorDocuments } from "../middleware/api";
-import AddDocument from '../Components/AddDocument';
+import AddDocument from '../Components/Popups/AddDocument';
 import NavBar from "../Components/NavBar";
 import { useLocation, useParams } from "react-router-dom";
 import DocumentCard from "../Components/DocumentCard";
 import { structureDate } from '../utils/structureDate';
-import EditInfo from '../Components/EditInfo';
+import EditInfo from '../Components/Popups/EditInfo';
 
 function Ancestor() {
     

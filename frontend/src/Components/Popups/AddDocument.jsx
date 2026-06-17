@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { addDocument } from "../middleware/api";
+import { addDocument } from "../../middleware/api";
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 

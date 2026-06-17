@@ -1,12 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/component_styles/AncestorCard.css'
 import { Handle, Position } from '@xyflow/react';
 import { Link } from 'react-router-dom';
 import { structureDate } from '../utils/structureDate';
+import AddAncestor from './Popups/AddAncestor';
 const AncestorCard = ({ data, isChild = false }) => {
     if (!data) return null;
 
     const birthDate = structureDate(data.date_of_birth);
+
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleHide = () => setShow(false);
 
     let deathDate = null;
     if (data.date_of_death) {
@@ -35,9 +41,10 @@ const AncestorCard = ({ data, isChild = false }) => {
 
                 </div>
             </Link>
+            <AddAncestor show={show} handleHide={handleHide} ancestor={data}/>
             <div className='ancestor-buttons'>
                 <button className='ancestor-button' id='edit-ancestor'>✎</button>
-                <button className='ancestor-button' id='add-ancestor' style={{fontSize: '22px', paddingBottom: '5px'}}>+</button>
+                <button className='ancestor-button' id='add-ancestor' style={{fontSize: '22px', paddingBottom: '5px'}} onClick={handleShow}>+</button>
                 <button className='ancestor-button' id='remove-ancestor'>X</button>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal'
 import { useState } from 'react';
-import { editDocument } from '../middleware/api';
+import { editDocument } from '../../middleware/api';
 
 function EditInfo({ show, handleHide, document }) {
     
