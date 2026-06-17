@@ -6,12 +6,10 @@ function EditInfo({ show, handleHide, document }) {
     
     const [filename, setFilename] = useState(document.filename.toString());
     const [filepath, setFilepath] = useState(document.filepath.toString());
-    
-    console.log(filename, filepath);
-    const handleSubmit = async (e) => {
 
+    const handleSubmit = async (e) => {
         await editDocument({filename: filename, filepath: filepath, ancestor_id: document.ancestor_id, info_id: document.info_id});
-        e.preventDefault();
+        window.location.reload();
     }
 
     return (
@@ -20,7 +18,7 @@ function EditInfo({ show, handleHide, document }) {
                 <Modal.Title>Edit Document Info</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form className='edit-form' onSubmit={handleSubmit}>
+                <form className='edit-form' method='POST' onSubmit={handleSubmit}>
                     <p>File name:</p>
                     <input placeholder={document.filename} style={{'width': '100%'}} onChange={(e) => setFilename(e.target.value)}></input>
                     <p></p>

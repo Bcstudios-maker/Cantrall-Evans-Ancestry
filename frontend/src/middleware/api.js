@@ -71,7 +71,16 @@ export const addUser = async ({ username, password, role }) => {
 }
 
 export const editDocument = async ({ filename, filepath, ancestor_id, info_id }) => {
-    const response = await fetch('http://localhost:4000/api/ancestor/editDocuments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filename, filepath, ancestor_id, info_id }) })
+    const response = await fetch('http://localhost:4000/api/editDocument', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filename, filepath, ancestor_id, info_id }) });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+    }
+    return await response.json();
+}
+
+export const addDocument = async ({ filepath, filename, ancestor_id }) => {
+    const response = await fetch('http://localhost:4000/api/addDocument', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filepath, filename, ancestor_id }) });
     if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error);

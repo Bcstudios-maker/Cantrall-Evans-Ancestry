@@ -3,6 +3,7 @@ import '../styles/page_styles/Ancestor.css';
 import { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import { getAncestorDocuments } from "../middleware/api";
+import AddDocument from '../Components/AddDocument';
 import NavBar from "../Components/NavBar";
 import { useLocation, useParams } from "react-router-dom";
 import DocumentCard from "../Components/DocumentCard";
@@ -23,6 +24,10 @@ function Ancestor() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleHide = () => setShow(false);
 
 
     useEffect(() => {
@@ -56,12 +61,12 @@ function Ancestor() {
     return (
         <>
             <NavBar />
-            
+            <AddDocument show={show} handleHide={handleHide}/>
             {
                 isAdmin ?  
                 (
                     <div className='admin-buttons'>
-                        <button className='admin-button' id='add-document' alt='Add Document'>+</button>
+                        <button className='admin-button' id='add-document' alt='Add Document' onClick={handleShow}>+</button>
                     </div>
                 ) : null
             }
@@ -71,7 +76,7 @@ function Ancestor() {
                 <h2 className='ancestor-dates'>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
                 <div className='ancestor-documents'>
                     <ul className="document-grid">
-                        {documents?.map((document) => (<li><DocumentCard document={document} user={user} key={document.info_id}/></li>))}
+                        {documents?.map((document) => (<li key={document.info_id}><DocumentCard document={document} user={user} key={document.info_id}/></li>))}
                     </ul>
                     
                 </div>

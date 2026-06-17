@@ -140,7 +140,7 @@ app.post('/api/addUser', async (req,res) => {
     }
 });
 
-app.post('/api/ancestor/editDocuments', async (req, res) => {
+app.post('/api/editDocument', async (req, res) => {
     const {filename, filepath, ancestor_id, info_id} = req.body;
 
     try{
@@ -150,6 +150,18 @@ app.post('/api/ancestor/editDocuments', async (req, res) => {
         res.status(500).json({error: err.message});
     }
 });
+
+app.post('/api/addDocument', async (req, res) => {
+    const {filepath, filename, ancestor_id} = req.body;
+
+    try{
+        const response = await pool.query('INSERT INTO ancestor_info (filepath, filename, ancestor_id, date_added) VALUES ($1, $2, $3, NOW())', [filepath, filename, ancestor_id]);
+        res.status(201).json({message: 'Document Added'});
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({error: err.message});
+    }
+})
 
 app.delete('/api/deleteDocument/:info_id', async(req, res) => {
     const {info_id} = req.params;
