@@ -30,7 +30,6 @@ function AncestryTree ({rootAncestorId}) {
     }
     , [rootAncestorId]);
 
-
     if(!tree) return (<p>LOADING...</p>);
 
     const { nodes, edges } = buildNodesAndEdges(tree);

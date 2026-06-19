@@ -17,6 +17,14 @@ export const getAncestors = async () => {
     return await response.json();
 }
 
+export const addAncestor = async ({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId }) => {
+    const response = await fetch('http://localhost:4000/api/addAncestor', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId})});
+    if(!response.ok){
+        throw new Error('Failed to add ancestor');
+    }
+    return await response.json();
+}
+
 export const getAncestorDocuments = async ({ ancestor_id }) => {
     const response = await fetch(`http://localhost:4000/api/getAncestorDocuments/${ancestor_id}`);
 

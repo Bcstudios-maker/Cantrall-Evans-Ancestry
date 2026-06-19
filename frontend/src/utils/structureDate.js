@@ -3,3 +3,9 @@ export const structureDate = (dateAdded) => {
 
     return new Date(dateAdded).toISOString().split('T')[0];
 }
+
+export const createDeate = (date) => {
+    if (!date) return null;
+    console.log(new Date(date));
+    return new Date(date);
+}

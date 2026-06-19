@@ -3,6 +3,7 @@
 export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0) => {
     if (!ancestor) return { nodes, edges };
 
+
     nodes.push({
         id: ancestor.ancestor_id.toString(),
         type: ancestor.spouse ? 'spouse' : 'ancestor',
