@@ -93,19 +93,17 @@ app.get("/api/getRelationships/:tree_id", async (req,res) => {
             `
             SELECT a.*
             FROM ancestors AS a
-            JOIN tree_members AS tm ON a.ancestor_id = tm.ancestor_id
-            WHERE  tm.tree_id = $1
+
             `
-        , [tree_id]);
+        );
 
         const relationships = await pool.query(
             `
             SELECT r.*
             FROM relationships AS r
-            JOIN tree_members AS tm ON r.ancestor_id = tm.ancestor_id
-            WHERE tm.tree_id = $1
+
             `
-        , [tree_id]);
+        );
 
         res.json({ ancestors: ancestors.rows, relationships: relationships.rows});
         
