@@ -16,7 +16,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
     const [relationType, setRelationType] = useState('');
 
     const handleAddAncestor = async () => {
-        await addAncestor({firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType, ancestorId: ancestor.ancestor_id});
+        await addAncestor({ firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType, ancestorId: ancestor.ancestor_id });
     }
 
 
@@ -27,32 +27,32 @@ function AddAncestor({ show, handleHide, ancestor }) {
                 <Modal.Title>Add Ancestor</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className='add-ancestor'>
-                    <form method='POST'>
-                        <input placeholder='Enter Ancestor First Name...' onChange={(e) => setFirstName(e.target.value)}></input>
-                        <input placeholder='Enter Ancestor Last Name...' onChange={(e) => setLastName(e.target.value)}></input>
-                        <input placeholder='Enter Date of Birth...' onChange={(e) => setDOB(e.target.value)}></input>
-                        <input placeholder='Enter Date of Death...' onChange={(e) => setDOD(e.target.value)}></input>
-                        <input placeholder='Enter Ancestor Image Link...' onChange={(e) => setImageLink(e.target.value)}></input>
-                        <select className='ancestor-gender-dropdown' onChange={(e) => setGender(e.target.value)}>
-                            <option value='m'>Male</option>
-                            <option value='f'>Female</option>
-                        </select>
-                        <select className="ancestor-dropdown" onChange={(e) => setRelationType(e.target.value)}>
-                            {!ancestor.spouse && (<><option value="wife">Husband</option><option value="husband">Wife</option></>)}
-                            {ancestor.spouse && (<><option value="father">Son</option><option value="mother">Daughter</option></>)}
-                        </select>
-                    </form>
+                <form method='POST' className='add-ancestor-form' style={{display: 'flex', flexDirection: 'column', gap: '10px', width: '75%', justifySelf: 'center'}}>
+                    <input className='add-ancestor-input' placeholder='Enter Ancestor First Name...' onChange={(e) => setFirstName(e.target.value)}></input>
+                    <input className='add-ancestor-input' placeholder='Enter Ancestor Last Name...' onChange={(e) => setLastName(e.target.value)}></input>
+                    <input className='add-ancestor-input' placeholder='Enter Date of Birth...' onChange={(e) => setDOB(e.target.value)}></input>
+                    <input className='add-ancestor-input' placeholder='Enter Date of Death...' onChange={(e) => setDOD(e.target.value)}></input>
+                    <input className='add-ancestor-input' placeholder='Enter Ancestor Image Link...' onChange={(e) => setImageLink(e.target.value)}></input>
+                    <select className='ancestor-gender-dropdown' onChange={(e) => setGender(e.target.value)}>
+                        <option className='add-ancestor-option' value='m'>Male</option>
+                        <option value='f'>Female</option>
+                    </select>
+                    <select className="ancestor-dropdown" onChange={(e) => setRelationType(e.target.value)}>
+                        {!ancestor.spouse && (<><option className='add-ancestor-option' value="wife">Husband</option><option className='add-ancestor-option' value="husband">Wife</option></>)}
+                        {ancestor.spouse && (<><option className='add-ancestor-option' value="father">Son</option><option className='add-ancestor-option' value="mother">Daughter</option></>)}
+                    </select>
+                </form>
 
-                </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleHide}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={handleAddAncestor} type='submit'>
-                    Add Ancestor
-                </Button>
+                <form method='POST' onSubmit={handleAddAncestor} style={{display: 'flex', gap: '10px'}}>
+                    <Button variant="secondary" onClick={handleHide}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleHide} type='submit'>
+                        Add Ancestor
+                    </Button>
+                </form>
             </Modal.Footer>
         </Modal>
     );

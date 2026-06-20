@@ -1,0 +1,6 @@
+.add-ancestor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    height: 50em;
+}
