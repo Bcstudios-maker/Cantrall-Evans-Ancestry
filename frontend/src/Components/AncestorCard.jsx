@@ -4,15 +4,18 @@ import { Handle, Position } from '@xyflow/react';
 import { Link } from 'react-router-dom';
 import { structureDate } from '../utils/structureDate';
 import AddAncestor from './Popups/AddAncestor';
+import EditAncestor from './Popups/EditAncestor';
 const AncestorCard = ({ data, isChild = false }) => {
     if (!data) return null;
 
     const birthDate = structureDate(data.date_of_birth);
 
-    const [show, setShow] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
 
-    const handleShow = () => setShow(true);
-    const handleHide = () => setShow(false);
+    const handleShowAdd = () => setShowAdd(true);
+    const handleShowEdit = () => setShowEdit(true);
+    const handleHide = () => { setShowAdd(false); setShowEdit(false); }
 
     let deathDate = null;
     if (data.date_of_death) {
@@ -41,10 +44,11 @@ const AncestorCard = ({ data, isChild = false }) => {
 
                 </div>
             </Link>
-            <AddAncestor show={show} handleHide={handleHide} ancestor={data}/>
+            <AddAncestor show={showAdd} handleHide={handleHide} ancestor={data} />
+            <EditAncestor show={showEdit} handleHide={handleHide} ancestor={data} />
             <div className='ancestor-buttons'>
-                <button className='ancestor-button' id='edit-ancestor'>✎</button>
-                <button className='ancestor-button' id='add-ancestor' style={{fontSize: '22px', paddingBottom: '5px'}} onClick={handleShow}>+</button>
+                <button className='ancestor-button' id='edit-ancestor' onClick={handleShowEdit}>✎</button>
+                <button className='ancestor-button' id='add-ancestor' style={{ fontSize: '22px', paddingBottom: '5px' }} onClick={handleShowAdd}>+</button>
                 <button className='ancestor-button' id='remove-ancestor'>X</button>
             </div>
         </div>

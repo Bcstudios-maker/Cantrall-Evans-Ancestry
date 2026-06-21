@@ -11,11 +11,6 @@ app.use(cors());
 
 require('dotenv').config();
 
-
-/* 
-    finds all trees. returns the resulting rows
-*/
-
 app.get("/api/getTrees", async (req, res) => {
     try {
         const result = await pool.query(`SELECT * FROM trees`);
@@ -45,7 +40,7 @@ app.post('/api/addAncestor', async (req, res) => {
         const newAncestorId = Ancestor.rows[0].ancestor_id;
         const Relationship = await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
         if(spouseAncestorId){
-            let newRelationType = 'mother';
+            let newRelationType = null;
             if(relationType === 'father'){
                 newRelationType = 'father';
             } else {
