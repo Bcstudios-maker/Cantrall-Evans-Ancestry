@@ -5,6 +5,10 @@ import Button from 'react-bootstrap/Button';
 
 function EditAncestor({ show, handleHide, ancestor }) {
 
+    const user = JSON.parse(localStorage.getItem('user'));
+    const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
+
+    if(!isAdmin) return (<alert>Cannot Edit Ancestor if you're not an admin.</alert>);
     const [firstName, setFirstName] = useState(ancestor.first_name.toString());
     const [lastName, setLastName] = useState(ancestor.last_name.toString());
     const [dob, setDOB] = useState(structureDate(ancestor.date_of_birth));

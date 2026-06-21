@@ -9,7 +9,7 @@ import EditInfo from './Popups/EditInfo';
 function DocumentCard({ document, user }) {
 
 
-    const isAdmin = user?.role === 'admin' ? true : false;
+    const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
 
     const dateAdded = structureDate(document.date_added);
 

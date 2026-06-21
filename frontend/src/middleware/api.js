@@ -17,12 +17,21 @@ export const getAncestors = async () => {
     return await response.json();
 }
 
-export const addAncestor = async ({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId}) => {
-    const response = await fetch('http://localhost:4000/api/addAncestor', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId})});
-    if(!response.ok){
+export const addAncestor = async ({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId }) => {
+    const response = await fetch('http://localhost:4000/api/addAncestor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId }) });
+    if (!response.ok) {
         throw new Error('Failed to add ancestor');
     }
     return await response.json();
+}
+
+export const deleteAncestor = async ({ ancestor_id }) => {
+    try {
+        const response = await fetch(`http://localhost:4000/api/deleteAncestor/${ancestor_id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ancestor_id }) });
+        return await response.json();
+    } catch (err) {
+        throw new Error(err.message);
+    }
 }
 
 export const getAncestorDocuments = async ({ ancestor_id }) => {
@@ -113,15 +122,12 @@ export const deleteUser = async ({ user_id }) => {
     }
 }
 
-export const deleteDocument = async ({ info_id, user }) => {
-    const isAdmin = user?.role === 'admin' ? true : false;
-
-    if (isAdmin) {
-        try {
-            const response = await fetch(`http://localhost:4000/api/deleteDocument/${info_id}`, { method: 'DELETE', headers: { 'Content-Type': 'applicaiton/json' }, body: JSON.stringify({ info_id }) });
-            return await response.json();
-        } catch (err) {
-            throw new Error(err.message);
-        }
+export const deleteDocument = async ({ info_id }) => {
+    try {
+        const response = await fetch(`http://localhost:4000/api/deleteDocument/${info_id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ info_id }) });
+        return await response.json();
+    } catch (err) {
+        throw new Error(err.message);
     }
+
 }

@@ -6,9 +6,12 @@ import { structureDate } from '../utils/structureDate';
 import AddAncestor from './Popups/AddAncestor';
 import EditAncestor from './Popups/EditAncestor';
 import DeleteModal from './Popups/DeleteModal';
+
 const AncestorCard = ({ data, isChild = false }) => {
     if (!data) return null;
 
+    const user = JSON.parse(localStorage.getItem('user'));
+    const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
     const birthDate = structureDate(data.date_of_birth);
 
     const [showAdd, setShowAdd] = useState(false);
@@ -48,14 +51,17 @@ const AncestorCard = ({ data, isChild = false }) => {
                     {data.date_of_death ? (<p>Date of Death: {deathDate}</p>) : (<p>Unknown</p>)}
                 </div>
             </Link>
+
             <AddAncestor show={showAdd} handleHide={handleHide} ancestor={data} />
             <EditAncestor show={showEdit} handleHide={handleHide} ancestor={data} />
             <DeleteModal show={showDelete} handleHide={handleHide} data={data} />
-            <div className='ancestor-buttons'>
-                <button className='ancestor-button' id='edit-ancestor' onClick={handleShowEdit}>✎</button>
-                <button className='ancestor-button' id='add-ancestor' style={{ fontSize: '22px', paddingBottom: '5px' }} onClick={handleShowAdd}>+</button>
-                <button className='ancestor-button' id='remove-ancestor' onClick={handleShowDelete}>X</button>
-            </div>
+            {isAdmin && (
+                <div className='ancestor-buttons'>
+                    <button className='ancestor-button' id='edit-ancestor' onClick={handleShowEdit}>✎</button>
+                    <button className='ancestor-button' id='add-ancestor' style={{ fontSize: '22px', paddingBottom: '5px' }} onClick={handleShowAdd}>+</button>
+                    <button className='ancestor-button' id='remove-ancestor' onClick={handleShowDelete}>X</button>
+                </div>
+            )}
         </div>
 
     );
