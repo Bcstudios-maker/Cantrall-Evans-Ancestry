@@ -62,9 +62,27 @@ app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
 
         res.status(201).json({ message: 'Succesfully deleted ancestor' });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ body: err.message });
     }
 });
+
+app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
+
+    console.log(req.params);
+    console.log(req.body);
+    const { ancestor_id } = req.params;
+
+    const { imageLink, firstName, lastName, dob, dod } = req.body;
+
+    try { 
+        const result = await pool.query(`UPDATE ancestors SET first_name = $1, last_name = $2, date_of_birth = $3, date_of_death = $4, ancestor_image = $5 WHERE ancestor_id = $6`, [firstName, lastName, dob, dod, imageLink, ancestor_id]);
+        console.log(result);
+        res.status(200).json({ message: 'Edited Ancestor successfully.'});
+    } catch (err) {
+        res.status(500).json({body: err.message});
+    }
+})
 
 app.get("/api/getDocuments", async (req, res) => {
     try {

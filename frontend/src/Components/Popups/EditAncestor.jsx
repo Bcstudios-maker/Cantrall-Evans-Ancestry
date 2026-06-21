@@ -2,6 +2,7 @@ import Modal from 'react-bootstrap/Modal'
 import { useEffect, useState } from 'react';
 import { structureDate } from '../../utils/structureDate';
 import Button from 'react-bootstrap/Button';
+import { editAncestor } from '../../middleware/api';
 
 function EditAncestor({ show, handleHide, ancestor }) {
 
@@ -16,6 +17,11 @@ function EditAncestor({ show, handleHide, ancestor }) {
     const [gender, setGender] = useState(ancestor.gender);
     const [ancestorImage, setAncestorImage] = useState(ancestor.ancestor_image);
 
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        await editAncestor({imageLink: ancestorImage, firstName: firstName, lastName: lastName, dob: dob, dod: dod, ancestor_id: ancestor.ancestor_id});
+        handleHide();
+    }
 
     return (
         <Modal show={show} onHide={handleHide} backdrop='static'>
@@ -24,20 +30,20 @@ function EditAncestor({ show, handleHide, ancestor }) {
             </Modal.Header>
             <Modal.Body>
                 <form className='edit-form' method='POST' onAbort={handleHide}>
-                    {(ancestorImage != '') ? (<input placeholder='Please Enter Image Link...' className='edit-input'/>) : (<input placeholder={ancestorImage} className='edit-input'></input>)}
-                    <input placeholder={firstName} className='edit-input'></input>
-                    <input placeholder={lastName} className='edit-input'></input>
-                    <input placeholder={dob} className='edit-input'></input>
-                    <input placeholder={dod} className='edit-input'></input>
+                    {(ancestorImage != '') ? (<input placeholder='Please Enter Image Link...' className='edit-input' onChange={(e) => setAncestorImage(e.target.value)}/>) : (<input placeholder={ancestorImage} className='edit-input' onChange={(e) => setAncestorImage(e.target.value)}></input>)}
+                    <input placeholder={firstName} className='edit-input' onChange={(e) => setFirstName(e.target.value)}></input>
+                    <input placeholder={lastName} className='edit-input' onChange={(e) => setLastName(e.target.value)}></input>
+                    <input placeholder={dob} className='edit-input' onChange={(e) => setDOB(e.target.value)}></input>
+                    <input placeholder={dod} className='edit-input' onChange={(e) => setDOD(e.target.value)}></input>
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <form method='POST' style={{display: 'flex', gap: '10px'}}>
+                <form method='POST' style={{display: 'flex', gap: '10px'}} onSubmit={handleEdit}>
                     <Button variant="secondary" onClick={handleHide}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleHide} type='submit'>
-                        Add Ancestor
+                    <Button variant="primary" type='submit'>
+                        Edit Ancestor
                     </Button>
                 </form>
             </Modal.Footer>

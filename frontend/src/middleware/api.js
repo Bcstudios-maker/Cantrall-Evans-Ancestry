@@ -25,6 +25,16 @@ export const addAncestor = async ({ firstName, lastName, dob, dod, imageLink, ge
     return await response.json();
 }
 
+export const editAncestor = async({ imageLink, firstName, lastName, dob, dod, ancestor_id }) => {
+
+    try{
+        const response = await fetch(`http://localhost:4000/api/editAncestor/${ancestor_id}`, { method: 'POST', headers: { 'Content-Type': 'application/json'}, body: JSON.stringify({ imageLink, firstName, lastName, dob, dod })});
+        return await response.json();
+    } catch (err){
+        throw new Error(err);
+    }
+}
+
 export const deleteAncestor = async ({ ancestor_id }) => {
     try {
         const response = await fetch(`http://localhost:4000/api/deleteAncestor/${ancestor_id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ancestor_id }) });
