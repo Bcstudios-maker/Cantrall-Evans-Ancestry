@@ -16,9 +16,14 @@ function AddAncestor({ show, handleHide, ancestor }) {
     const [relationType, setRelationType] = useState('');
 
     const handleAddAncestor = async () => {
-        await addAncestor({ firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType, ancestorId: ancestor.ancestor_id });
-    }
+        
+        let spouseId = null;
+        if(ancestor.spouse){
+            spouseId = ancestor.spouse.ancestor_id;
+        }
 
+        await addAncestor({ firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType, ancestorId: ancestor.ancestor_id, spouseAncestorId: spouseId});
+    }
 
 
     return (
@@ -38,6 +43,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
                         <option value='f'>Female</option>
                     </select>
                     <select className="ancestor-dropdown" onChange={(e) => setRelationType(e.target.value)}>
+                        {}
                         {!ancestor.spouse && (<><option className='add-ancestor-option' value="wife">Husband</option><option className='add-ancestor-option' value="husband">Wife</option></>)}
                         {ancestor.spouse && (<><option className='add-ancestor-option' value="father">Son</option><option className='add-ancestor-option' value="mother">Daughter</option></>)}
                     </select>

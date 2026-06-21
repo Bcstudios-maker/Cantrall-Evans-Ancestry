@@ -8,8 +8,6 @@ export const buildTree = (ancestor_id, ancestors, relationships, visited = new S
     console.log("ALL IDS:", ancestors.map(a => a.ancestor_id));
 
     const spouseRelation = relationships.find(r => (r.ancestor_id === ancestor_id || r.relation_id === ancestor_id) && (r.relation_type === 'husband' || r.relation_type === 'wife'));
-    console.log("NODE:", ancestor_id);
-    console.log("RELATION FOUND:", spouseRelation);
     let spouse = null
 
     if(spouseRelation){

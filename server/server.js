@@ -38,12 +38,21 @@ app.get("/api/getAncestors", async (req, res) => {
 });
 
 app.post('/api/addAncestor', async (req, res) => {
-    const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId} = req.body;
+    const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId} = req.body;
 
     try {
         const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
         const newAncestorId = Ancestor.rows[0].ancestor_id;
         const Relationship = await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
+        if(spouseAncestorId){
+            let newRelationType = 'mother';
+            if(relationType === 'father'){
+                newRelationType = 'father';
+            } else {
+                newRelationType = 'mother';
+            }
+            const spouseRelationship = await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [spouseAncestorId, newAncestorId, newRelationType]);
+        }
         res.status(201).json({message: 'Successfully added ancestor'});
     } catch (err) {
         res.status(500).json({body: err.message});
