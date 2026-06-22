@@ -9,6 +9,7 @@ import { GetAncestorsInTree, getRelationships } from "../middleware/api";
 import { ReactFlow, Background, Controls } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useParams } from "react-router-dom";
+import { LoadSmallestAncestorId } from "../utils/LoadSmallestAncestorId";
 
 
 function AncestryTree () {
@@ -22,10 +23,14 @@ function AncestryTree () {
         const loadTree = async () => {
             try{
                 const data = tree_id ? await GetAncestorsInTree({tree_id: tree_id}) :await getRelationships();
+  
                 const { ancestors, relationships } = data;
 
-                console.log(ancestors);
-                console.log(relationships);
+                setRootAncestorId(LoadSmallestAncestorId({data: ancestors}));
+
+
+
+
 
                 const build = buildTree(rootAncestorId, ancestors, relationships);
                 setTree(build);

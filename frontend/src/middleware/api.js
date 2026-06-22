@@ -61,8 +61,8 @@ export const getDocuments = async () => {
     return await response.json();
 }
 
-export const getRelationships = async ({ tree_id }) => {
-    const response = await fetch(`http://localhost:4000/api/getRelationships/${tree_id}`);
+export const getRelationships = async () => {
+    const response = await fetch(`http://localhost:4000/api/getRelationships`);
 
     if (!response.ok) {
         throw new Error('Failed to fetch ancestor relationships.');

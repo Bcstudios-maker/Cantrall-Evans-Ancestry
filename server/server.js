@@ -144,8 +144,7 @@ app.get("/api/getUsers", async (req, res) => {
 });
 
 
-app.get("/api/getRelationships/:tree_id", async (req, res) => {
-    const { tree_id } = req.params;
+app.get("/api/getRelationships", async (req, res) => {
     try {
         const ancestors = await pool.query(
             `

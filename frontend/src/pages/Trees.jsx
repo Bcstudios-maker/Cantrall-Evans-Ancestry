@@ -14,7 +14,7 @@ function Trees() {
         const handleGetTrees = async () => {
             try {
                 const result = await GetTrees();
-                console.log(result);
+
                 setTrees(result);
             } catch (err) {
                 setError(err);
@@ -32,7 +32,7 @@ function Trees() {
                 <h1>Family Trees</h1>
                 <div className="grid-container">
                     <div className="trees-grid">
-                        {trees?.map((tree) => (<TreeCard tree={tree}/>))}
+                        {trees?.map((tree) => (<TreeCard tree={tree} key={tree.tree_id}/>))}
                     </div>
                 </div>
             </div>
