@@ -51,6 +51,6 @@
 
 .tree-button:hover {
     background-color: rgba(25, 0, 255, 0.464);
-    box-shadow: 0 0 10px rgb(25, 0, 255);
+    box-shadow: 0 0 10px rgba(25, 0, 255, 0.464);
 }
 

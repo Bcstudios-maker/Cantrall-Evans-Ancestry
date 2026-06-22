@@ -5,18 +5,22 @@ import AncestorCard from "./AncestorCard";
 import SpouseCard from "./SpouseCard";
 import { buildTree } from "../utils/buildTree";
 import {  buildNodesAndEdges } from "../utils/buildNodes";
-import { getRelationships } from "../middleware/api";
+import { GetAncestorsInTree, getRelationships } from "../middleware/api";
 import { ReactFlow, Background, Controls } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { useParams } from "react-router-dom";
 
 function AncestryTree ({rootAncestorId}) {
 
     const [ tree, setTree ] = useState(null);
 
+    const {tree_id: tree_id} = useParams();
+
     useEffect(() => {
         const loadTree = async () => {
+            let data = null;
             try{
-                const data = await getRelationships({tree_id: 0}); 
+                data = tree_id ? await GetAncestorsInTree({tree_id: tree_id}) :await getRelationships();
                 const { ancestors, relationships } = data;
 
                 const build = buildTree(rootAncestorId, ancestors, relationships);

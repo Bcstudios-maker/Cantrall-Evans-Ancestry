@@ -3,7 +3,7 @@ import NavBar from "../Components/NavBar";
 
 import  DocumentCard  from '../Components/DocumentCard'
 import { useState, useEffect } from "react";
-import { getTrees, getAncestors, getDocuments } from "../middleware/api";
+import { getDocuments } from "../middleware/api";
 
 
 function Home() {

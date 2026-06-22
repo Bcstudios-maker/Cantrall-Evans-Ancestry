@@ -11,27 +11,6 @@ app.use(cors());
 
 require('dotenv').config();
 
-app.get("/api/getTrees", async (req, res) => {
-    try {
-        const result = await pool.query(`SELECT * FROM trees`);
-
-        res.json(result.rows)
-    } catch (err) {
-        console.log('THERE WAS AN ERROR: ' + err);
-        res.status(500).json({ body: err.message });
-    }
-});
-
-app.get("/api/getAncestors", async (req, res) => {
-    try {
-        const result = await pool.query(`SELECT * FROM ancestors`);
-        res.json(result.rows);
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ body: err.message });
-    }
-});
-
 app.post('/api/addAncestor', async (req, res) => {
     const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId } = req.body;
 
@@ -64,11 +43,37 @@ app.get('/api/getTrees', async (req, res) => {
     try {
         const result = await pool.query(`select * from trees`);
         res.json(result.rows);
-        res.status(200).json({body: 'Succesfully retrieved trees'});
+        res.status(200).json({ body: 'Succesfully retrieved trees' });
     } catch (err) {
-        resl.status(500).json({ body: err.message})
+        resl.status(500).json({ body: err.message })
     }
 
+});
+
+app.get('/api/getAncestorsInTree/:tree_id', async (req, res) => {
+    const { tree_id } = req.params;
+    try {
+        const ancestors = await pool.query(
+            `
+            SELECT * 
+            FROM ancestors AS a
+            JOIN tree_members AS tm ON a.ancestor_id = tm.ancestor_id
+            WHERE tm.tree_id = $1
+            `
+        , [tree_id]);
+        const relationships = await pool.query(
+            `
+            SELECT * 
+            FROM relationships AS r
+            JOIN tree_members AS tm ON r.ancestor_id = tm.ancestor_id
+            WHERE tm.tree_id = $1
+            `
+        , [tree_id]);
+        
+        res.json({ancestors: ancestors.rows, relationships: relationships.rows});
+    } catch (err) {
+        res.status(500).json({body: err.message});
+    }
 });
 
 
@@ -88,18 +93,17 @@ app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
 
 app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
 
-    console.log(req.params);
-    console.log(req.body);
+
     const { ancestor_id } = req.params;
 
     const { imageLink, firstName, lastName, dob, dod } = req.body;
 
-    try { 
+    try {
         const result = await pool.query(`UPDATE ancestors SET first_name = $1, last_name = $2, date_of_birth = $3, date_of_death = $4, ancestor_image = $5 WHERE ancestor_id = $6`, [firstName, lastName, dob, dod, imageLink, ancestor_id]);
         console.log(result);
-        res.status(200).json({ message: 'Edited Ancestor successfully.'});
+        res.status(200).json({ message: 'Edited Ancestor successfully.' });
     } catch (err) {
-        res.status(500).json({body: err.message});
+        res.status(500).json({ body: err.message });
     }
 })
 

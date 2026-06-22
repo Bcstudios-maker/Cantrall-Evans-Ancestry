@@ -18,6 +18,7 @@ function App() {
         <Route path='/Home' element={<Home/>}/>
         <Route path='/Ancestors' element={<Ancestors/>}/>
         <Route path='/Trees' element={<Trees/>}/>
+        <Route path='/Trees/Ancestors/:tree_id' element={<Ancestors/>}/>
         <Route path='/Admin' element={<AdminRoute><Admin /></AdminRoute>}/>
         <Route path='/Ancestors/:ancestor_id' element={<Ancestor/>}/>
       </Routes>

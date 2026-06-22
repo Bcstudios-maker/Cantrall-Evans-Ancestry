@@ -8,14 +8,6 @@ export const getTrees = async () => {
     return await response.json();
 }
 
-export const getAncestors = async () => {
-    const response = await fetch('http://localhost:4000/api/getAncestors');
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch family trees.');
-    }
-    return await response.json();
-}
 
 export const addAncestor = async ({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId }) => {
     const response = await fetch('http://localhost:4000/api/addAncestor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId }) });
@@ -127,6 +119,16 @@ export const GetTrees = async () => {
     } catch (err){
         throw new Error(await response.json().error);
     }
+}
+
+export const GetAncestorsInTree = async ({tree_id}) => {
+    try {
+        const result = await fetch(`http://localhost:4000/api/GetAncestorsInTree/${tree_id}`);
+        return await result.json();
+    } catch (err){
+        throw new Error(await response.json().error);
+    }
+
 }
 
 export const deleteUser = async ({ user_id }) => {
