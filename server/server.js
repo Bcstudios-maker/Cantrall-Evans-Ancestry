@@ -69,6 +69,7 @@ app.get('/api/getAncestorsInTree/:tree_id', async (req, res) => {
             WHERE tm.tree_id = $1
             `
         , [tree_id]);
+        console.log(ancestors, relationships);
         
         res.json({ancestors: ancestors.rows, relationships: relationships.rows});
     } catch (err) {

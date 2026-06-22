@@ -123,7 +123,7 @@ export const GetTrees = async () => {
 
 export const GetAncestorsInTree = async ({tree_id}) => {
     try {
-        const result = await fetch(`http://localhost:4000/api/GetAncestorsInTree/${tree_id}`);
+        const result = await fetch(`http://localhost:4000/api/GetAncestorsInTree/${tree_id}`, {method: 'GET', headers: { 'Content-Type': 'application/json'}, params: JSON.stringify({tree_id})});
         return await result.json();
     } catch (err){
         throw new Error(await response.json().error);

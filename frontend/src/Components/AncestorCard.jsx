@@ -14,6 +14,8 @@ const AncestorCard = ({ data, isChild = false }) => {
     const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
     const birthDate = structureDate(data.date_of_birth);
 
+    const ancestor_id = data.ancestor_id
+
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -35,7 +37,7 @@ const AncestorCard = ({ data, isChild = false }) => {
     return (
 
         <div className="ancestor-card" >
-            <Link to={{ pathname: `/Ancestors/${data.ancestor_id.toString()}` }} state={data} style={{ textDecoration: 'none' }} >
+            <Link to={{ pathname: `/Ancestors/${ancestor_id}` }} state={data} style={{ textDecoration: 'none' }} >
                 {!isChild && (
                     <>
                         <Handle type='target' position={Position.Top} id='top' />

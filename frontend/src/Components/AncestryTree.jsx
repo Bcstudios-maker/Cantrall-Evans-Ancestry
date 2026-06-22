@@ -10,18 +10,22 @@ import { ReactFlow, Background, Controls } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useParams } from "react-router-dom";
 
-function AncestryTree ({rootAncestorId}) {
 
+function AncestryTree () {
+
+    const [ rootAncestorId, setRootAncestorId] = useState(2);
     const [ tree, setTree ] = useState(null);
 
     const {tree_id: tree_id} = useParams();
 
     useEffect(() => {
         const loadTree = async () => {
-            let data = null;
             try{
-                data = tree_id ? await GetAncestorsInTree({tree_id: tree_id}) :await getRelationships();
+                const data = tree_id ? await GetAncestorsInTree({tree_id: tree_id}) :await getRelationships();
                 const { ancestors, relationships } = data;
+
+                console.log(ancestors);
+                console.log(relationships);
 
                 const build = buildTree(rootAncestorId, ancestors, relationships);
                 setTree(build);
@@ -37,7 +41,7 @@ function AncestryTree ({rootAncestorId}) {
     if(!tree) return (<p>LOADING...</p>);
 
     const { nodes, edges } = buildNodesAndEdges(tree);
-    console.log(nodes);
+
     const nodeTypes = {
         ancestor: AncestorCard,
         spouse: SpouseCard

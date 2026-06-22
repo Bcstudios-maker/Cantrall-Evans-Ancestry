@@ -3,9 +3,8 @@
 export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0) => {
     if (!ancestor) return { nodes, edges };
 
-
     nodes.push({
-        id: ancestor.ancestor_id.toString(),
+        id: String(ancestor.ancestor_id),
         type: ancestor.spouse ? 'spouse' : 'ancestor',
         position: {x, y},
         data: {
@@ -18,9 +17,9 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
         let spacing = 500;
         let startX = x - 300 + (index * spacing);
         edges.push({
-            id: `${ancestor.ancestor_id} - ${child.ancestor_id}`,
-            source: ancestor.ancestor_id.toString(),
-            target: child.ancestor_id.toString(),
+            id: `${String(ancestor.ancestor_id)} - ${String(child.ancestor_id)}`,
+            source: String(ancestor.ancestor_id),
+            target: String(child.ancestor_id),
         });
         buildNodesAndEdges(child, nodes, edges, startX, y + 350);
     });

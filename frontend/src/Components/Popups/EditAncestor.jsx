@@ -10,8 +10,8 @@ function EditAncestor({ show, handleHide, ancestor }) {
     const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
 
     if(!isAdmin) return (<alert>Cannot Edit Ancestor if you're not an admin.</alert>);
-    const [firstName, setFirstName] = useState(ancestor.first_name.toString());
-    const [lastName, setLastName] = useState(ancestor.last_name.toString());
+    const [firstName, setFirstName] = useState(ancestor.first_name);
+    const [lastName, setLastName] = useState(ancestor.last_name);
     const [dob, setDOB] = useState(structureDate(ancestor.date_of_birth));
     const [dod, setDOD] = useState(structureDate(ancestor.date_of_death));
     const [gender, setGender] = useState(ancestor.gender);
