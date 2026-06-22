@@ -115,6 +115,20 @@ export const addDocument = async ({ filepath, filename, ancestor_id }) => {
     return await response.json();
 }
 
+
+/*
+Tree API calls
+*/
+
+export const GetTrees = async () => {
+    try {
+        const response = await fetch('http://localhost:4000/api/getTrees');
+        return await response.json();
+    } catch (err){
+        throw new Error(await response.json().error);
+    }
+}
+
 export const deleteUser = async ({ user_id }) => {
     const user = JSON.parse(localStorage.getItem('user'));
 

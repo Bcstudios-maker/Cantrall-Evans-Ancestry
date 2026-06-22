@@ -54,6 +54,25 @@ app.post('/api/addAncestor', async (req, res) => {
     }
 });
 
+/*
+
+All Tree api calls
+
+*/
+
+app.get('/api/getTrees', async (req, res) => {
+    try {
+        const result = await pool.query(`select * from trees`);
+        res.json(result.rows);
+        res.status(200).json({body: 'Succesfully retrieved trees'});
+    } catch (err) {
+        resl.status(500).json({ body: err.message})
+    }
+
+});
+
+
+
 app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
     const { ancestor_id } = req.params;
     try {

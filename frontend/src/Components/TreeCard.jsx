@@ -1,9 +1,11 @@
 import '../styles/component_styles/TreeCard.css'
 
-function TreeCard() {
+function TreeCard({ tree }) {
+
+    
     return (
         <div className="card-content">
-            <h2> Example Tree</h2>
+            <h2>{tree.family_name}</h2>
             <div className="tree-image">
                 image placeholder
             </div>
