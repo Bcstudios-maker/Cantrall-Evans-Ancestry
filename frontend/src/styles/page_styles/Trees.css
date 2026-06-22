@@ -1,0 +1,19 @@
+.trees-content {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    height: 40em;
+}
+
+.trees-content h1 {
+    color: white;
+}
+
+.trees-grid {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    gap: 200px;
+
+}
