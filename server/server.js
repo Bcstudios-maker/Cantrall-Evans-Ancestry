@@ -45,7 +45,7 @@ app.get('/api/getTrees', async (req, res) => {
         res.json(result.rows);
         res.status(200).json({ body: 'Succesfully retrieved trees' });
     } catch (err) {
-        resl.status(500).json({ body: err.message })
+        res.status(500).json({ body: err.message })
     }
 
 });

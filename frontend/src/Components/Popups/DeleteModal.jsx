@@ -11,7 +11,7 @@ function DeleteModal({ show, handleHide, data }) {
     const handleDelete = async (e) => {
         e.preventDefault();
         if (isAncestor) await deleteAncestor({ ancestor_id: data.ancestor_id });
-        if (isDocument) await deleteDocument({info_id: data.info_id, user: user});
+        if (isDocument) await deleteDocument({info_id: data.info_id});
 
         handleHide();
 
