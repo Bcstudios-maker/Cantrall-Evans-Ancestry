@@ -22,14 +22,19 @@ function AncestryTree () {
     useEffect(() => {
         const loadTree = async () => {
             try{
-                const data = tree_id ? await GetAncestorsInTree({tree_id: tree_id}) :await getRelationships();
+                const data = tree_id ? await GetAncestorsInTree({tree_id: tree_id}) : await getRelationships();
+
   
                 const { ancestors, relationships } = data;
 
-                setRootAncestorId(LoadSmallestAncestorId({data: ancestors}));
+
+                const ancestor_id = LoadSmallestAncestorId({data: ancestors});
                 
-                const build = buildTree(rootAncestorId, ancestors, relationships);
+
+                const build = buildTree(ancestor_id, ancestors, relationships);
+
                 setTree(build);
+
                
             } catch (err){
                 console.log(err);
@@ -42,6 +47,7 @@ function AncestryTree () {
     if(!tree) return (<p>LOADING...</p>);
 
     const { nodes, edges } = buildNodesAndEdges(tree);
+
 
     const nodeTypes = {
         ancestor: AncestorCard,
