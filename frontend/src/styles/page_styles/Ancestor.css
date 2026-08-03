@@ -1,7 +1,21 @@
+.ancestor-relationships{
+    width: 25%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.ancestor-relationship {
+    width: 30%;
+    height: fit-content;
+    background-color: red;
+}
 .ancestor-info{
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 75%;
+    height: fit-content;
 }
 
 .ancestor-name {
@@ -32,17 +46,17 @@
 }
 
 .admin-button {
-    width: 35px;
-    background: none;
-    height: 35px;
-    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
-    border-radius: 100%;
-    font-weight: bolder;
-    font-size: 100%;
-    text-align: center;
+    background: none;
     color: white;
-    transition:  background-color 0.5s, box-shadow 0.5s;
+    font-weight: bolder;
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+    transition: background-color 0.5s, box-shadow 0.5s;
 }
 
 #edit-info:hover {

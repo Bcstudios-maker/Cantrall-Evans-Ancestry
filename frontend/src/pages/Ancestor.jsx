@@ -70,15 +70,23 @@ function Ancestor() {
                     </div>
                 ) : null
             }
-            <div className="ancestor-info">
-                <h1 className='ancestor-name'>{data.first_name} {data.last_name}</h1>
-                <h2 className='ancestor-dates'>Born: {birthDate}</h2>
-                <h2 className='ancestor-dates'>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
-                <div className='ancestor-documents'>
-                    <ul className="document-grid">
-                        {documents?.map((document) => (<li key={document.info_id}><DocumentCard document={document} user={user} key={document.info_id}/></li>))}
-                    </ul>
-                    
+            <div className='ancestor-container' style={{display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px'}}>
+
+                <div className='ancestor-relationships'>
+                    <div className='ancestor-relationship'>children</div>
+                    <div className='ancestor-relationship'>spouse</div>
+                    <div className='ancestor-relationship'>parents</div>
+                </div>
+                <div className="ancestor-info">
+                    <h1 className='ancestor-name'>{data.first_name} {data.last_name}</h1>
+                    <h2 className='ancestor-dates'>Born: {birthDate}</h2>
+                    <h2 className='ancestor-dates'>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
+                    <div className='ancestor-documents'>
+                        <ul className="document-grid">
+                            {documents?.map((document) => (<li key={document.info_id}><DocumentCard document={document} user={user} key={document.info_id}/></li>))}
+                        </ul>
+                        
+                    </div>
                 </div>
             </div>
         </>
