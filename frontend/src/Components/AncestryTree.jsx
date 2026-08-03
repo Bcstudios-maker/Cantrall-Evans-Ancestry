@@ -29,9 +29,9 @@ function AncestryTree () {
 
 
                 const ancestor_id = LoadSmallestAncestorId({data: ancestors});
-                
+                setRootAncestorId(rootAncestorId)
 
-                const build = buildTree(ancestor_id, ancestors, relationships);
+                const build = buildTree(rootAncestorId, ancestors, relationships);
 
                 setTree(build);
 

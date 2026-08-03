@@ -26,15 +26,15 @@ function EditAncestor({ show, handleHide, ancestor }) {
     return (
         <Modal show={show} onHide={handleHide} backdrop='static'>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Document Info</Modal.Title>
+                <Modal.Title>Edit Ancestor Info</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form className='edit-form' method='POST' onAbort={handleHide}>
+                <form className='edit-form' method='POST' onAbort={handleHide} style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
                     {(ancestorImage != '') ? (<input placeholder='Please Enter Image Link...' className='edit-input' onChange={(e) => setAncestorImage(e.target.value)}/>) : (<input placeholder={ancestorImage} className='edit-input' onChange={(e) => setAncestorImage(e.target.value)}></input>)}
                     <input placeholder={firstName} className='edit-input' onChange={(e) => setFirstName(e.target.value)}></input>
                     <input placeholder={lastName} className='edit-input' onChange={(e) => setLastName(e.target.value)}></input>
                     <input placeholder={dob} className='edit-input' onChange={(e) => setDOB(e.target.value)}></input>
-                    <input placeholder={dod} className='edit-input' onChange={(e) => setDOD(e.target.value)}></input>
+                    <input placeholder={dod != null ? dod : 'Please Enter a Date of Death'} className='edit-input' onChange={(e) => setDOD(e.target.value)}></input>
                 </form>
             </Modal.Body>
             <Modal.Footer>
