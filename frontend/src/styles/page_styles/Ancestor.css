@@ -10,6 +10,23 @@
     height: fit-content;
     background-color: red;
 }
+.ancestor-relationship-seperator {
+    width: 15px;
+    height: 20px;
+    background-color: red;
+}
+#children {
+    background-color: pink;
+}
+
+#spouse {
+    background-color: teal;
+}
+
+#parents {
+    background-color: blueviolet;
+}
+
 .ancestor-info{
     display: flex;
     flex-direction: column;

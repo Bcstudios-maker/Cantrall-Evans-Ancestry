@@ -73,9 +73,9 @@ function Ancestor() {
             <div className='ancestor-container' style={{display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px'}}>
 
                 <div className='ancestor-relationships'>
-                    <div className='ancestor-relationship'>children</div>
-                    <div className='ancestor-relationship'>spouse</div>
-                    <div className='ancestor-relationship'>parents</div>
+                    <div className='ancestor-relationship' id='children'><span className='ancestor-relationship-seperator'></span>children</div>
+                    <div className='ancestor-relationship' id='spouse'><span className='ancestor-relationship-seperator'></span>spouse</div>
+                    <div className='ancestor-relationship' id='parents'><span className='ancestor-relationship-seperator'></span>parents</div>
                 </div>
                 <div className="ancestor-info">
                     <h1 className='ancestor-name'>{data.first_name} {data.last_name}</h1>
