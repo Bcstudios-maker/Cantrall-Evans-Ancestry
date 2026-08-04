@@ -11,6 +11,10 @@ app.use(cors());
 
 require('dotenv').config();
 
+/**
+ * All Specific Ancestor Queries (Being queries that are done to add, edit, retrieve, or delete one ancestor rather than look at a whole tree.)
+ */
+
 app.post('/api/addAncestor', async (req, res) => {
     const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId } = req.body;
 
@@ -33,9 +37,44 @@ app.post('/api/addAncestor', async (req, res) => {
     }
 });
 
+app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
+    const { ancestor_id } = req.params;
+    try {
+        const resultRelationships = await pool.query(`DELETE FROM relationships WHERE ancestor_id = $1 OR relation_id = $1`, [ancestor_id]);
+        const resultAncestor = await pool.query(`DELETE FROM ancestors WHERE ancestor_id = $1 `, [ancestor_id]);
+
+        res.status(201).json({ message: 'Succesfully deleted ancestor' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ body: err.message });
+    }
+});
+
+app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
+
+
+    const { ancestor_id } = req.params;
+
+    const { imageLink, firstName, lastName, dob, dod } = req.body;
+
+    try {
+        const result = await pool.query(`UPDATE ancestors SET first_name = $1, last_name = $2, date_of_birth = $3, date_of_death = $4, ancestor_image = $5 WHERE ancestor_id = $6`, [firstName, lastName, dob, dod, imageLink, ancestor_id]);
+        console.log(result);
+        res.status(200).json({ message: 'Edited Ancestor successfully.' });
+    } catch (err) {
+        res.status(500).json({ body: err.message });
+    }
+})
+
+app.get("/api/getLocalAncestors/:ancestor_id", async (req, res) => {
+    const { ancestor_id } = req.params;
+
+    
+});
+
 /*
 
-All Tree api calls
+All Tree Queries
 
 */
 
@@ -77,73 +116,6 @@ app.get('/api/getAncestorsInTree/:tree_id', async (req, res) => {
     }
 });
 
-
-
-app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
-    const { ancestor_id } = req.params;
-    try {
-        const resultRelationships = await pool.query(`DELETE FROM relationships WHERE ancestor_id = $1 OR relation_id = $1`, [ancestor_id]);
-        const resultAncestor = await pool.query(`DELETE FROM ancestors WHERE ancestor_id = $1 `, [ancestor_id]);
-
-        res.status(201).json({ message: 'Succesfully deleted ancestor' });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ body: err.message });
-    }
-});
-
-app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
-
-
-    const { ancestor_id } = req.params;
-
-    const { imageLink, firstName, lastName, dob, dod } = req.body;
-
-    try {
-        const result = await pool.query(`UPDATE ancestors SET first_name = $1, last_name = $2, date_of_birth = $3, date_of_death = $4, ancestor_image = $5 WHERE ancestor_id = $6`, [firstName, lastName, dob, dod, imageLink, ancestor_id]);
-        console.log(result);
-        res.status(200).json({ message: 'Edited Ancestor successfully.' });
-    } catch (err) {
-        res.status(500).json({ body: err.message });
-    }
-})
-
-app.get("/api/getDocuments", async (req, res) => {
-    try {
-        const result = await pool.query(`SELECT * FROM ancestor_info WHERE date_added >= CURRENT_DATE - INTERVAL '7 days'`);
-        res.json(result.rows);
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ body: err.message });
-    }
-});
-
-app.get("/api/getAncestorDocuments/:ancestor_id", async (req, res) => {
-    const { ancestor_id } = req.params;
-    try {
-        const result = await pool.query(`SELECT * from ancestor_info WHERE ancestor_id = $1`, [ancestor_id]);
-        res.json(result.rows);
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ body: err.message });
-    }
-});
-
-app.get("/api/getAncestorInfo", async (req, res) => {
-    const { ancestor_id } = req.params;
-});
-
-app.get("/api/getUsers", async (req, res) => {
-    try {
-        const result = await pool.query(`SELECT * FROM users`);
-        res.json(result.rows);
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ body: err.message });
-    }
-});
-
-
 app.get("/api/getRelationships", async (req, res) => {
     try {
         const ancestors = await pool.query(
@@ -169,6 +141,10 @@ app.get("/api/getRelationships", async (req, res) => {
         res.status(500).json({ body: err.message });
     }
 });
+
+/**
+ *  All User queries
+ */
 
 app.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
@@ -208,6 +184,33 @@ app.post('/api/addUser', async (req, res) => {
     }
 });
 
+app.delete('/api/deleteUser/:user_id', async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const response = await pool.query('DELETE FROM users WHERE user_id = $1', [user_id]);
+        res.status(201).json({ message: 'User deleted' });
+    } catch (err) {
+        console.log(err.message);
+        res.status(401).json({ error: err.message });
+    }
+});
+
+/**
+ * All Document queries.
+ */
+
+app.get("/api/getAncestorDocuments/:ancestor_id", async (req, res) => {
+    const { ancestor_id } = req.params;
+    try {
+        const result = await pool.query(`SELECT * from ancestor_info WHERE ancestor_id = $1`, [ancestor_id]);
+        res.json(result.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ body: err.message });
+    }
+});
+
 app.post('/api/editDocument', async (req, res) => {
     const { filename, filepath, ancestor_id, info_id } = req.body;
 
@@ -218,6 +221,17 @@ app.post('/api/editDocument', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+app.get("/api/getDocuments", async (req, res) => {
+    try {
+        const result = await pool.query(`SELECT * FROM ancestor_info WHERE date_added >= CURRENT_DATE - INTERVAL '7 days'`);
+        res.json(result.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ body: err.message });
+    }
+});
+
 
 app.post('/api/addDocument', async (req, res) => {
     const { filepath, filename, ancestor_id } = req.body;
@@ -243,16 +257,5 @@ app.delete('/api/deleteDocument/:info_id', async (req, res) => {
     }
 });
 
-app.delete('/api/deleteUser/:user_id', async (req, res) => {
-    const { user_id } = req.params;
-
-    try {
-        const response = await pool.query('DELETE FROM users WHERE user_id = $1', [user_id]);
-        res.status(201).json({ message: 'User deleted' });
-    } catch (err) {
-        console.log(err.message);
-        res.status(401).json({ error: err.message });
-    }
-})
 
 app.listen(4000, () => console.log("server on localhost:4000"));

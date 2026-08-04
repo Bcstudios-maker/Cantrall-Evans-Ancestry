@@ -7,13 +7,17 @@
 }
 .ancestor-relationship {
     width: 30%;
-    height: fit-content;
+    height: 80px;
     background-color: red;
+    font-size: 24px;
+    font-weight: bold;
 }
 .ancestor-relationship-seperator {
-    width: 15px;
-    height: 20px;
-    background-color: red;
+    position: relative;
+    justify-self: center;
+    width: 90%;
+    height: 2px;
+    background-color: gray;
 }
 #children {
     background-color: pink;
