@@ -14,7 +14,7 @@ const AncestorCard = ({ data, isChild = false }) => {
     const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
     const birthDate = structureDate(data.date_of_birth);
 
-    const ancestor_id = data.ancestor_id
+    const ancestor_id = data.ancestor_id;
 
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);

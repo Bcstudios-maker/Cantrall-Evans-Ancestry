@@ -17,11 +17,27 @@ require('dotenv').config();
 
 app.post('/api/addAncestor', async (req, res) => {
     const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId } = req.body;
+    await pool.query(`BEGIN`);
+    const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
+    console.log(Ancestor);
+    const newAncestorId = Ancestor.rows[0].ancestor_id;
+    await pool.query(`COMMIT`);
+    res.status(201).json({ message: 'Added Ancestor to Ancestors table.'})
+    
+    /**
+    try { 
+        await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
 
+    } catch (err) {
+
+    }
+    */
+
+    /*
     try {
         const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
         const newAncestorId = Ancestor.rows[0].ancestor_id;
-        const Relationship = await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
+        await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
         if (spouseAncestorId) {
             let newRelationType = null;
             if (relationType === 'father') {
@@ -29,12 +45,13 @@ app.post('/api/addAncestor', async (req, res) => {
             } else {
                 newRelationType = 'mother';
             }
-            const spouseRelationship = await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [spouseAncestorId, newAncestorId, newRelationType]);
+            await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [spouseAncestorId, newAncestorId, newRelationType]);
         }
         res.status(201).json({ message: 'Successfully added ancestor' });
     } catch (err) {
         res.status(500).json({ body: err.message });
     }
+    */
 });
 
 app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
@@ -69,7 +86,6 @@ app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
 app.get("/api/getLocalAncestors/:ancestor_id", async (req, res) => {
     const { ancestor_id } = req.params;
 
-    
 });
 
 /*
@@ -99,7 +115,7 @@ app.get('/api/getAncestorsInTree/:tree_id', async (req, res) => {
             JOIN tree_members AS tm ON a.ancestor_id = tm.ancestor_id
             WHERE tm.tree_id = $1
             `
-        , [tree_id]);
+            , [tree_id]);
         const relationships = await pool.query(
             `
             SELECT * 
@@ -107,12 +123,12 @@ app.get('/api/getAncestorsInTree/:tree_id', async (req, res) => {
             JOIN tree_members AS tm ON r.ancestor_id = tm.ancestor_id
             WHERE tm.tree_id = $1
             `
-        , [tree_id]);
+            , [tree_id]);
         console.log(ancestors, relationships);
-        
-        res.json({ancestors: ancestors.rows, relationships: relationships.rows});
+
+        res.json({ ancestors: ancestors.rows, relationships: relationships.rows });
     } catch (err) {
-        res.status(500).json({body: err.message});
+        res.status(500).json({ body: err.message });
     }
 });
 

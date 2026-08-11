@@ -10,7 +10,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
     const [lastName, setLastName] = useState('');
     const [dob, setDOB] = useState(null);
     const [dod, setDOD] = useState(null);
-    const [imageLink, setImageLink] = useState('');
+    const [imageLink, setImageLink] = useState(null);
 
     const [gender, setGender] = useState('m');
     const [relationType, setRelationType] = useState('');
@@ -21,7 +21,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
         if(ancestor.spouse){
             spouseId = ancestor.spouse.ancestor_id;
         }
-
+        console.log(firstName, lastName, dob, dod, imageLink);
         await addAncestor({ firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType, ancestorId: ancestor.ancestor_id, spouseAncestorId: spouseId});
     }
 
