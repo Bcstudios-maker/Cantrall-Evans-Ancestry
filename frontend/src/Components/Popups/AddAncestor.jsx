@@ -22,7 +22,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
             spouseId = ancestor.spouse.ancestor_id;
         }
         console.log(firstName, lastName, dob, dod, imageLink);
-        await addAncestor({ firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType, ancestorId: ancestor.ancestor_id, spouseAncestorId: spouseId});
+        await addAncestor({ firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType, ancestorId: ancestor.ancestor_id, ancestorGender: ancestor.gender, spouseAncestorId: spouseId});
     }
 
 

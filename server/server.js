@@ -16,22 +16,35 @@ require('dotenv').config();
  */
 
 app.post('/api/addAncestor', async (req, res) => {
-    const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId } = req.body;
-    await pool.query(`BEGIN`);
-    const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
-    console.log(Ancestor);
-    const newAncestorId = Ancestor.rows[0].ancestor_id;
-    await pool.query(`COMMIT`);
-    res.status(201).json({ message: 'Added Ancestor to Ancestors table.'})
-    
-    /**
+    const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId } = req.body;
+
+    let newRelationType = null;
+
+    try{
+        await pool.query(`BEGIN`);
+        const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
+        const newAncestorId = Ancestor.rows[0].ancestor_id;
+        await pool.query(`SAVEPOINT addedAncestor`);
+        res.status(201).json({ message: 'Added Ancestor to Ancestors table.'});
+    } catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+
+    // This code determines the relation type that is entered into the database.
+
+    if (relationType == "son" || relationType == 'daughter'){
+        newRelationType 
+    }
+
     try { 
-        await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
+        await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, relationType]);
+        await pool.query(`SAVEPOINT addedRelationship`);
+        res.status(201).json({message: 'Added Relationship'});
 
     } catch (err) {
-
+        await pool.query(`ROLLBACK TO addedAncestor`);
+        res.status(500).json({ message: err.message });
     }
-    */
 
     /*
     try {

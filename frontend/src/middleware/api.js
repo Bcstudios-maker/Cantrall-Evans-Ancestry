@@ -9,8 +9,8 @@ export const getTrees = async () => {
 }
 
 
-export const addAncestor = async ({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId }) => {
-    const response = await fetch('http://localhost:4000/api/addAncestor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, spouseAncestorId }) });
+export const addAncestor = async ({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId }) => {
+    const response = await fetch('http://localhost:4000/api/addAncestor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId }) });
     if (!response.ok) {
         throw new Error('Failed to add ancestor');
     }
