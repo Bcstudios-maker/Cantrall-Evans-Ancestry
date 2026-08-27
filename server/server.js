@@ -20,31 +20,94 @@ app.post('/api/addAncestor', async (req, res) => {
 
     let newRelationType = null;
 
-    try{
-        await pool.query(`BEGIN`);
-        const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
-        const newAncestorId = Ancestor.rows[0].ancestor_id;
-        await pool.query(`SAVEPOINT addedAncestor`);
-        res.status(201).json({ message: 'Added Ancestor to Ancestors table.'});
-    } catch (err) {
-        res.status(500).json({ message: err.message});
-    }
+
+    await pool.query(`BEGIN`);
+    const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
+    const newAncestorId = Ancestor.rows[0].ancestor_id;
+    await pool.query(`SAVEPOINT addedAncestor`);
 
     // This code determines the relation type that is entered into the database.
+    if (relationType == 'child') {
+        if (ancestorGender == 'f') {
+            newRelationType = 'mother';
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, newRelationType]);
+                await pool.query(`SAVEPOINT addedRelationship1`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedAncestor`);
+                res.status(500).json({ message: err.message });
+            }
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'father')`, [spouseAncestorId, newAncestorId]);
+                await pool.query(`SAVEPOINT addedRelationship2`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedRelationship1`);
+                res.status(500).json({ message: err.message });
+            }
 
-    if (relationType == "son" || relationType == 'daughter'){
-        newRelationType 
+        } else {
+            newRelationType = 'father';
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, newRelationType]);
+                await pool.query(`SAVEPOINT addedRelationship1`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedAncestor`);
+                res.status(500).json({ message: err.message });
+            }
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'mother')`, [spouseAncestorId, newAncestorId]);
+                await pool.query(`SAVEPOINT addedRelationship2`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedRelationship1`);
+                res.status(500).json({ message: err.message });
+            }
+
+        }
+    } else {
+        if (ancestorGender == 'f') {
+            newRelationType = 'husband';
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, newRelationType]);
+                await pool.query(`SAVEPOINT addedSpouseRelationship1`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedAncestor`);
+                res.status(500).json({ message: err.message });
+            }
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'wife')`, [ancestorId, newAncestorId]);
+                await pool.query(`SAVEPOINT addedSpouseRelationship2`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedSpouseRelationship1`);
+                res.status(500).json({ message: err.message });
+            }
+        } else {
+            newRelationType = 'wife';
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, newRelationType]);
+                await pool.query(`SAVEPOINT addedSpouseRelationship1`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedAncestor`);
+                res.status(500).json({ message: err.message });
+            }
+            try {
+                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'husband')`, [ancestorId, newAncestorId]);
+                await pool.query(`SAVEPOINT addedSpouseRelationship2`);
+                res.status(201).json({ message: 'Added Relationship' });
+            } catch (err) {
+                await pool.query(`ROLLBACK TO addedSpouseRelationship1`);
+                res.status(500).json({ message: err.message });
+            }
+        }
     }
 
-    try { 
-        await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, relationType]);
-        await pool.query(`SAVEPOINT addedRelationship`);
-        res.status(201).json({message: 'Added Relationship'});
 
-    } catch (err) {
-        await pool.query(`ROLLBACK TO addedAncestor`);
-        res.status(500).json({ message: err.message });
-    }
 
     /*
     try {

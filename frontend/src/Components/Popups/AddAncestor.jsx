@@ -40,12 +40,12 @@ function AddAncestor({ show, handleHide, ancestor }) {
                     <input className='add-ancestor-input' placeholder='Enter Ancestor Image Link...' onChange={(e) => setImageLink(e.target.value)}></input>
                     <select className='ancestor-gender-dropdown' onChange={(e) => setGender(e.target.value)}>
                         <option className='add-ancestor-option' value='m'>Male</option>
-                        <option value='f'>Female</option>
+                        <option className='add-ancestor-option' value='f'>Female</option>
                     </select>
                     <select className="ancestor-dropdown" onChange={(e) => setRelationType(e.target.value)}>
                         {}
                         {!ancestor.spouse && (<><option className='add-ancestor-option' value="wife">Husband</option><option className='add-ancestor-option' value="husband">Wife</option></>)}
-                        {ancestor.spouse && (<><option className='add-ancestor-option' value="father">Son</option><option className='add-ancestor-option' value="mother">Daughter</option></>)}
+                        {ancestor.spouse && (<><option className='add-ancestor-option' value="child">Son</option><option className='add-ancestor-option' value="child">Daughter</option></>)}
                     </select>
                 </form>
 
