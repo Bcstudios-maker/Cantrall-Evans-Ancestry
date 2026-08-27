@@ -44,7 +44,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
                     </select>
                     <select className="ancestor-dropdown" onChange={(e) => setRelationType(e.target.value)}>
                         {}
-                        {!ancestor.spouse && (<><option className='add-ancestor-option' value="wife">Husband</option><option className='add-ancestor-option' value="husband">Wife</option></>)}
+                        {!ancestor.spouse && (<><option className='add-ancestor-option' value="spouse">Husband</option><option className='add-ancestor-option' value="spouse">Wife</option></>)}
                         {ancestor.spouse && (<><option className='add-ancestor-option' value="child">Son</option><option className='add-ancestor-option' value="child">Daughter</option></>)}
                     </select>
                 </form>

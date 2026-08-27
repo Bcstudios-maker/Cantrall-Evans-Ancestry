@@ -17,117 +17,43 @@ require('dotenv').config();
 
 app.post('/api/addAncestor', async (req, res) => {
     const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId } = req.body;
-
-    let newRelationType = null;
-
-
-    await pool.query(`BEGIN`);
-    const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
-    const newAncestorId = Ancestor.rows[0].ancestor_id;
-    await pool.query(`SAVEPOINT addedAncestor`);
-
-    // This code determines the relation type that is entered into the database.
-    if (relationType == 'child') {
-        if (ancestorGender == 'f') {
-            newRelationType = 'mother';
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, newRelationType]);
-                await pool.query(`SAVEPOINT addedRelationship1`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedAncestor`);
-                res.status(500).json({ message: err.message });
-            }
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'father')`, [spouseAncestorId, newAncestorId]);
-                await pool.query(`SAVEPOINT addedRelationship2`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedRelationship1`);
-                res.status(500).json({ message: err.message });
-            }
-
-        } else {
-            newRelationType = 'father';
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, newRelationType]);
-                await pool.query(`SAVEPOINT addedRelationship1`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedAncestor`);
-                res.status(500).json({ message: err.message });
-            }
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'mother')`, [spouseAncestorId, newAncestorId]);
-                await pool.query(`SAVEPOINT addedRelationship2`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedRelationship1`);
-                res.status(500).json({ message: err.message });
-            }
-
-        }
-    } else {
-        if (ancestorGender == 'f') {
-            newRelationType = 'husband';
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, newRelationType]);
-                await pool.query(`SAVEPOINT addedSpouseRelationship1`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedAncestor`);
-                res.status(500).json({ message: err.message });
-            }
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'wife')`, [ancestorId, newAncestorId]);
-                await pool.query(`SAVEPOINT addedSpouseRelationship2`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedSpouseRelationship1`);
-                res.status(500).json({ message: err.message });
-            }
-        } else {
-            newRelationType = 'wife';
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, newRelationType]);
-                await pool.query(`SAVEPOINT addedSpouseRelationship1`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedAncestor`);
-                res.status(500).json({ message: err.message });
-            }
-            try {
-                await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, 'husband')`, [ancestorId, newAncestorId]);
-                await pool.query(`SAVEPOINT addedSpouseRelationship2`);
-                res.status(201).json({ message: 'Added Relationship' });
-            } catch (err) {
-                await pool.query(`ROLLBACK TO addedSpouseRelationship1`);
-                res.status(500).json({ message: err.message });
-            }
-        }
+    if(!firstName || !lastName || !gender || !relationType || !ancestorId || !ancestorGender){
+        res.status(400).json({message: 'Missing required fields'});
     }
 
+    const client = await pool.connect();
 
-
-    /*
     try {
-        const Ancestor = await pool.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
-        const newAncestorId = Ancestor.rows[0].ancestor_id;
-        await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
-        if (spouseAncestorId) {
-            let newRelationType = null;
-            if (relationType === 'father') {
-                newRelationType = 'father';
-            } else {
-                newRelationType = 'mother';
-            }
-            await pool.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [spouseAncestorId, newAncestorId, newRelationType]);
+        await client.query('BEGIN');
+
+        const ancestorResult = await client.query(`INSERT INTO ancestors (first_name, last_name, date_of_birth, date_of_death, ancestor_image, gender) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ancestor_id`, [firstName, lastName, dob, dod, imageLink, gender]);
+
+        const newAncestorId = ancestorResult.rows[0].ancestor_id;
+
+        if (relationType === 'child'){
+            const parentRelation = ancestorGender === 'f' ? 'mother' : 'father';
+            const spouseParentRelation = ancestorGender === 'f' ? 'father' : 'mother';
+            
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, parentRelation]);
+
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [spouseAncestorId, newAncestorId, spouseParentRelation]);
+        } else if (relationType === 'spouse'){
+            const relation = gender === 'm' ? 'husband' : 'wife';
+            const spouseRelation = ancestorGender === 'm' ? 'husband' : 'wife';
+
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relation]);
+
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, spouseRelation]);
         }
-        res.status(201).json({ message: 'Successfully added ancestor' });
+
+        await client.query(`COMMIT`);
+        return res.status(201).json({message: 'Added relationship'});
     } catch (err) {
-        res.status(500).json({ body: err.message });
+        await client.query(`ROLLBACK`);
+        return res.status(500).json({message: err.message});
+    } finally {
+        client.release();
     }
-    */
 });
 
 app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
