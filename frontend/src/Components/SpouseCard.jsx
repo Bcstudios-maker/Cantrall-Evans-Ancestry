@@ -8,11 +8,11 @@ function SpouseCard({ data }) {
         <div className="spouse-card" >
             {data.spouse && (
                 <>
-                    <Handle type='target' position={Position.Top} className='handle target-handle' id='top' />
+
                     <Handle type='source' position={Position.Bottom} className='handle source-h' id='bottom'/>
                 </>
             )}
-            <AncestorCard data={data} isChild />
+            <AncestorCard data={data} isChild/>
             {data.spouse && (
                 <>
                     <span> + </span>

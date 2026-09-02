@@ -16,9 +16,20 @@ require('dotenv').config();
  */
 
 app.post('/api/addAncestor', async (req, res) => {
-    const { firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId } = req.body;
-    if(!firstName || !lastName || !gender || !relationType || !ancestorId || !ancestorGender){
-        res.status(400).json({message: 'Missing required fields'});
+
+    const { tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId } = req.body;
+
+    console.log(firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId);
+
+    if (!tree_id) {
+        return res.status(400).json({ message: 'Missing Tree ID' });
+    }
+    if (!firstName || !lastName || !gender || !relationType || !ancestorId || !ancestorGender) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    if (!relationType) {
+        return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const client = await pool.connect();
@@ -30,27 +41,28 @@ app.post('/api/addAncestor', async (req, res) => {
 
         const newAncestorId = ancestorResult.rows[0].ancestor_id;
 
-        if (relationType === 'child'){
-            const parentRelation = ancestorGender === 'f' ? 'mother' : 'father';
-            const spouseParentRelation = ancestorGender === 'f' ? 'father' : 'mother';
+        if (relationType === 'husband' || relationType === 'wife') {
+            let spouseRelationType = ancestorGender === 'm' ? 'husband' : 'wife';
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [newAncestorId, ancestorId, relationType]);
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [ancestorId, newAncestorId, spouseRelationType]);
+
+        } else if (relationType === 'son' || relationType === 'daughter') {
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
             
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, parentRelation]);
-
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [spouseAncestorId, newAncestorId, spouseParentRelation]);
-        } else if (relationType === 'spouse'){
-            const relation = gender === 'm' ? 'husband' : 'wife';
-            const spouseRelation = ancestorGender === 'm' ? 'husband' : 'wife';
-
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relation]);
-
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, spouseRelation]);
+        } else if (relationType === 'mChild' || relationType === 'wChild') {
+            const newChildRelationType = relationType === 'mChild' ? 'son' : 'daughter';
+            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, newChildRelationType]);
         }
 
+
+        //No matter what a new ancestor will be added to a tree.
+        await client.query(`INSERT INTO tree_members (tree_id, ancestor_id) VALUES ($1, $2)`, [tree_id, newAncestorId]);
+
         await client.query(`COMMIT`);
-        return res.status(201).json({message: 'Added relationship'});
+        return res.status(201).json({ message: 'Added relationship' });
     } catch (err) {
         await client.query(`ROLLBACK`);
-        return res.status(500).json({message: err.message});
+        return res.status(500).json({ message: err.message });
     } finally {
         client.release();
     }

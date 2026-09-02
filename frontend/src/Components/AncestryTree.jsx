@@ -29,7 +29,7 @@ function AncestryTree () {
 
 
                 const ancestor_id = LoadSmallestAncestorId({data: ancestors});
-                setRootAncestorId(rootAncestorId)
+                setRootAncestorId(ancestor_id);
 
                 const build = buildTree(rootAncestorId, ancestors, relationships);
 
@@ -53,6 +53,7 @@ function AncestryTree () {
         ancestor: AncestorCard,
         spouse: SpouseCard
     };
+
 
     return (
         <div className="ancestry-tree" style={{width: '100%', height: '50em'}}>
