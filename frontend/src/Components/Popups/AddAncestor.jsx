@@ -16,22 +16,18 @@ function AddAncestor({ show, handleHide, ancestor }) {
     const [imageLink, setImageLink] = useState(null);
 
     const [gender, setGender] = useState('m');
-    const [relationType, setRelationType] = useState(ancestor.spouse ? 'child' : 'spouse');
+    const [relationType, setRelationType] = useState('parent');
 
-    const {tree_id: tree_id} = useParams();
-
-
+    const {tree_id: tree_id} = useParams();       
+        
     const handleAddAncestor = async (e) => {
 
         e.preventDefault();
-        
-        await addAncestor({ tree_id: tree_id ? tree_id : null, firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType ? relationType : null, ancestorId: ancestor.ancestor_id ? ancestor.ancestor_id : null, ancestorGender: ancestor.gender ? ancestor.gender : null, spouseAncestorId: ancestor.spouse ? ancestor.spouse.ancestor_id : null});
+        console.log(tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor);
+        await addAncestor({ tree_id: tree_id ? tree_id : null, firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType ? relationType : null, ancestor: ancestor});
         handleHide();
 
     }
-
-
-
 
     return (
         <Modal show={show} onHide={handleHide} backdrop='static'>
@@ -50,10 +46,10 @@ function AddAncestor({ show, handleHide, ancestor }) {
                             <option className='add-ancestor-option' value='m'>Male</option>
                             <option className='add-ancestor-option' value='f'>Female</option>
                         </select>
-                        <select className="ancestor-dropdown" value={relationType} onChange={(e) => setRelationType(e.target.value)}>
-                            {(!ancestor.spouse || ancestor.spouse.length === 0) && (<><option className='add-ancestor-option' value="husband">Husband</option><option className='add-ancestor-option' value="wife">Wife</option></>)}
-                            {(!ancestor.parents || ancestor.parents.length === 0) && (<><option className='add-ancestor-option' value="son">Father</option><option className='add-ancestor-option' value="daughter">Mother</option></>)}
-                            {(ancestor.parents && ancestor.spouse) && (<><option className='add-ancestor-option' value="mChild">Son</option><option className='add-ancestor-option' value="wChild">Daughter</option></>)}
+                        <select className="ancestor-dropdown" value={relationType} onChange={(e) => {console.log('selected:' + e.target.value); setRelationType(e.target.value);}}>
+                            {(ancestor.spouse) && (<><option className='add-ancestor-option' value='child'>Child</option></>)}
+                            {(!ancestor.parents || ancestor.parents.length === 0) && (<><option className='add-ancestor-option' value='parent'>Parent</option></>)}
+                            {!ancestor.spouse && (<><option className='add-ancestor-option' value='spouse'>Spouse</option></>)}
                         </select>
                     </div>
 

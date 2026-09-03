@@ -17,19 +17,19 @@ require('dotenv').config();
 
 app.post('/api/addAncestor', async (req, res) => {
 
-    const { tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId } = req.body;
+    const { tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor } = req.body;
 
-    console.log(firstName, lastName, dob, dod, imageLink, gender, relationType, ancestorId, ancestorGender, spouseAncestorId);
+    console.log(firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor);
 
     if (!tree_id) {
         return res.status(400).json({ message: 'Missing Tree ID' });
     }
-    if (!firstName || !lastName || !gender || !relationType || !ancestorId || !ancestorGender) {
+    if (!firstName || !lastName || !gender) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
     if (!relationType) {
-        return res.status(400).json({ message: 'Missing required fields' });
+        return res.status(400).json({ message: 'Missing required field relation_type' });
     }
 
     const client = await pool.connect();
@@ -41,19 +41,53 @@ app.post('/api/addAncestor', async (req, res) => {
 
         const newAncestorId = ancestorResult.rows[0].ancestor_id;
 
-        if (relationType === 'husband' || relationType === 'wife') {
-            let spouseRelationType = ancestorGender === 'm' ? 'husband' : 'wife';
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [newAncestorId, ancestorId, relationType]);
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [ancestorId, newAncestorId, spouseRelationType]);
+        // pcr : parent -> child relationship
+        // cpr : child -> parent relationship
+        // ssr : spouse -> spouse relationship
 
-        } else if (relationType === 'son' || relationType === 'daughter') {
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestorId, newAncestorId, relationType]);
-            
-        } else if (relationType === 'mChild' || relationType === 'wChild') {
-            const newChildRelationType = relationType === 'mChild' ? 'son' : 'daughter';
-            await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestorId, newChildRelationType]);
+        switch (relationType) {
+            case "parent":
+                const pcr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestor.ancestor_id, relationType]);
+                const cpr2 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestor.ancestor_id, newAncestorId, 'child']);
+                console.log(pcr1, cpr2);
+                break;
+            case "child":
+                if (ancestor.spouse) {
+                    try {
+                        const pcr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestor.ancestor_id, newAncestorId, 'parent']);
+                        const pcr2 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestor.spouse.ancestor_id, newAncestorId, 'parent']);
+                        const cpr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestor.ancestor_id, relationType]);
+                        const cpr2 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestor.spouse.ancestor_id, relationType]);
+                        console.log(`cpr1: ${cpr1}, cpr2: ${cpr2}, pcr1: ${pcr1}, pcr2: ${pcr2}`);
+                    } catch (err) {
+                        return res.status(400).json({ message: 'Could not create parent <-> child relationships ' + err.message });
+                    }
+                } else {
+                    return res.status(400).json({ message: 'Immaculate conception is only possible for God.' });
+                }
+                break;
+            case "spouse":
+                const ssr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [newAncestorId, ancestor.ancestor_id, relationType]);
+                const ssr2 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestor.ancestor_id, newAncestorId, relationType]);
+
+                if (ancestor.children) {
+                    try {
+                        ancestor.children.forEach(async (child) => {
+                            const pcr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [newAncestorId, child.ancestor_id, 'parent']);
+                            const cpr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [child.ancestor_id, newAncestorId, 'child']);
+                            
+                            console.log("pcr1: " + pcr1 + "cpr1: " + cpr2)
+                        });
+                    } catch (err) {
+                        return res.status(400).json({ message: 'Unable to make parent <-> child relationship for new spouse.'});
+                    }
+
+                }
+                break;
+            default:
+                console.log('No known relation type.');
+                break;
         }
-
 
         //No matter what a new ancestor will be added to a tree.
         await client.query(`INSERT INTO tree_members (tree_id, ancestor_id) VALUES ($1, $2)`, [tree_id, newAncestorId]);
@@ -90,7 +124,6 @@ app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
 
     try {
         const result = await pool.query(`UPDATE ancestors SET first_name = $1, last_name = $2, date_of_birth = $3, date_of_death = $4, ancestor_image = $5 WHERE ancestor_id = $6`, [firstName, lastName, dob, dod, imageLink, ancestor_id]);
-        console.log(result);
         res.status(200).json({ message: 'Edited Ancestor successfully.' });
     } catch (err) {
         res.status(500).json({ body: err.message });
@@ -138,7 +171,6 @@ app.get('/api/getAncestorsInTree/:tree_id', async (req, res) => {
             WHERE tm.tree_id = $1
             `
             , [tree_id]);
-        console.log(ancestors, relationships);
 
         res.json({ ancestors: ancestors.rows, relationships: relationships.rows });
     } catch (err) {
@@ -202,7 +234,6 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.post('/api/addUser', async (req, res) => {
     const { username, password, role } = req.body;
-    console.log(req.body);
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
