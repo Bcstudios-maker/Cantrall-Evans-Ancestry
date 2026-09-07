@@ -105,8 +105,9 @@ app.post('/api/addAncestor', async (req, res) => {
 app.delete('/api/deleteAncestor/:ancestor_id', async (req, res) => {
     const { ancestor_id } = req.params;
     try {
-        const resultRelationships = await pool.query(`DELETE FROM relationships WHERE ancestor_id = $1 OR relation_id = $1`, [ancestor_id]);
-        const resultAncestor = await pool.query(`DELETE FROM ancestors WHERE ancestor_id = $1 `, [ancestor_id]);
+        await pool.query(`DELETE FROM tree_members WHERE ancestor_id = $1`, [ancestor_id]);
+        await pool.query(`DELETE FROM relationships WHERE ancestor_id = $1 OR relation_id = $1`, [ancestor_id]);
+        await pool.query(`DELETE FROM ancestors WHERE ancestor_id = $1 `, [ancestor_id]);
 
         res.status(201).json({ message: 'Succesfully deleted ancestor' });
     } catch (err) {

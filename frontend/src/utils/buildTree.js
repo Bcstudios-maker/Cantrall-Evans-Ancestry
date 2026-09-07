@@ -1,5 +1,5 @@
 
-export const buildTree = (currentId, ancestors, relationships, visited = new Set()) => {
+export const buildTree = (currentId, ancestors, relationships, visited = new Set(), skipChildren = false) => {
     if (visited.has(currentId)) return;
     visited.add(currentId);
 
@@ -8,10 +8,10 @@ export const buildTree = (currentId, ancestors, relationships, visited = new Set
     const spouseRelation = relationships.find(r => r.ancestor_id === currentId && (r.relation_type === 'spouse'));
     const spouse = spouseRelation ? ancestors.find(a => a.ancestor_id === spouseRelation.relation_id) : null;
     console.log("Spouse: " + spouse);
-    const parents = relationships.filter(r => r.ancestor_id == currentId && (r.relation_type === 'child')).map(r => buildTree(r.relation_id, ancestors, relationships, visited)).filter(Boolean);
+    const parents = relationships.filter(r => r.ancestor_id == currentId && (r.relation_type === 'child')).map(r => buildTree(r.relation_id, ancestors, relationships, visited, true)).filter(Boolean);
     console.log("Parents: " + parents);
 
-    const children = relationships.filter(r => r.ancestor_id === currentId && (r.relation_type === 'parent')).map(r => buildTree(r.relation_id, ancestors, relationships, visited)).filter(Boolean);
+    const children = skipChildren ? [] : relationships.filter(r => r.ancestor_id === currentId && (r.relation_type === 'parent')).map(r => buildTree(r.relation_id, ancestors, relationships, visited, false)).filter(Boolean);
     console.log("Children: " + children);
 
     

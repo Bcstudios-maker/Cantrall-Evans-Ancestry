@@ -1,12 +1,12 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createDeate } from '../../utils/structureDate';
 import { addAncestor } from '../../middleware/api';
 import { useParams } from 'react-router-dom';
+import { SetDefaultRelationType } from '../../utils/setDefaultRelationType';
 
 function AddAncestor({ show, handleHide, ancestor }) {
-    
     
 
     const [firstName, setFirstName] = useState('');
@@ -16,10 +16,10 @@ function AddAncestor({ show, handleHide, ancestor }) {
     const [imageLink, setImageLink] = useState(null);
 
     const [gender, setGender] = useState('m');
-    const [relationType, setRelationType] = useState('parent');
+    const [relationType, setRelationType] = useState(() => SetDefaultRelationType(ancestor));
 
     const {tree_id: tree_id} = useParams();       
-        
+    
     const handleAddAncestor = async (e) => {
 
         e.preventDefault();
