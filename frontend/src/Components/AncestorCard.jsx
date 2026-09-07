@@ -50,6 +50,7 @@ const AncestorCard = ({ data, isChild = false }) => {
                 </div>
                 <div className="ancestor-description" >
                     <h3>{data.first_name} {data.last_name}</h3>
+                    <h4>ID: {data.ancestor_id}</h4>
                     <p>Date of Birth: {birthDate}</p>
                     {data.date_of_death ? (<p>Date of Death: {deathDate}</p>) : (<p>Unknown</p>)}
                 </div>

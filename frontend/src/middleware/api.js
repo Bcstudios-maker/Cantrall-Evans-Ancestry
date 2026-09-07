@@ -1,13 +1,4 @@
-export const getTrees = async () => {
-    const response = await fetch('http://localhost:4000/api/getTrees');
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch family trees.');
-    }
-
-    return await response.json();
-}
-
+// Ancestor API calls
 
 export const addAncestor = async ({ tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor }) => {
     const response = await fetch('http://localhost:4000/api/addAncestor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor})});
@@ -36,19 +27,32 @@ export const deleteAncestor = async ({ ancestor_id }) => {
     }
 }
 
+export const getRelationships = async () => {
+    const response = await fetch(`http://localhost:4000/api/getRelationships`);
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch ancestor relationships.');
+    }
+    return await response.json();
+}
+
+export const GetLocalAncestors = async ({ ancestor_id }) => {
+    const response = await fetch(`http://localhost:4000/api/getLocalAncestors/${ancestor_id}`);
+
+    if(!response.ok) {
+        throw new Error('Failed to fetch Local Ancestors');
+    }
+
+    return await response.json();
+}
+
+// Document API calls
+
 export const getAncestorDocuments = async ({ ancestor_id }) => {
     const response = await fetch(`http://localhost:4000/api/getAncestorDocuments/${ancestor_id}`);
 
     if (!response.ok) {
         throw new Error('Failed to fetch ancestor with ancestor_id: ' + ancestor_id);
-    }
-    return await response.json();
-}
-export const getUsers = async () => {
-    const response = await fetch('http://localhost:4000/api/getUsers');
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch family trees.');
     }
     return await response.json();
 }
@@ -61,32 +65,14 @@ export const getDocuments = async () => {
     return await response.json();
 }
 
-export const getRelationships = async () => {
-    const response = await fetch(`http://localhost:4000/api/getRelationships`);
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch ancestor relationships.');
+export const deleteDocument = async ({ info_id }) => {
+    try {
+        const response = await fetch(`http://localhost:4000/api/deleteDocument/${info_id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ info_id }) });
+        return await response.json();
+    } catch (err) {
+        throw new Error(err.message);
     }
-    return await response.json();
-}
 
-export const loginUser = async ({ username, password, role }) => {
-    const response = await fetch('http://localhost:4000/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password, role }) });
-
-    if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error);
-    }
-    return await response.json();
-}
-
-export const addUser = async ({ username, password, role }) => {
-    const response = await fetch('http://localhost:4000/api/addUser', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password, role }) });
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error);
-    }
-    return await response.json();
 }
 
 export const editDocument = async ({ filename, filepath, ancestor_id, info_id }) => {
@@ -131,6 +117,19 @@ export const GetAncestorsInTree = async ({tree_id}) => {
 
 }
 
+export const getTrees = async () => {
+    const response = await fetch('http://localhost:4000/api/getTrees');
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch family trees.');
+    }
+
+    return await response.json();
+}
+
+
+// User API calls
+
 export const deleteUser = async ({ user_id }) => {
     const user = JSON.parse(localStorage.getItem('user'));
 
@@ -148,12 +147,30 @@ export const deleteUser = async ({ user_id }) => {
     }
 }
 
-export const deleteDocument = async ({ info_id }) => {
-    try {
-        const response = await fetch(`http://localhost:4000/api/deleteDocument/${info_id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ info_id }) });
-        return await response.json();
-    } catch (err) {
-        throw new Error(err.message);
-    }
+export const getUsers = async () => {
+    const response = await fetch('http://localhost:4000/api/getUsers');
 
+    if (!response.ok) {
+        throw new Error('Failed to fetch family trees.');
+    }
+    return await response.json();
+}
+
+export const loginUser = async ({ username, password, role }) => {
+    const response = await fetch('http://localhost:4000/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password, role }) });
+
+    if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error);
+    }
+    return await response.json();
+}
+
+export const addUser = async ({ username, password, role }) => {
+    const response = await fetch('http://localhost:4000/api/addUser', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password, role }) });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+    }
+    return await response.json();
 }

@@ -26,7 +26,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
         console.log(tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor);
         await addAncestor({ tree_id: tree_id ? tree_id : null, firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType ? relationType : null, ancestor: ancestor});
         handleHide();
-
+        window.location.reload();
     }
 
     return (

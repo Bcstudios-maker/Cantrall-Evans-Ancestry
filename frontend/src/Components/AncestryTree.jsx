@@ -34,7 +34,7 @@ function AncestryTree () {
                 const build = buildTree(rootAncestorId, ancestors, relationships);
 
                 setTree(build);
-
+                console.log(tree);
                
             } catch (err){
                 console.log(err);

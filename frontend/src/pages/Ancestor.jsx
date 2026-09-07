@@ -9,21 +9,22 @@ import { useLocation, useParams } from "react-router-dom";
 import DocumentCard from "../Components/DocumentCard";
 import { structureDate } from '../utils/structureDate';
 import EditInfo from '../Components/Popups/EditInfo';
+import LocalAncestorCard from '../Components/LocalAncestorCard';
 
 function Ancestor() {
-    
+
     const location = useLocation();
     const data = location.state;
 
     const user = JSON.parse(localStorage.getItem('user'));
 
     const isAdmin = user?.role === 'admin' ? true : false;
-    
-    const {ancestor_id: ancestorId} = useParams();
+
+    const { ancestor_id: ancestorId } = useParams();
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
+
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
@@ -33,9 +34,7 @@ function Ancestor() {
     useEffect(() => {
         const loadDocuments = async () => {
             try {
-                const documentData = await getAncestorDocuments({ancestor_id: ancestorId});
-
-                console.log(documentData);
+                const documentData = await getAncestorDocuments({ ancestor_id: ancestorId });
                 setDocuments(documentData);
             } catch (err) {
                 setError(err);
@@ -44,7 +43,10 @@ function Ancestor() {
                 setLoading(false);
             }
         }
-        if(ancestorId){
+        const loadLocalAncestors = async () => {
+
+        }
+        if (ancestorId) {
             loadDocuments();
         }
     }, [ancestorId]);
@@ -56,26 +58,25 @@ function Ancestor() {
         deathDate = structureDate(data.date_of_death);
 
     }
-    if (!data) {return (<><NavBar /><p>Ancestor not Found</p></>);}
-
+    if (!data) { return (<><NavBar /><p>Ancestor not Found</p></>); }
+    console.log(data);
     return (
         <>
             <NavBar />
-            <AddDocument show={show} handleHide={handleHide}/>
+            <AddDocument show={show} handleHide={handleHide} />
             {
-                isAdmin ?  
-                (
-                    <div className='admin-buttons'>
-                        <button className='admin-button' id='add-document' alt='Add Document' onClick={handleShow}>+</button>
-                    </div>
-                ) : null
+                isAdmin ?
+                    (
+                        <div className='admin-buttons'>
+                            <button className='admin-button' id='add-document' alt='Add Document' onClick={handleShow}>+</button>
+                        </div>
+                    ) : null
             }
-            <div className='ancestor-container' style={{display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px'}}>
-
-                <div className='ancestor-relationships'>
-                    <div className='ancestor-relationship' id='children'>children<div className='ancestor-relationship-seperator' /></div>
-                    <div className='ancestor-relationship' id='spouse'>spouse<div className='ancestor-relationship-seperator' /></div>
-                    <div className='ancestor-relationship' id='parents'>parents<div className='ancestor-relationship-seperator' /></div>
+            <div className='ancestor-container' style={{ display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px' }}>
+                <div className='local-ancestor-relationships'>
+                    <div className='ancestor-relationship' id='children'>children<div className='ancestor-relationship-seperator' />{data.children?.map((child) => (<LocalAncestorCard ancestorData={child} key={child.ancestor_id}/>))}</div>
+                    <div className='ancestor-relationship' id='spouse'>spouse<div className='ancestor-relationship-seperator' />{data.spouse && (<LocalAncestorCard ancestorData={data.spouse} key={data.spouse.ancestor_id}/>)}</div>
+                    <div className='ancestor-relationship' id='parents'>parents<div className='ancestor-relationship-seperator' />{data.parents?.map((parent) => (<LocalAncestorCard ancestorData={parent} key={parent.ancestor_id}/>))}</div>
                 </div>
                 <div className="ancestor-info">
                     <h1 className='ancestor-name'>{data.first_name} {data.last_name}</h1>
@@ -83,9 +84,9 @@ function Ancestor() {
                     <h2 className='ancestor-dates'>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
                     <div className='ancestor-documents'>
                         <ul className="document-grid">
-                            {documents?.map((document) => (<li key={document.info_id}><DocumentCard document={document} user={user} key={document.info_id}/></li>))}
+                            {documents?.map((document) => (<li key={document.info_id}><DocumentCard document={document} user={user} key={document.info_id} /></li>))}
                         </ul>
-                        
+
                     </div>
                 </div>
             </div>

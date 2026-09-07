@@ -71,15 +71,22 @@ app.post('/api/addAncestor', async (req, res) => {
                 const ssr2 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3)`, [ancestor.ancestor_id, newAncestorId, relationType]);
 
                 if (ancestor.children) {
+
+                    const children = await client.query(`
+                        select distinct a.first_name, a.last_name, a.date_of_birth, a.date_of_death, a.gender, r.ancestor_id, r.relation_id, r.relation_type
+                        from ancestors as a, relationships AS r
+                        where (a.ancestor_id = 23 AND r.ancestor_id = 23) AND r.relation_type = 'parent' 
+                    `);
+
+                    const result = children.rows;
+
                     try {
-                        ancestor.children.forEach(async (child) => {
-                            const pcr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [newAncestorId, child.ancestor_id, 'parent']);
-                            const cpr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [child.ancestor_id, newAncestorId, 'child']);
-                            
-                            console.log("pcr1: " + pcr1 + "cpr1: " + cpr2)
+                        result.forEach(async (child) => {
+                            const pcr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [newAncestorId, child.relation_id, 'parent']);
+                            const cpr1 = await client.query(`INSERT INTO relationships (ancestor_id, relation_id, relation_type) VALUES ($1, $2, $3) RETURNING *`, [child.relation_id, newAncestorId, 'child']);
                         });
                     } catch (err) {
-                        return res.status(400).json({ message: 'Unable to make parent <-> child relationship for new spouse.'});
+                        return res.status(400).json({ message: 'Unable to make parent <-> child relationship for new spouse.' });
                     }
 
                 }
@@ -134,6 +141,14 @@ app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
 app.get("/api/getLocalAncestors/:ancestor_id", async (req, res) => {
     const { ancestor_id } = req.params;
 
+    try {
+        const relationshipResult = await pool.query(`SELECT * from relationships where ancestor_id = $1`, [ancestor_id]);
+        const ancestorResult = await pool.query(`SELECT * from ancestors`);
+
+        res.json({ ancestors: ancestorResult.rows, relationships: relationshipResult.rows });
+    } catch (err) {
+        return res.status(400).json({ message: err.message });
+    }
 });
 
 /*
