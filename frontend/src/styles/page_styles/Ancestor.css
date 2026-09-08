@@ -1,13 +1,21 @@
+
+/*
+
+    Local Ancestor Relationship Container Styling
+
+*/
+
 .local-ancestor-relationships{
-    width: 25%;
-    height: fit-content;
+    width: 50%;
     display: flex;
     flex-direction: row;
+    gap: 15px;
     justify-content: space-evenly;
 }
 .ancestor-relationship {
-    width: 30%;
-    height: 80px;
+    width: 400px;
+    height: fit-content;
+    padding-bottom: 10px;
     background-color: red;
     font-size: 24px;
     font-weight: bold;
@@ -31,14 +39,20 @@
     background-color: blueviolet;
 }
 
-.ancestor-info{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 75%;
-    height: fit-content;
-}
+/*
 
+    Ancestor Info Styling
+
+*/
+
+.ancestor-info-container {
+    width: 50%;
+    margin-left: 15px;
+    background-color: red;
+    display: flex;
+    
+    flex-direction: column;
+}
 .ancestor-name {
     color: white;
 }
@@ -55,6 +69,12 @@
     justify-self: center;
     padding: 0px;
 }
+
+/*
+
+    Admin Button Styling
+
+*/
 
 .admin-buttons {
     display: flex;

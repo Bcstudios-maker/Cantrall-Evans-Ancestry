@@ -75,8 +75,8 @@ app.post('/api/addAncestor', async (req, res) => {
                     const children = await client.query(`
                         select distinct a.first_name, a.last_name, a.date_of_birth, a.date_of_death, a.gender, r.ancestor_id, r.relation_id, r.relation_type
                         from ancestors as a, relationships AS r
-                        where (a.ancestor_id = 23 AND r.ancestor_id = 23) AND r.relation_type = 'parent' 
-                    `);
+                        where (a.ancestor_id = $1 AND r.ancestor_id = $1) AND r.relation_type = 'parent' 
+                    `, [ancestor.ancestor_id]);
 
                     const result = children.rows;
 
@@ -138,14 +138,14 @@ app.post('/api/editAncestor/:ancestor_id', async (req, res) => {
     }
 })
 
-app.get("/api/getLocalAncestors/:ancestor_id", async (req, res) => {
+app.get("/api/GetLocalAncestors/:ancestor_id", async (req, res) => {
     const { ancestor_id } = req.params;
 
     try {
         const relationshipResult = await pool.query(`SELECT * from relationships where ancestor_id = $1`, [ancestor_id]);
-        const ancestorResult = await pool.query(`SELECT * from ancestors`);
-
-        res.json({ ancestors: ancestorResult.rows, relationships: relationshipResult.rows });
+        const ancestors = await pool.query(`SELECT * from ancestors`);
+        console.log(`Relationship Result: ${relationshipResult.rows} \nAncestor Result ${ancestors.rows}`)
+        res.json({ ancestors: ancestors.rows, relationships: relationshipResult.rows });
     } catch (err) {
         return res.status(400).json({ message: err.message });
     }

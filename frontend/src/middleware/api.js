@@ -37,7 +37,7 @@ export const getRelationships = async () => {
 }
 
 export const GetLocalAncestors = async ({ ancestor_id }) => {
-    const response = await fetch(`http://localhost:4000/api/getLocalAncestors/${ancestor_id}`);
+    const response = await fetch(`http://localhost:4000/api/getLocalAncestors/${ancestor_id}`, { method: 'GET', headers: {'Content-Type': 'application/json'}, params: JSON.stringify({ancestor_id})});
 
     if(!response.ok) {
         throw new Error('Failed to fetch Local Ancestors');

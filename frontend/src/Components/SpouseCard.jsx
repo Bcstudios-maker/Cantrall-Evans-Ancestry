@@ -8,7 +8,6 @@ function SpouseCard({ data }) {
         <div className="spouse-card" >
             {data.spouse && (
                 <>
-
                     <Handle type='source' position={Position.Bottom} className='handle source-h' id='bottom'/>
                 </>
             )}
