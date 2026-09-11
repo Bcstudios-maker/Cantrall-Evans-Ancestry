@@ -33,8 +33,8 @@ function EditAncestor({ show, handleHide, ancestor }) {
                     {(ancestorImage != '') ? (<input placeholder='Please Enter Image Link...' className='edit-input' onChange={(e) => setAncestorImage(e.target.value)}/>) : (<input placeholder={ancestorImage} className='edit-input' onChange={(e) => setAncestorImage(e.target.value)}></input>)}
                     <input placeholder={firstName} className='edit-input' onChange={(e) => setFirstName(e.target.value)}></input>
                     <input placeholder={lastName} className='edit-input' onChange={(e) => setLastName(e.target.value)}></input>
-                    <input placeholder={dob} className='edit-input' onChange={(e) => setDOB(e.target.value)}></input>
-                    <input placeholder={dod != null ? dod : 'Please Enter a Date of Death'} className='edit-input' onChange={(e) => setDOD(e.target.value)}></input>
+                    <input placeholder={dob} className='edit-input' type='date' onChange={(e) => setDOB(e.target.value)}></input>
+                    <input placeholder={dod != null ? dod : 'Please Enter a Date of Death'} type='date' className='edit-input' onChange={(e) => setDOD(e.target.value)}></input>
                 </form>
             </Modal.Body>
             <Modal.Footer>

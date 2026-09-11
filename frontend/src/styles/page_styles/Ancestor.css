@@ -1,17 +1,17 @@
-
 /*
 
     Local Ancestor Relationship Container Styling
 
 */
 
-.local-ancestor-relationships{
+.local-ancestor-relationships {
     width: 50%;
     display: flex;
     flex-direction: row;
     gap: 15px;
     justify-content: space-evenly;
 }
+
 .ancestor-relationship {
     width: 400px;
     height: fit-content;
@@ -20,6 +20,7 @@
     font-size: 24px;
     font-weight: bold;
 }
+
 .ancestor-relationship-seperator {
     position: relative;
     justify-self: center;
@@ -27,6 +28,7 @@
     height: 2px;
     background-color: gray;
 }
+
 #children {
     background-color: pink;
 }
@@ -50,9 +52,10 @@
     margin-left: 15px;
     background-color: red;
     display: flex;
-    
+
     flex-direction: column;
 }
+
 .ancestor-name {
     color: white;
 }
@@ -61,13 +64,73 @@
     color: white;
 }
 
+
+
+/*
+
+    Ancestor Biography Section styling.
+
+*/
+
+.ancestor-bio-container {
+    width: 95%;
+    height: 250px;
+    max-height: fit-content;
+    margin-top: 20px;
+    justify-self: center;
+    color: black;
+    
+}
+
+.ancestor-bio {
+    height: 250px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ancestor-bio-headerbutton {
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#edit-bio {
+    align-self: center;
+    
+}
+
+.bio-header {
+    margin: 0px;
+    align-self: center;
+    flex: 1;
+}
+
+
+
+/*  This is styling for the document grid.  */
+
 .ancestor-documents {
     margin-top: 2em;
 }
+
 .document-grid {
     list-style: none;
     justify-self: center;
     padding: 0px;
+}
+
+#edit-bio:hover {
+    cursor: pointer;
+    background-color: rgba(21, 255, 0, 0.365);
+    box-shadow: 0 0 10px 0 rgba(21, 255, 0, 0.365);
+}
+
+#add-document:hover {
+    cursor: pointer;
+    background-color: rgba(21, 255, 0, 0.365);
+    box-shadow: 0 0 10px 0 rgba(21, 255, 0, 0.365);
 }
 
 /*
@@ -92,22 +155,13 @@
     align-items: center;
     border: none;
     background: none;
-    color: white;
+    color: black;
     font-weight: bolder;
+    font-size: 20px;
+    text-align: center;
     border-radius: 100%;
     width: 35px;
     height: 35px;
     transition: background-color 0.5s, box-shadow 0.5s;
 }
 
-#edit-info:hover {
-    cursor: pointer;
-    background-color: rgba(0, 255, 213, 0.583);
-    box-shadow: 0 0 10px 0 rgba(0, 255, 213, 0.583);
-}
-
-#add-document:hover {
-    cursor: pointer;
-    background-color: rgba(21, 255, 0, 0.365);
-    box-shadow: 0 0 10px 0 rgba(21, 255, 0, 0.365);
-}

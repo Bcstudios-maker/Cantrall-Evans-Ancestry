@@ -11,6 +11,7 @@ import { structureDate } from '../utils/structureDate';
 import EditInfo from '../Components/Popups/EditInfo';
 import LocalAncestorCard from '../Components/LocalAncestorCard';
 import { BuildLocalAncestors } from '../utils/BuildLocalAncestors';
+import EditBiography from '../Components/Popups/EditBiography';
 
 function Ancestor() {
 
@@ -24,13 +25,16 @@ function Ancestor() {
     const { ancestor_id: ancestorId } = useParams();
     const [documents, setDocuments] = useState([]);
     const [localAncestors, setLocalAncestors] = useState([]);
+    const [bio, setBio] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const [show, setShow] = useState(false);
+    const [showEditBio, setShowEditBio ] = useState(false);
 
     const handleShow = () => setShow(true);
-    const handleHide = () => setShow(false);
+    const handleShowEditBio = () => setShowEditBio(true);
+    const handleHide = () => {setShow(false); setShowEditBio(false);}
 
 
 
@@ -114,14 +118,7 @@ function Ancestor() {
         <>
             <NavBar />
             <AddDocument show={show} handleHide={handleHide} />
-            {
-                isAdmin ?
-                    (
-                        <div className='admin-buttons'>
-                            <button className='admin-button' id='add-document' alt='Add Document' onClick={handleShow}>+</button>
-                        </div>
-                    ) : null
-            }
+            <EditBiography show={showEditBio} ancestor={data} handleHide={handleHide} />
             <div className='ancestor-body-container' style={{ display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px' }}>
                 <div className='local-ancestor-relationships'>
                     <div className='ancestor-relationship' id='children'>CHILDREN<div className='ancestor-relationship-seperator' />{localAncestors.children?.map((child) => (<LocalAncestorCard ancestorData={child} relation_type={'child'} currentAncestorGender={data.gender} key={child.ancestor_id} />))}</div>
@@ -135,11 +132,30 @@ function Ancestor() {
                         <h2 className='ancestor-dates'>Born: {birthDate}</h2>
                         <h2 className='ancestor-dates'>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
                     </div>
-                    <div className='ancestor-documents'>
-                        <ul className="document-grid">
-                            {documents?.map((document) => (<li key={document.info_id}><DocumentCard document={document} user={user} key={document.info_id} /></li>))}
-                        </ul>
+                </div>
+            </div>
+            <div className='ancestor-bio-container'>
+                <div className='ancestor-bio'>
+                    <div className='ancestor-bio-headerbutton'>
+                        {isAdmin ? (<button className='admin-button' id='edit-bio' alt='Edit Biography' title='Edit Biography' onClick={handleShowEditBio}>✎</button>) : null}
+                        <h2 className='bio-header'>{data.first_name} {data.last_name}'s Biography: </h2>
                     </div>
+                    <div className='biography-container'>
+                        {bio ? (<p>BLAH BLAH BLAH</p>) : (<p>NO ANCESTOR BIOGRAPHY</p>)}
+                    </div>
+                </div>
+                <div className='ancestor-documents'>
+                    {
+                        isAdmin ?
+                            (
+                                <div className='admin-buttons' id='admin-buttons-container'>
+                                    <button className='admin-button' id='add-document' alt='Add Document' title='Add Document' onClick={handleShow}>+</button>
+                                </div>
+                            ) : null
+                    }
+                    <ul className="document-grid">
+                        {documents?.map((document) => (<li key={document.info_id}><DocumentCard document={document} user={user} key={document.info_id} /></li>))}
+                    </ul>
                 </div>
             </div>
         </>

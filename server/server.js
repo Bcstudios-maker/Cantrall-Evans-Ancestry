@@ -273,6 +273,18 @@ app.delete('/api/deleteUser/:user_id', async (req, res) => {
     }
 });
 
+app.get('/api/getUsers', async (req, res) => {
+    try {
+        const response = await pool.query(`SELECT * FROM users`);
+        res.json(response.rows);
+        res.status(201).json({ message: 'Retrieved Users' });
+    } catch (err) {
+        console.log(err.message);
+        res.status(401).json({ error: err.message });
+    }
+});
+
+
 /**
  * All Document queries.
  */
