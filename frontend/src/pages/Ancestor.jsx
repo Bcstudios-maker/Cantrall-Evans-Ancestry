@@ -2,7 +2,7 @@ import '../styles/page_styles/Ancestor.css';
 
 import { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal'
-import { getAncestorDocuments, GetLocalAncestors } from "../middleware/api";
+import { GetAncestorBiography, getAncestorDocuments, GetLocalAncestors } from "../middleware/api";
 import AddDocument from '../Components/Popups/AddDocument';
 import NavBar from "../Components/NavBar";
 import { useLocation, useParams } from "react-router-dom";
@@ -26,15 +26,15 @@ function Ancestor() {
     const [documents, setDocuments] = useState([]);
     const [localAncestors, setLocalAncestors] = useState([]);
     const [bio, setBio] = useState();
-    const [loading, setLoading] = useState(true);
+    const [Loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const [show, setShow] = useState(false);
-    const [showEditBio, setShowEditBio ] = useState(false);
+    const [showEditBio, setShowEditBio] = useState(false);
 
     const handleShow = () => setShow(true);
     const handleShowEditBio = () => setShowEditBio(true);
-    const handleHide = () => {setShow(false); setShowEditBio(false);}
+    const handleHide = () => { setShow(false); setShowEditBio(false); }
 
 
 
@@ -43,7 +43,7 @@ function Ancestor() {
      */
 
     useEffect(() => {
-        const loadDocuments = async () => {
+        const LoadDocuments = async () => {
 
             try {
 
@@ -64,9 +64,9 @@ function Ancestor() {
 
         }
 
-        const loadLocalAncestors = async () => {
+        const LoadLocalAncestors = async () => {
 
-            // Set both loading and error to their default values. This allows user to fetch local ancestors even if they cant load documents.
+            // Set both Loading and error to their default values. This allows user to fetch local ancestors even if they cant Load documents.
             setLoading(true);
             setError(null);
 
@@ -94,10 +94,28 @@ function Ancestor() {
 
         }
 
+        const LoadAncestorBiography = async () => {
+
+            // Set both Loading and error to their default values. This allows user to fetch local ancestors even if they cant Load documents.
+            setLoading(true);
+            setError(null);
+
+            try {
+                const {biography} = await GetAncestorBiography({ ancestor_id: ancestorId });
+                setBio(biography);
+            } catch (err) {
+                setError(err);
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+
         if (ancestorId) {
 
-            loadDocuments();
-            loadLocalAncestors();
+            LoadDocuments();
+            LoadLocalAncestors();
+            LoadAncestorBiography();
 
         }
 
@@ -118,7 +136,7 @@ function Ancestor() {
         <>
             <NavBar />
             <AddDocument show={show} handleHide={handleHide} />
-            <EditBiography show={showEditBio} ancestor={data} handleHide={handleHide} />
+            <EditBiography show={showEditBio} ancestor={data} handleHide={handleHide} bio={bio} />
             <div className='ancestor-body-container' style={{ display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px' }}>
                 <div className='local-ancestor-relationships'>
                     <div className='ancestor-relationship' id='children'>CHILDREN<div className='ancestor-relationship-seperator' />{localAncestors.children?.map((child) => (<LocalAncestorCard ancestorData={child} relation_type={'child'} currentAncestorGender={data.gender} key={child.ancestor_id} />))}</div>
@@ -141,7 +159,7 @@ function Ancestor() {
                         <h2 className='bio-header'>{data.first_name} {data.last_name}'s Biography: </h2>
                     </div>
                     <div className='biography-container'>
-                        {bio ? (<p>BLAH BLAH BLAH</p>) : (<p>NO ANCESTOR BIOGRAPHY</p>)}
+                        {bio ? (<p>{bio}</p>) : (<p>No Ancestor Biography</p>)}
                     </div>
                 </div>
                 <div className='ancestor-documents'>

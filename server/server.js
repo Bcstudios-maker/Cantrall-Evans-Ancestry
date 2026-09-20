@@ -22,14 +22,14 @@ app.post('/api/addAncestor', async (req, res) => {
     console.log(firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor);
 
     if (!tree_id) {
-        return res.status(400).json({ message: 'Missing Tree ID' });
+        return res.status(500).json({ message: 'Missing Tree ID' });
     }
     if (!firstName || !lastName || !gender) {
-        return res.status(400).json({ message: 'Missing required fields' });
+        return res.status(500).json({ message: 'Missing required fields' });
     }
 
     if (!relationType) {
-        return res.status(400).json({ message: 'Missing required field relation_type' });
+        return res.status(500).json({ message: 'Missing required field relation_type' });
     }
 
     const client = await pool.connect();
@@ -151,6 +151,31 @@ app.get("/api/GetLocalAncestors/:ancestor_id", async (req, res) => {
     }
 });
 
+app.get("/api/GetAncestorBiography/:ancestor_id", async (req, res) => {
+    const { ancestor_id } = req.params;
+
+    try {
+        const ancestorBiography = await pool.query(`SELECT ancestor_bio FROM ancestor_biographies WHERE ancestor_id = $1`, [ancestor_id]);
+
+        console.log('bio ' + ancestorBiography.rows[0].ancestor_bio);
+        res.status(200).json({ biography: ancestorBiography.rows[0].ancestor_bio });
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+});
+
+app.post("/api/InsertAncestorBiography", async (req, res) => {
+    const { ancestor_id, ancestor_bio } = req.body;
+
+    try {
+        await pool.query(`INSERT INTO ancestor_biographies (ancestor_id, ancestor_bio) VALUES ($1, $2) ON CONFLICT (ancestor_id) DO UPDATE SET ancestor_bio = EXCLUDED.ancestor_bio`, [ancestor_id, ancestor_bio]);
+        return res.status(201).json({ message: 'Succesfully inserted biography'});
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+});
+
+
 /*
 
 All Tree Queries
@@ -163,7 +188,7 @@ app.get('/api/getTrees', async (req, res) => {
         res.json(result.rows);
         res.status(200).json({ body: 'Succesfully retrieved trees' });
     } catch (err) {
-        res.status(500).json({ body: err.message })
+        res.status(500).json({ body: err.message });
     }
 
 });
@@ -269,7 +294,7 @@ app.delete('/api/deleteUser/:user_id', async (req, res) => {
         res.status(201).json({ message: 'User deleted' });
     } catch (err) {
         console.log(err.message);
-        res.status(401).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -280,7 +305,7 @@ app.get('/api/getUsers', async (req, res) => {
         res.status(201).json({ message: 'Retrieved Users' });
     } catch (err) {
         console.log(err.message);
-        res.status(401).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 });
 

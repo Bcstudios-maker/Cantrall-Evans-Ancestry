@@ -1,19 +1,19 @@
 // Ancestor API calls
 
 export const addAncestor = async ({ tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor }) => {
-    const response = await fetch('http://localhost:4000/api/addAncestor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor})});
+    const response = await fetch('http://localhost:4000/api/addAncestor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor }) });
     if (!response.ok) {
         throw new Error('Failed to add ancestor');
-    } 
+    }
     return await response.json();
 }
 
-export const editAncestor = async({ imageLink, firstName, lastName, dob, dod, ancestor_id }) => {
+export const editAncestor = async ({ imageLink, firstName, lastName, dob, dod, ancestor_id }) => {
 
-    try{
-        const response = await fetch(`http://localhost:4000/api/editAncestor/${ancestor_id}`, { method: 'POST', headers: { 'Content-Type': 'application/json'}, body: JSON.stringify({ imageLink, firstName, lastName, dob, dod })});
+    try {
+        const response = await fetch(`http://localhost:4000/api/editAncestor/${ancestor_id}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageLink, firstName, lastName, dob, dod }) });
         return await response.json();
-    } catch (err){
+    } catch (err) {
         throw new Error(err);
     }
 }
@@ -37,9 +37,29 @@ export const getRelationships = async () => {
 }
 
 export const GetLocalAncestors = async ({ ancestor_id }) => {
-    const response = await fetch(`http://localhost:4000/api/getLocalAncestors/${ancestor_id}`, { method: 'GET', headers: {'Content-Type': 'application/json'}, params: JSON.stringify({ancestor_id})});
+    const response = await fetch(`http://localhost:4000/api/getLocalAncestors/${ancestor_id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' }, params: JSON.stringify({ ancestor_id }) });
 
-    if(!response.ok) {
+    if (!response.ok) {
+        throw new Error('Failed to fetch Local Ancestors');
+    }
+
+    return await response.json();
+}
+
+export const GetAncestorBiography = async ({ ancestor_id }) => {
+    const response = await fetch(`http://localhost:4000/api/GetAncestorBiography/${ancestor_id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' }, params: JSON.stringify({ ancestor_id }) });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch Local Ancestors');
+    }
+
+    return await response.json();
+}
+
+export const InsertAncestorBiography = async ({ ancestor_id, text }) => {
+    const response = await fetch(`http://localhost:4000/api/InsertAncestorBiography`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ancestor_id, text }) });
+
+    if (!response.ok) {
         throw new Error('Failed to fetch Local Ancestors');
     }
 
@@ -102,16 +122,16 @@ export const GetTrees = async () => {
     try {
         const response = await fetch('http://localhost:4000/api/getTrees');
         return await response.json();
-    } catch (err){
+    } catch (err) {
         throw new Error(await response.json().error);
     }
 }
 
-export const GetAncestorsInTree = async ({tree_id}) => {
+export const GetAncestorsInTree = async ({ tree_id }) => {
     try {
-        const result = await fetch(`http://localhost:4000/api/GetAncestorsInTree/${tree_id}`, {method: 'GET', headers: { 'Content-Type': 'application/json'}, params: JSON.stringify({tree_id})});
+        const result = await fetch(`http://localhost:4000/api/GetAncestorsInTree/${tree_id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' }, params: JSON.stringify({ tree_id }) });
         return await result.json();
-    } catch (err){
+    } catch (err) {
         throw new Error(await response.json().error);
     }
 
