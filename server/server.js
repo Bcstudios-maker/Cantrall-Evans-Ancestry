@@ -168,7 +168,8 @@ app.post("/api/InsertAncestorBiography", async (req, res) => {
     const { ancestor_id, ancestor_bio } = req.body;
 
     try {
-        await pool.query(`INSERT INTO ancestor_biographies (ancestor_id, ancestor_bio) VALUES ($1, $2) ON CONFLICT (ancestor_id) DO UPDATE SET ancestor_bio = EXCLUDED.ancestor_bio`, [ancestor_id, ancestor_bio]);
+        const result = await pool.query(`INSERT INTO ancestor_biographies (ancestor_id, ancestor_bio) VALUES ($1, $2) ON CONFLICT (ancestor_id) DO UPDATE SET ancestor_bio = EXCLUDED.ancestor_bio RETURNING *`, [ancestor_id, ancestor_bio]);
+        console.log(result.rows);
         return res.status(201).json({ message: 'Succesfully inserted biography'});
     } catch (err) {
         return res.status(500).json({ message: err.message });

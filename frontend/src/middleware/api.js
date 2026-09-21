@@ -56,8 +56,8 @@ export const GetAncestorBiography = async ({ ancestor_id }) => {
     return await response.json();
 }
 
-export const InsertAncestorBiography = async ({ ancestor_id, text }) => {
-    const response = await fetch(`http://localhost:4000/api/InsertAncestorBiography`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ancestor_id, text }) });
+export const InsertAncestorBiography = async ({ ancestor_id, ancestor_bio }) => {
+    const response = await fetch(`http://localhost:4000/api/InsertAncestorBiography`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ancestor_id, ancestor_bio }) });
 
     if (!response.ok) {
         throw new Error('Failed to fetch Local Ancestors');

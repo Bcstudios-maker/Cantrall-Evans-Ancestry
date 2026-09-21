@@ -7,13 +7,15 @@ import { InsertAncestorBiography } from "../../middleware/api";
 
 function EditBiography({ show, handleHide, ancestor, ancestorBio }) {
 
-    const [bio, setBio] = useState(ancestorBio ? ancestorBio : '');
+    const [bio, setBio] = useState('');
 
     const UpdateAncestorBiography = async (e) => {
 
         e.preventDefault();
-        await InsertAncestorBiography({ ancestor_id: Number(ancestor.ancestor_id), text: bio });
+        console.log(bio);
+        await InsertAncestorBiography({ ancestor_id: Number(ancestor.ancestor_id), ancestor_bio: bio });
         handleHide();
+        window.location.reload();
     }
 
     return (
@@ -24,7 +26,7 @@ function EditBiography({ show, handleHide, ancestor, ancestorBio }) {
             <form className='edit-form' onSubmit={UpdateAncestorBiography} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <Modal.Body>
                     <label>Insert {ancestor.first_name}'s Biography:</label>
-                    <textarea id='bio-textarea' placeholder={`Insert Biography for ${ancestor.first_name}...`} rows={10} cols={53} value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
+                    <textarea id='bio-textarea' placeholder={`Insert Biography for ${ancestor.first_name}...`} rows={10} cols={53} value={bio} onChange={(e) => {setBio(e.target.value); console.log(bio);}}></textarea>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleHide}>
