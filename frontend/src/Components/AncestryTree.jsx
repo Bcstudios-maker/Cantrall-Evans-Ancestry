@@ -31,10 +31,9 @@ function AncestryTree () {
                 const ancestor_id = LoadSmallestAncestorId({data: ancestors});
                 setRootAncestorId(ancestor_id);
 
-                const build = buildTree(rootAncestorId, ancestors, relationships);
+                const build = buildTree(ancestor_id, ancestors, relationships);
 
                 setTree(build);
-                console.log(tree);
                
             } catch (err){
                 console.log(err);
@@ -47,7 +46,10 @@ function AncestryTree () {
     if(!tree) return (<p>LOADING...</p>);
 
     const { nodes, edges } = buildNodesAndEdges(tree);
-
+    console.log('Nodes: ');
+    console.log(nodes);
+    console.log('Edges: ');
+    console.log(edges);
 
     const nodeTypes = {
         ancestor: AncestorCard,

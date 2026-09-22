@@ -2,32 +2,56 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { createDeate } from '../../utils/structureDate';
-import { addAncestor } from '../../middleware/api';
+import { addAncestor, GetLocalAncestors } from '../../middleware/api';
 import { useParams } from 'react-router-dom';
 import { SetDefaultRelationType } from '../../utils/setDefaultRelationType';
+import { BuildLocalAncestors } from '../../utils/BuildLocalAncestors';
 
 function AddAncestor({ show, handleHide, ancestor }) {
-    
+
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [dob, setDOB] = useState(null);
     const [dod, setDOD] = useState(null);
     const [imageLink, setImageLink] = useState(null);
-
     const [gender, setGender] = useState('m');
     const [relationType, setRelationType] = useState(() => SetDefaultRelationType(ancestor));
 
-    const {tree_id: tree_id} = useParams();       
-    
-    const handleAddAncestor = async (e) => {
+    const [relationships, setRelationships] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    const { tree_id: tree_id } = useParams();
+    const { ancestor_id: ancestorId } = ancestor;
+
+    const handleAddAncestor = async (e) => {
         e.preventDefault();
-        console.log(tree_id, firstName, lastName, dob, dod, imageLink, gender, relationType, ancestor);
-        await addAncestor({ tree_id: tree_id ? tree_id : null, firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType ? relationType : null, ancestor: ancestor});
+        await addAncestor({ tree_id: tree_id ? tree_id : null, firstName: firstName, lastName: lastName, dob: dob, dod: dod, imageLink: imageLink, gender: gender, relationType: relationType ? relationType : null, ancestor: ancestor });
         handleHide();
         window.location.reload();
     }
+
+    useEffect(() => {
+        const UpdateAvailableRelationTypes = async () => {
+            try {
+                const localAncestors = await GetLocalAncestors({ ancestor_id: ancestorId });
+                const { ancestors, relationships } = localAncestors;
+                const build = BuildLocalAncestors(ancestor.ancestor_id, ancestors, relationships);
+                setRelationships(build);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (show) {
+            UpdateAvailableRelationTypes();
+            console.log(relationships);
+        }
+
+    }, [show])
 
     return (
         <Modal show={show} onHide={handleHide} backdrop='static'>
@@ -36,27 +60,27 @@ function AddAncestor({ show, handleHide, ancestor }) {
             </Modal.Header>
             <form onSubmit={handleAddAncestor}>
                 <Modal.Body>
-                    <div className='add-ancestor-form' style={{display: 'flex', flexDirection: 'column', gap: '10px', width: '75%', justifySelf: 'center'}}>
+                    <div className='add-ancestor-form' style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '75%', justifySelf: 'center' }}>
                         <input className='add-ancestor-input' placeholder='Enter Ancestor First Name...' onChange={(e) => setFirstName(e.target.value)}></input>
                         <input className='add-ancestor-input' placeholder='Enter Ancestor Last Name...' onChange={(e) => setLastName(e.target.value)}></input>
-                        <input className='add-ancestor-input' placeholder='Enter Date of Birth...' type='date' onChange={(e) => setDOB(e.target.value)}></input>
+                        <input className='add-ancestor-input' placeholder='Enter Date of Birth...' type='date' onChange={(e) => {setDOB(e.target.value); console.log(DOB);}}></input>
                         <input className='add-ancestor-input' placeholder='Enter Date of Death...' type='date' onChange={(e) => setDOD(e.target.value)}></input>
                         <input className='add-ancestor-input' placeholder='Enter Ancestor Image Link...' onChange={(e) => setImageLink(e.target.value)}></input>
                         <select className='ancestor-gender-dropdown' value={gender} onChange={(e) => setGender(e.target.value)}>
                             <option className='add-ancestor-option' value='m'>Male</option>
                             <option className='add-ancestor-option' value='f'>Female</option>
                         </select>
-                        <select className="ancestor-dropdown" value={relationType} onChange={(e) => {console.log('selected:' + e.target.value); setRelationType(e.target.value);}}>
-                            {(ancestor.spouse) && (<><option className='add-ancestor-option' value='child'>Child</option></>)}
-                            {(!ancestor.parents || ancestor.parents.length === 0) && (<><option className='add-ancestor-option' value='parent'>Parent</option></>)}
-                            {!ancestor.spouse && (<><option className='add-ancestor-option' value='spouse'>Spouse</option></>)}
+                        <select className="ancestor-dropdown" value={relationType} onChange={(e) => { console.log('selected:' + e.target.value); setRelationType(e.target.value); }}>
+                            {(relationships.spouse) && (<><option className='add-ancestor-option' value='child'>Child</option></>)}
+                            {(!relationships.parents || relationships.parents.length === 0) && (<><option className='add-ancestor-option' value='parent'>Parent</option></>)}
+                            {!relationships.spouse && (<><option className='add-ancestor-option' value='spouse'>Spouse</option></>)}
                         </select>
                     </div>
 
                 </Modal.Body>
                 <Modal.Footer>
-                        <Button variant="secondary" type='button' onClick={handleHide}>Close</Button>
-                        <Button variant="primary" type='submit'>Add Ancestor</Button>
+                    <Button variant="secondary" type='button' onClick={handleHide}>Close</Button>
+                    <Button variant="primary" type='submit'>Add Ancestor</Button>
                 </Modal.Footer>
             </form>
         </Modal>

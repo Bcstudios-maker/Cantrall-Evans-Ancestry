@@ -2,9 +2,10 @@
 
 export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0, visited = new Set()) => {
     if (!ancestor) return { nodes, edges };
-    console.log(ancestor);
 
-    let currentId = String(ancestor.ancestor_id)
+    let currentId = String(ancestor.ancestor_id);
+    let ancestorSpouse = ancestor.spouse;
+
     if (!visited.has(currentId)) {
         visited.add(currentId);
         nodes.push({
@@ -15,11 +16,8 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
                 ...ancestor
             }
         })
-
-        if(ancestor.spouse) {
-            visited.add(String(ancestor.spouse.ancestor_id));
-        }
     }
+
 
 
     if (ancestor.parents) {
@@ -28,7 +26,6 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
             let parentId = String(parent.ancestor_id);
             let edgeId = `${parentId} - ${currentId}`
             let pX = x - 425;
-
             if (!edges.some(e => e.id === edgeId)) {
                 edges.push({
                     id: edgeId,
@@ -46,12 +43,14 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
     if (ancestor.children) {
         ancestor.children?.forEach((child, index) => {
             // cSpacing = Child Spacing
-            // cX = Child X
+            // cX = Child X 
+            console.log('Child: ' + child);
 
             let childId = String(child.ancestor_id);
-            let edgeId = `${currentId} - ${childId}`
-            let cSpacing = child.spouse ? 425 * index : 850 * index;
-            let cX = x - cSpacing;
+            let childSpouse = child.spouse;
+            let edgeId = `${currentId} - ${childId}`;
+            let cSpacing = 250;
+            let cX = childSpouse ? x - (850 * index) : x - (425 * index);
 
             if (!edges.some(e => e.id === edgeId)) {
                 edges.push({
@@ -62,13 +61,13 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
             }
 
             if (!visited.has(childId)) {
-                buildNodesAndEdges(child, nodes, edges, cX, y + 300, visited)
+                buildNodesAndEdges(child, nodes, edges, cX - (cSpacing), y + 300, visited)
             }
 
         })
-    }
 
-    console.log(`Ancestor: ${ancestor.children} + ${ancestor.parents}`);
+
+    }
     return { nodes, edges };
 }
 

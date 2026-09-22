@@ -9,7 +9,6 @@ import DeleteModal from './Popups/DeleteModal';
 
 const AncestorCard = ({ data, isChild = false }) => {
     if (!data) return null;
-
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
     const birthDate = structureDate(data.date_of_birth);
