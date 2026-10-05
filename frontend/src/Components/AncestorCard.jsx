@@ -37,13 +37,11 @@ const AncestorCard = ({ data, isChild = false }) => {
 
         <div className="ancestor-card" >
             <Link to={{ pathname: `/Ancestors/${ancestor_id}` }} state={data} style={{ textDecoration: 'none' }} >
-                {!isChild && (
-                    <>
-                        <Handle type='target' position={Position.Top} id='top' />
-                        <Handle type='source' position={Position.Bottom} id='bottom' />
-                    </>
-                )}
-                <Handle type='target' position={Position.Top} id='top'/>
+
+                {(!isChild) && (<><Handle type='source' position={Position.Bottom} id={`as${ancestor_id}`} /><Handle type='target' position={Position.Top} id={`at${ancestor_id}`} /></>)}
+
+
+
                 <div className="ancestor-image">
 
                 </div>

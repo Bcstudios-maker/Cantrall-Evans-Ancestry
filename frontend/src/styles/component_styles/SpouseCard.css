@@ -4,15 +4,14 @@
     justify-content: space-evenly;
     align-items: center;
     position: relative;
-    gap: 1em;
+    gap: 16px;
 }
 .spouse-card span {
    width: 20px;
    font-size: 30px;
    text-align: center;
-
    font-weight: bolder;
-   color: white;
+   color: black;
 }
 .handle {
     justify-self: center;

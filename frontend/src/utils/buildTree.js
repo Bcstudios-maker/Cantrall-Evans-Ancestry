@@ -1,6 +1,4 @@
-
 export const buildTree = (currentId, ancestors, relationships, pathVisited = new Set()) => {
-    console.log(currentId);
     if (pathVisited.has(currentId)) return null;
     const nextVisited =  new Set(pathVisited).add(currentId);
 
