@@ -63,7 +63,7 @@ function AddAncestor({ show, handleHide, ancestor }) {
                     <div className='add-ancestor-form' style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '75%', justifySelf: 'center' }}>
                         <input className='add-ancestor-input' placeholder='Enter Ancestor First Name...' onChange={(e) => setFirstName(e.target.value)}></input>
                         <input className='add-ancestor-input' placeholder='Enter Ancestor Last Name...' onChange={(e) => setLastName(e.target.value)}></input>
-                        <input className='add-ancestor-input' placeholder='Enter Date of Birth...' type='date' onChange={(e) => {setDOB(e.target.value); console.log(DOB);}}></input>
+                        <input className='add-ancestor-input' placeholder='Enter Date of Birth...' type='date' onChange={(e) => setDOB(e.target.value)}></input>
                         <input className='add-ancestor-input' placeholder='Enter Date of Death...' type='date' onChange={(e) => setDOD(e.target.value)}></input>
                         <input className='add-ancestor-input' placeholder='Enter Ancestor Image Link...' onChange={(e) => setImageLink(e.target.value)}></input>
                         <select className='ancestor-gender-dropdown' value={gender} onChange={(e) => setGender(e.target.value)}>
