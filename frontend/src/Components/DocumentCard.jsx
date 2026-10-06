@@ -1,6 +1,6 @@
 import '../styles/component_styles/DocumentCard.css'
 
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { structureDate } from "../utils/structureDate";
 import { deleteDocument } from '../middleware/api';
 import DeleteModal from './Popups/DeleteModal';
@@ -18,7 +18,7 @@ function DocumentCard({ document, user }) {
 
     const handleShowEdit = () => setShowEdit(true);
     const handleShowDelete = () => setShowDelete(true);
-    const handleHide = () => {setShowEdit(false); setShowDelete(false);}
+    const handleHide = () => { setShowEdit(false); setShowDelete(false); }
 
     const handleDelete = () => {
         if (!isAdmin) return;
@@ -29,12 +29,12 @@ function DocumentCard({ document, user }) {
     return (
 
         <div className="document-content">
-            <a className='document-link' href={document.filepath}>
+            <Link to={{ pathname: `/Document/${document.info_id}` }} state={document} style={{ textDecoration: 'none' }}>
                 <h2 className='document-name'>{document.filename}</h2>
-                <p className='document-date'>Date Added: {dateAdded}</p>
-            </a>
-            <EditInfo show={showEdit} handleHide={handleHide} document={document}/>
-            <DeleteModal show={showDelete} handleHide={handleHide} data={document}/>
+                <p className='document-date' style={{color: 'white'}}>Date Added: {dateAdded}</p>
+            </Link>
+            <EditInfo show={showEdit} handleHide={handleHide} document={document} />
+            <DeleteModal show={showDelete} handleHide={handleHide} data={document} />
             {isAdmin && (
                 <div className='document-buttons' >
                     <button className='document-button' id='delete-document' alt='Delete Document' onClick={handleShowDelete}>X</button>
