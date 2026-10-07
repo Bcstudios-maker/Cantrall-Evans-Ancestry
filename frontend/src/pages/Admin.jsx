@@ -39,7 +39,6 @@ function Admin() {
 
     return (
         <>
-            <NavBar />
             <div className="admin-panel">
                 <h1>ADMINISTRATOR PANEL</h1>
                 <div className="admin-divider"></div>

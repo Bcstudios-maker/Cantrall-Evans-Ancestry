@@ -134,7 +134,6 @@ function Ancestor() {
 
     return (
         <>
-            <NavBar />
             <AddDocument show={show} handleHide={handleHide} />
             <EditBiography show={showEditBio} ancestor={data} handleHide={handleHide} bio={bio} />
             <div className='ancestor-body-container' style={{ display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px' }}>

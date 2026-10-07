@@ -37,7 +37,6 @@ function Home() {
 
     return (
         <>
-            <NavBar />
             <main className="home-content">
                 <div className="home">
                     <form onSubmit={handleSearch} className="search-form">

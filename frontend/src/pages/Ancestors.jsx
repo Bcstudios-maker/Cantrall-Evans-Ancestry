@@ -9,7 +9,6 @@ function Ancestors() {
 
     return ( 
         <>
-            <NavBar/>
             <div className="ancestors-tree">
                 <AncestryTree/>
             </div>
