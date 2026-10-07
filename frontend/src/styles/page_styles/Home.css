@@ -1,0 +1,34 @@
+.home-content {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    color: white;
+}
+
+.home-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 1100px;
+    width: 100%;
+    background-image: url('../../assets/Banner.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.logo-container {
+    width: 500px;
+    height: 500px;
+    position: relative;
+    background-image: url('../../assets/Logo.png');
+    background-repeat: no-repeat;
+    background-size: cover
+}
+
+.logo-title {
+    margin-top: 25px;
+    width: 600px;
+    font: arial;
+}

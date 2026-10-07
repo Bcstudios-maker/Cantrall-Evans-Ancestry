@@ -1,7 +1,6 @@
-import AncestorCard from "../Components/AncestorCard";
-import NavBar from "../Components/NavBar";
+import '../styles/page_styles/Home.css';
 
-import  DocumentCard  from '../Components/DocumentCard'
+import  DocumentCard  from '../Components/DocumentCard';
 import { useState, useEffect } from "react";
 import { getDocuments } from "../middleware/api";
 
@@ -38,16 +37,19 @@ function Home() {
     return (
         <>
             <main className="home-content">
-                <div className="home">
+                <div className="home-banner">
+                    <div className='logo-container'></div>
+                    <h1 className='logo-title'>CANTRALL EVANS ANCESTRY</h1>
+                </div>
+                <div className="document-search">
                     <form onSubmit={handleSearch} className="search-form">
                         <input type="text" placeholder="Search for documents..." className="search-input" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                         <button type="submit">SEARCH</button>
                     </form>
                 </div>
                 <div className="documents-grid">
-                    <ul>
+                    <ul style={{listStyle: 'none', padding: '0px', marginTop: '50px', marginBottom: '50px'}}>
                         {documents.map((document) => (searchQuery.startsWith) && <li><DocumentCard document={document} key={document.info_id}/></li>)}
-
                     </ul>
                 </div>
             </main>
