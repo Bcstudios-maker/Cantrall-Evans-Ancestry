@@ -58,7 +58,7 @@ function AncestryTree () {
 
 
     return (
-        <div className="ancestry-tree" style={{width: '100%', height: '50em'}}>
+        <div className="ancestry-tree" style={{width: '100%', height: '1000px', backgroundColor: 'rgba(164, 121, 67, 0.15)'}}>
             <ReactFlow nodeTypes={nodeTypes} nodes={nodes} edges={edges} fitView>
          
             </ReactFlow>

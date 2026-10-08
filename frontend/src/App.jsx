@@ -14,7 +14,6 @@ function App() {
 
   return (
     <main className='main-content'>
-      <NavBar/>
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/Home' element={<Home/>}/>

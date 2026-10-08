@@ -1,6 +1,7 @@
 import { RPProvider, RPLayout, RPPages, RPConfig } from '@react-pdf-kit/viewer'
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import NavBar from '../Components/NavBar';
 
 const CheckFilePath = async (filePath, siganl) => {
     try {
@@ -47,7 +48,9 @@ function Document() {
     }
 
     return (
-        <div>
+
+        <>
+            <NavBar />
             <h1>{documentData.filename}</h1>
             <RPConfig>
                 <RPProvider src={documentData.filepath}>
@@ -59,7 +62,7 @@ function Document() {
                     </RPLayout>
                 </RPProvider>
             </RPConfig>
-        </div>
+        </>
     );
 }
 

@@ -7,10 +7,11 @@ import AncestorCard from "../Components/AncestorCard";
 import AncestryTree from '../Components/AncestryTree';
 function Ancestors() {
 
-    return ( 
+    return (
         <>
+            <NavBar />
             <div className="ancestors-tree">
-                <AncestryTree/>
+                <AncestryTree />
             </div>
         </>
     );

@@ -17,8 +17,8 @@ function Admin() {
     const [loading, setLoading] = useState(true);
 
     const handleAddUser = async (e) => {
-        await addUser({username: username, password: password, role: role});
-       window.location.reload;
+        await addUser({ username: username, password: password, role: role });
+        window.location.reload;
     }
 
 
@@ -27,7 +27,7 @@ function Admin() {
             try {
                 const users = await getUsers();
                 setUsers(users);
-            } catch (err){
+            } catch (err) {
                 console.log(err);
                 setError('Failed to load users...');
             } finally {
@@ -39,6 +39,7 @@ function Admin() {
 
     return (
         <>
+            <NavBar />
             <div className="admin-panel">
                 <h1>ADMINISTRATOR PANEL</h1>
                 <div className="admin-divider"></div>
@@ -62,7 +63,7 @@ function Admin() {
                 <div className="admin-remove-user">
                     <h2 id="removeUsers">REMOVE USERS</h2>
                     <div className="users-grid">
-                        {users.map((user) => (<UserCard user={user} key={user.user_id}/>))}
+                        {users.map((user) => (<UserCard user={user} key={user.user_id} />))}
                     </div>
                 </div>
             </div>

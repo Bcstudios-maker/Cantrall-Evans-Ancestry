@@ -1,10 +1,16 @@
 .home-content {
-    width: 95%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-self: center;
     color: white;
 }
+
+/*
+
+Banner Section Styling
+
+*/
 
 .home-banner {
     display: flex;
@@ -31,4 +37,95 @@
     margin-top: 25px;
     width: 600px;
     font: arial;
+}
+
+/*
+
+About Us Section Styling
+
+*/
+
+.about-us {
+    height: 650px;
+    display: flex;
+    flex-direction: row;
+    color: black;
+}
+
+.about-img {
+    width: 50%;
+}
+
+.about-content {
+    width: 75%;
+    text-align: center;
+}
+
+.about-content h1 {
+    font-size: 70px;
+    margin-top: 25px;
+}
+
+.about-content p {
+    text-align: center;
+    margin: 25px 10px 0 10px;
+    font-size: 18px;
+}
+
+/*
+
+Document Search Section Styling
+
+*/
+
+.document-search {
+    width: 100%;
+    height: 450px;
+    background-color: rgba(164, 120, 67, 0.224);
+    color: black;
+}
+
+.search-header {
+    margin-top: 80px;
+    margin-bottom: 30px;
+    justify-self: center;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+}
+
+.search-input {
+    width: 500px;
+    height: 45px;
+    margin-top: 25px;
+    font-size: 22px;
+    color: black;
+    border: none;
+    border-radius:  15px;
+}
+
+.search-input:focus {
+    outline: none;
+    font-weight: 500;
+}
+
+.search-btn {
+    width: 200px;
+    height: 50px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 25px;
+    background-color: #085296;
+    color: white;
+    font-size: 25px;
+    font-weight: 500;
+    transition: box-shadow 1s;
+}
+
+.search-btn:hover {
+    box-shadow: 0 0 25px #a1d1ff;
 }
