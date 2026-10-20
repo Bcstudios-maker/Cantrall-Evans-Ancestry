@@ -38,13 +38,12 @@ function DocumentCard({ document, user }) {
 
     const fontSize = findFontSize(filename.length);
 
+
     return (
+        <Link to={{ pathname: `/Document/${document.info_id}` }} state={document} style={{ textDecoration: 'none' }}>
+            <div className="document-content" style={{background: document.file_path ? `url(${document.file_path})` : 'rgba(152, 141, 82, 1)'}}>
 
-        <div className="document-content">
-            <Link to={{ pathname: `/Document/${document.info_id}` }} state={document} style={{ textDecoration: 'none' }}>
                 <h2 className='document-name' style={{ fontSize: `${fontSize}px` }}>{filename}</h2>
-                <image className='document-image'></image>
-
                 <p className='document-date' style={{ color: 'white' }}>Date Added: {dateAdded}</p>
                 <EditInfo show={showEdit} handleHide={handleHide} document={document} />
                 <DeleteModal show={showDelete} handleHide={handleHide} data={document} />
@@ -54,9 +53,9 @@ function DocumentCard({ document, user }) {
                         <button className='admin-button' id='edit-info' alt='Edit Ancestor Info' onClick={handleShowEdit}>✎</button>
                     </div>
                 )}
-            </Link>
-        </div>
 
+            </div>
+        </Link>
     );
 }
 
