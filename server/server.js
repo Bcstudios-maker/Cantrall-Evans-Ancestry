@@ -339,7 +339,7 @@ app.post('/api/editDocument', async (req, res) => {
 
 app.get("/api/getDocuments", async (req, res) => {
     try {
-        const result = await pool.query(`SELECT * FROM ancestor_info WHERE date_added >= CURRENT_DATE - INTERVAL '7 days'`);
+        const result = await pool.query(`SELECT * FROM ancestor_info`);
         res.json(result.rows);
     } catch (err) {
         console.log(err);

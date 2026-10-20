@@ -30,7 +30,7 @@ Banner Section Styling
     position: relative;
     background-image: url('../../assets/Logo.png');
     background-repeat: no-repeat;
-    background-size: cover
+    background-size: cover;
 }
 
 .logo-title {
@@ -49,16 +49,21 @@ About Us Section Styling
     height: 650px;
     display: flex;
     flex-direction: row;
-    color: black;
+    color: black;   
 }
 
 .about-img {
     width: 50%;
+    background-image: url('../../assets/wood-cut.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .about-content {
     width: 75%;
     text-align: center;
+    background-color: rgba(164, 120, 67, 0.27);
+    color: black;
 }
 
 .about-content h1 {
@@ -68,8 +73,9 @@ About Us Section Styling
 
 .about-content p {
     text-align: center;
-    margin: 25px 10px 0 10px;
+    margin: 25px 25px 0 25px;
     font-size: 18px;
+    font-weight: 500;
 }
 
 /*
@@ -80,7 +86,7 @@ Document Search Section Styling
 
 .document-search {
     width: 100%;
-    height: 450px;
+    height: 400px;
     background-color: rgba(164, 120, 67, 0.224);
     color: black;
 }
@@ -128,4 +134,39 @@ Document Search Section Styling
 
 .search-btn:hover {
     box-shadow: 0 0 25px #a1d1ff;
+}
+
+/*
+
+    Styling for Documents Grid section
+
+*/
+
+.documents-grid {
+    background-color: rgba(164, 120, 67, 0.224);
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.documents-seperator {
+    width: 85%;
+    height: 5px;
+    border-radius: 5px;
+    background-color: black;
+
+}
+
+.grid-container {
+    display: grid;
+    grid: 500px / 25vw auto auto;
+    justify-content: stretch;
+    height: fit-content;
+    width: 90%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    gap: 25px;
 }

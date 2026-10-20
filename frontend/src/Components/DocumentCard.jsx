@@ -12,6 +12,7 @@ function DocumentCard({ document, user }) {
     const isAdmin = user?.role?.toLowerCase() === 'admin' ? true : false;
 
     const dateAdded = structureDate(document.date_added);
+    const filename = document.filename;
 
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -26,21 +27,34 @@ function DocumentCard({ document, user }) {
         deleteDocument({ info_id: document.info_id, user: user });
         window.location.reload();
     }
+
+    const findFontSize = (nameLength) => {
+        var fontSize = 32;
+        if (nameLength < 32) {
+            fontSize = 64;
+        }
+        return fontSize;
+    }
+
+    const fontSize = findFontSize(filename.length);
+
     return (
 
         <div className="document-content">
             <Link to={{ pathname: `/Document/${document.info_id}` }} state={document} style={{ textDecoration: 'none' }}>
-                <h2 className='document-name'>{document.filename}</h2>
-                <p className='document-date' style={{color: 'white'}}>Date Added: {dateAdded}</p>
+                <h2 className='document-name' style={{ fontSize: `${fontSize}px` }}>{filename}</h2>
+                <image className='document-image'></image>
+
+                <p className='document-date' style={{ color: 'white' }}>Date Added: {dateAdded}</p>
+                <EditInfo show={showEdit} handleHide={handleHide} document={document} />
+                <DeleteModal show={showDelete} handleHide={handleHide} data={document} />
+                {isAdmin && (
+                    <div className='document-buttons' >
+                        <button className='document-button' id='delete-document' alt='Delete Document' onClick={handleShowDelete}>X</button>
+                        <button className='admin-button' id='edit-info' alt='Edit Ancestor Info' onClick={handleShowEdit}>✎</button>
+                    </div>
+                )}
             </Link>
-            <EditInfo show={showEdit} handleHide={handleHide} document={document} />
-            <DeleteModal show={showDelete} handleHide={handleHide} data={document} />
-            {isAdmin && (
-                <div className='document-buttons' >
-                    <button className='document-button' id='delete-document' alt='Delete Document' onClick={handleShowDelete}>X</button>
-                    <button className='admin-button' id='edit-info' alt='Edit Ancestor Info' onClick={handleShowEdit}>✎</button>
-                </div>
-            )}
         </div>
 
     );

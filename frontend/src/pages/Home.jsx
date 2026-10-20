@@ -28,8 +28,7 @@ function Home() {
             }
         }
         loadDocuments();
-    }
-        , [])
+    }, [])
 
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
@@ -50,7 +49,7 @@ function Home() {
                 <section className='about-us'>
                     <img className='about-img'></img>
                     <div className='about-content'>
-                        <h1>ABOUT US</h1>
+                        <h1>ABOUT THIS SITE</h1>
                         <p>
                             Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
 
@@ -61,8 +60,6 @@ function Home() {
                             Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
 
                             Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-
                         </p>
                     </div>
                 </section>
@@ -74,9 +71,10 @@ function Home() {
                     </form>
                 </section>
                 <section className="documents-grid">
-                    <ul style={{ listStyle: 'none', padding: '0px', marginTop: '50px', marginBottom: '50px' }}>
-                        {documents.map((document) => (String(document.filename.toLowerCase()).startsWith(finalQuery.toLowerCase())) && <li><DocumentCard document={document} key={document.info_id} /></li>)}
-                    </ul>
+                    <div className='documents-seperator'></div>
+                    <div className='grid-container'>
+                        {documents.map((document) => (String(document.filename.toLowerCase()).startsWith(finalQuery.toLowerCase())) && <DocumentCard document={document} key={document.info_id} />)}
+                    </div>
                 </section>
             </main>
         </>
