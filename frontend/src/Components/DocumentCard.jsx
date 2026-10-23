@@ -21,12 +21,7 @@ function DocumentCard({ document, user }) {
     const handleShowDelete = () => setShowDelete(true);
     const handleHide = () => { setShowEdit(false); setShowDelete(false); }
 
-    const handleDelete = () => {
-        if (!isAdmin) return;
 
-        deleteDocument({ info_id: document.info_id, user: user });
-        window.location.reload();
-    }
 
     const findFontSize = (nameLength) => {
         var fontSize = 32;
@@ -38,24 +33,24 @@ function DocumentCard({ document, user }) {
 
     const fontSize = findFontSize(filename.length);
 
-
     return (
-        <Link to={{ pathname: `/Document/${document.info_id}` }} state={document} style={{ textDecoration: 'none' }}>
-            <div className="document-content" style={{background: document.file_path ? `url(${document.file_path})` : 'rgba(152, 141, 82, 1)'}}>
 
-                <h2 className='document-name' style={{ fontSize: `${fontSize}px` }}>{filename}</h2>
-                <p className='document-date' style={{ color: 'white' }}>Date Added: {dateAdded}</p>
+        <div className="document-content" style={{ backgroundImage: document.image_path ? `url('${document.image_path}')` : 'none' }}>
+            <Link to={{ pathname: `/Document/${document.info_id}` }} state={document} className={'document-link-container'} >
+            <h2 className={'document-name'} style={{ fontSize: `${fontSize}px`, fontWeight: 'bold'}}>{filename}</h2>
+                <p className={'document-date'} style={{ color: 'white', fontWeight: 'bold' }}>Date Added: {dateAdded}</p>
                 <EditInfo show={showEdit} handleHide={handleHide} document={document} />
                 <DeleteModal show={showDelete} handleHide={handleHide} data={document} />
-                {isAdmin && (
-                    <div className='document-buttons' >
-                        <button className='document-button' id='delete-document' alt='Delete Document' onClick={handleShowDelete}>X</button>
-                        <button className='admin-button' id='edit-info' alt='Edit Ancestor Info' onClick={handleShowEdit}>✎</button>
-                    </div>
-                )}
+            </Link>
+            {isAdmin && (
+                <div className='document-buttons' >
+                    <button className='document-button' id='delete-document' alt='Delete Document' onClick={handleShowDelete}>X</button>
+                    <button className='admin-button' id='edit-info' alt='Edit Ancestor Info' onClick={handleShowEdit}>✎</button>
+                </div>
+            )}
 
-            </div>
-        </Link>
+        </div>
+
     );
 }
 
