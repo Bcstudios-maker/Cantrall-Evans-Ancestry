@@ -36,6 +36,7 @@ Banner Section Styling
 .logo-title {
     margin-top: 25px;
     width: 600px;
+    text-align: center;
     font: arial;
 }
 
@@ -46,7 +47,7 @@ About Us Section Styling
 */
 
 .about-us {
-    height: 650px;
+    height: 35vw;
     display: flex;
     flex-direction: row;
     color: black;   
@@ -67,14 +68,14 @@ About Us Section Styling
 }
 
 .about-content h1 {
-    font-size: 70px;
+    font-size: 3.661vw;
     margin-top: 25px;
 }
 
 .about-content p {
     text-align: center;
     margin: 25px 25px 0 25px;
-    font-size: 18px;
+    font-size: 0.994vw;
     font-weight: 500;
 }
 
@@ -86,10 +87,12 @@ Document Search Section Styling
 
 .document-search {
     width: 100%;
-    height: 400px;
+    height: 21vw;
     background-color: rgba(164, 120, 67, 0.224);
     color: black;
 }
+
+.search-banner {}
 
 .search-header {
     margin-top: 80px;
@@ -105,10 +108,10 @@ Document Search Section Styling
 }
 
 .search-input {
-    width: 500px;
-    height: 45px;
+    width: 26.2vw;
+    height: 2.4vw;
     margin-top: 25px;
-    font-size: 22px;
+    font-size: 1.151vw;
     color: black;
     border: none;
     border-radius:  15px;

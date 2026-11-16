@@ -4,11 +4,11 @@
     justify-content: space-evenly;
     align-items: center;
     position: relative;
-    gap: 16px;
+    gap: 32px;
 }
 .spouse-card span {
-   width: 20px;
-   font-size: 30px;
+   width: 40px;
+   font-size: 64px;
    text-align: center;
    font-weight: bolder;
    color: black;

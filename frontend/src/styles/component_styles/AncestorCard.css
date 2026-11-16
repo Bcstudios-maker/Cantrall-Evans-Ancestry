@@ -1,9 +1,14 @@
 .ancestor-card {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     background-color: grey;
     padding: 5px;
     border-radius: 15px;
     width: 450px;
+    height: 600px;
 }
 
 .ancestor-card:hover {
@@ -12,31 +17,56 @@
 
 .ancestor-description {
     color: white;
+    margin-top: 15px;
+}
+
+.ancestor-description > h3 {
+    font-size: 43px;
+    text-align: center;
+}
+.ancestor-description > h4 {
+    font-size: 32px;
+    text-align: center;
+    margin-top: 10px;
+}
+.ancestor-description p {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 40px;
 }
 
 .ancestor-buttons {
+    overflow: visible;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-right: 10px;
+    justify-self: flex-end;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    height: 80px;
+    width: 300px;
+    gap: 30px;
 }
 
 .ancestor-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     border: none;
     background: black;
     color: white;
+    padding: 0px;
     font-weight: bolder;
     border-radius: 100%;
-    width: 35px;
-    height: 35px;
+    font-size: 28px;
+    width: 72px;
+    height: 70px;
     transition: background-color 0.5s, box-shadow 0.5s;
 }
 
 #edit-ancestor:hover {
+    cursor: pointer;
     background-color: rgba(0, 255, 213, 0.583);
     box-shadow: 0 0 10px 0 rgba(0, 255, 213, 0.583);
 }

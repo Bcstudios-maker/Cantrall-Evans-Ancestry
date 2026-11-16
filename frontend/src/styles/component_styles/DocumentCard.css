@@ -20,7 +20,7 @@
     flex-direction: column;
     justify-content: space-between;
     text-decoration: none;
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    text-shadow: -1px -1px 2px rgb(140, 140, 140), 1px -1px 2px rgb(140, 140, 140), -1px 1px 2px rgb(140, 140, 140), 1px 1px 2px rgb(140, 140, 140);
 }
 
 .document-name {
@@ -47,7 +47,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.2);
     pointer-events: none;
 
 }

@@ -3,7 +3,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
     console.log('ancestor info: ' + ancestor.first_name);
     console.log('spouse ' + ancestor.spouse?.first_name);
 
-    const GAP = 52; // Gap between spouse cards. Good for parents.
+    const GAP = 94; // Gap between spouse cards. Good for parents.
     const CARD_WIDTH = 450; // Self Explanitory
     const SPOUSE_WIDTH = (CARD_WIDTH * 2) + GAP; // Total width of a spouse card.
 
@@ -59,7 +59,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
 
             let parentX = isSpouse ? secondCardEdge : firstCardEdge;
 
-            buildNodesAndEdges(parent, nodes, edges, parentX, y - 450, visited, false, null);
+            buildNodesAndEdges(parent, nodes, edges, parentX, y - 950, visited, false, null);
         });
     }
 
@@ -82,7 +82,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
             //needs to be multiplied by index to determine positioning.
             childX = child.spouse ? childX - 502 : childX - 502;
 
-            buildNodesAndEdges(child, nodes, edges, childX , y + 450, visited, false, null);
+            buildNodesAndEdges(child, nodes, edges, childX , y + 950, visited, false, null);
         });
     }
 

@@ -64,6 +64,7 @@ function Home() {
                     </div>
                 </section>
                 <section className="document-search">
+                    <div className='search-banner'></div>
                     <h2 className='search-header'>SEARCH THROUGH ALL ANCESTOR DOCUMENTATION</h2>
                     <form onSubmit={handleSubmit} className="search-form">
                         <input type="text" placeholder="Search for documents..." className="search-input" value={searchQuery} onChange={handleSearch} />

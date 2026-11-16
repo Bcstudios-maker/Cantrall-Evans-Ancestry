@@ -36,7 +36,7 @@ const AncestorCard = ({ data, isChild = false }) => {
     return (
 
         <div className="ancestor-card" >
-            <Link to={{ pathname: `/Ancestors/${ancestor_id}` }} state={data} style={{ textDecoration: 'none' }} >
+            <Link to={{ pathname: `/Ancestors/${ancestor_id}` }} state={data} style={{ textDecoration: 'none',     width: "100%"}} >
 
                 {(!isChild) && (<><Handle type='source' position={Position.Bottom} id={`as${ancestor_id}`} /><Handle type='target' position={Position.Top} id={`at${ancestor_id}`} /></>)}
 
@@ -59,7 +59,7 @@ const AncestorCard = ({ data, isChild = false }) => {
             {isAdmin && (
                 <div className='ancestor-buttons'>
                     <button className='ancestor-button' id='edit-ancestor' onClick={handleShowEdit}>✎</button>
-                    <button className='ancestor-button' id='add-ancestor' style={{ fontSize: '22px', paddingBottom: '5px' }} onClick={handleShowAdd}>+</button>
+                    <button className='ancestor-button' id='add-ancestor' style={{ fontSize: '44px', paddingBottom: '15px' }} onClick={handleShowAdd}>+</button>
                     <button className='ancestor-button' id='remove-ancestor' onClick={handleShowDelete}>X</button>
                 </div>
             )}
