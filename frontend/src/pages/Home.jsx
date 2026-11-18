@@ -41,7 +41,7 @@ function Home() {
     return (
         <>
             <NavBar />
-            <main className="home-content" style={{ position: 'absolute' }}>
+            <main className="home-content" >
                 <section className="home-banner">
                     <div className='logo-container'></div>
                     <h1 className='logo-title'>CANTRALL EVANS ANCESTRY</h1>
@@ -64,7 +64,6 @@ function Home() {
                     </div>
                 </section>
                 <section className="document-search">
-                    <div className='search-banner'></div>
                     <h2 className='search-header'>SEARCH THROUGH ALL ANCESTOR DOCUMENTATION</h2>
                     <form onSubmit={handleSubmit} className="search-form">
                         <input type="text" placeholder="Search for documents..." className="search-input" value={searchQuery} onChange={handleSearch} />

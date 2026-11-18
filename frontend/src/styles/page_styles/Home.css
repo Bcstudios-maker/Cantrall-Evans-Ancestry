@@ -1,4 +1,5 @@
 .home-content {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -92,8 +93,6 @@ Document Search Section Styling
     color: black;
 }
 
-.search-banner {}
-
 .search-header {
     margin-top: 80px;
     margin-bottom: 30px;
@@ -148,10 +147,8 @@ Document Search Section Styling
 .documents-grid {
     background-color: rgba(164, 120, 67, 0.224);
     width: 100%;
-    height: fit-content;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
@@ -167,9 +164,9 @@ Document Search Section Styling
     display: grid;
     grid: 500px / 25vw auto auto;
     justify-content: stretch;
-    height: fit-content;
+    min-height: 31.25vw;
+    max-height: 62.5vw;
     width: 90%;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 2.604vw;
     gap: 25px;
 }
