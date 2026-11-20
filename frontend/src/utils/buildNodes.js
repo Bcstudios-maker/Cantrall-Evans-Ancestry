@@ -1,12 +1,9 @@
-export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 0, visited = new Set(), isSpouse = false, ancestorSpouseId = null) => {
+import { useLayout } from "../hooks/useLayout";
+
+export const buildNodesAndEdges = (ancestor, layout, nodes = [], edges = [], x = 0, y = 0, visited = new Set(), isSpouse = false, ancestorSpouseId = null) => {
     if (!ancestor) return { nodes, edges };
-    console.log('ancestor info: ' + ancestor.first_name);
-    console.log('spouse ' + ancestor.spouse?.first_name);
 
-    const GAP = 94; // Gap between spouse cards. Good for parents.
-    const CARD_WIDTH = 450; // Self Explanitory
-    const SPOUSE_WIDTH = (CARD_WIDTH * 2) + GAP; // Total width of a spouse card.
-
+    const { GAP, CARD_WIDTH, Y_GAP, SPOUSE_WIDTH } = layout;
     let currentId = String(ancestor.ancestor_id);
     let spouseId = String(ancestor.spouse?.ancestor_id);
     let cardType = ancestor.spouse ? 'spouse' : 'ancestor';
@@ -31,7 +28,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
 
     if (ancestor.spouse && !visited.has(String(ancestor.spouse.ancestor_id))) {
         visited.add(spouseId);
-        buildNodesAndEdges(ancestor.spouse, nodes, edges, x + (CARD_WIDTH + GAP), y, visited, true, combinedId);
+        buildNodesAndEdges(ancestor.spouse, layout, nodes, edges, x + (CARD_WIDTH + GAP), y, visited, true, combinedId);
     }
 
 
@@ -59,7 +56,7 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
 
             let parentX = isSpouse ? secondCardEdge : firstCardEdge;
 
-            buildNodesAndEdges(parent, nodes, edges, parentX, y - 950, visited, false, null);
+            buildNodesAndEdges(parent, layout, nodes, edges, parentX, y - Y_GAP, visited, false, null);
         });
     }
 
@@ -75,19 +72,22 @@ export const buildNodesAndEdges = (ancestor, nodes = [], edges = [], x = 0, y = 
                     id: edgeId,
                     source: combinedId,
                     sourceHandle: `ss${combinedId}`,
-                    target: child.spouse ? combinedChildId : childId ,
+                    target: child.spouse ? combinedChildId : childId,
                     targetHandle: child.spouse ? `st${childId}` : `at${childId}`
                 });
             }
             //needs to be multiplied by index to determine positioning.
             childX = child.spouse ? childX - 502 : childX - 502;
 
-            buildNodesAndEdges(child, nodes, edges, childX , y + 950, visited, false, null);
+            buildNodesAndEdges(child, layout, nodes, edges, childX, y + Y_GAP, visited, false, null);
         });
     }
 
     return { nodes, edges };
 }
+
+const DESIGN_WIDTH = 1920;
+
 
 // edges.push({
 //     id: `${String(ancestor.ancestor_id)} - ${String(child.ancestor_id)}`,

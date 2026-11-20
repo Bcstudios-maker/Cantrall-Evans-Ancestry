@@ -4,33 +4,37 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: grey;
+    background-color: rgba(164, 120, 67, 0.8);
     padding: 5px;
     border-radius: 15px;
-    width: 450px;
-    height: 600px;
+    width: 23.438vw;
+    height: 31.25vw;
 }
 
 .ancestor-card:hover {
     cursor: pointer;
 }
 
-.ancestor-description {
+.description-container {
     color: white;
     margin-top: 15px;
+    display: flex;
+    height: 23.438vw;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .ancestor-description > h3 {
-    font-size: 43px;
+    font-size: 2.24vw;
     text-align: center;
 }
 .ancestor-description > h4 {
-    font-size: 32px;
+    font-size: 1.667vw;
     text-align: center;
     margin-top: 10px;
 }
-.ancestor-description p {
-    font-size: 24px;
+.ancestor-dates p {
+    font-size: 1.25vw;
     text-align: center;
     margin-top: 40px;
 }
@@ -53,13 +57,13 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    background: none;
     border: none;
-    background: black;
     color: white;
     padding: 0px;
     font-weight: bolder;
     border-radius: 100%;
-    font-size: 28px;
+    font-size: 1.458vw;
     width: 72px;
     height: 70px;
     transition: background-color 0.5s, box-shadow 0.5s;

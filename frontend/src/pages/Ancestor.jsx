@@ -36,6 +36,8 @@ function Ancestor() {
     const handleShowEditBio = () => setShowEditBio(true);
     const handleHide = () => { setShow(false); setShowEditBio(false); }
 
+    const ancestorImageLink = imageLinkHelper(data.ancestor_image, data.gender);
+
 
 
     /**
@@ -133,11 +135,11 @@ function Ancestor() {
     if (!data) { return (<><NavBar /><p>Ancestor not Found</p></>); }
 
     return (
-        <>
+        <div style={{backgroundColor: 'rgba(250, 219, 181, 0.8)'}}>
             <NavBar />
             <AddDocument show={show} handleHide={handleHide} />
             <EditBiography show={showEditBio} ancestor={data} handleHide={handleHide} bio={bio} />
-            <div className='ancestor-body-container' style={{ display: 'flex', flexDirection: 'row', justifySelf: 'center', width: '95%', marginTop: '15px' }}>
+            <div className='ancestor-body-container'>
                 <div className='local-ancestor-relationships'>
                     <div className='ancestor-relationship' id='children'>CHILDREN<div className='ancestor-relationship-seperator' />{localAncestors.children?.map((child) => (<LocalAncestorCard ancestorData={child} relation_type={'child'} currentAncestorGender={data.gender} key={child.ancestor_id} />))}</div>
                     <div className='ancestor-relationship' id='spouse'>SPOUSE<div className='ancestor-relationship-seperator' />{localAncestors.spouse && (<LocalAncestorCard ancestorData={localAncestors.spouse} relation_type={'spouse'} currentAncestorGender={data.gender} key={localAncestors.spouse.ancestor_id} />)}</div>
@@ -150,6 +152,7 @@ function Ancestor() {
                         <h2 className='ancestor-dates'>Born: {birthDate}</h2>
                         <h2 className='ancestor-dates'>Died: {data.date_of_death ? (deathDate) : 'Unknown'}</h2>
                     </div>
+                    <div className='ancestor-image' style={{backgroundImage: `url(${ancestorImageLink})`, width: '75px', height:'100px'}}/>
                 </div>
             </div>
             <div className='ancestor-bio-container'>
@@ -176,9 +179,25 @@ function Ancestor() {
                     </ul>
                 </div>
             </div>
-        </>
+        </div>
 
     );
 }
 
+const imageLinkHelper = (imageLink, gender) => {
+    
+    let ancestorImage;
+    
+    if(imageLink){
+        ancestorImage = 'iom'
+    } else {
+        if(gender === 'm'){
+            ancestorImage = '../src/assets/placeholders/male_placeholder.gif';
+        } else {
+            ancestorImage = '../src/assets/placeholders/female_placeholder.gif';
+        }
+    }
+
+    return ancestorImage;
+}
 export default Ancestor;

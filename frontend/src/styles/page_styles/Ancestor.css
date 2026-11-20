@@ -1,3 +1,10 @@
+.ancestor-body-container { 
+    display: flex;
+    justify-self: center;
+    width: 95%;
+    padding-top: 100px;
+}
+
 /*
 
     Local Ancestor Relationship Container Styling
@@ -15,8 +22,11 @@
 .ancestor-relationship {
     width: 400px;
     height: fit-content;
-    padding-bottom: 10px;
+    padding: 5px 15px 15px 15px;
+    border-radius: 10px;
     background-color: red;
+    color: white;
+    text-align: center;
     font-size: 24px;
     font-weight: bold;
 }
@@ -26,19 +36,19 @@
     justify-self: center;
     width: 90%;
     height: 2px;
-    background-color: gray;
+    background-color: rgb(140, 139, 139);
 }
 
 #children {
-    background-color: pink;
+    background-color: rgba(130, 247, 255, 0.6);
 }
 
 #spouse {
-    background-color: teal;
+    background-color: rgba(242, 154, 255, 0.6);
 }
 
 #parents {
-    background-color: blueviolet;
+    background-color: rgba(137, 43, 226, 0.6);
 }
 
 /*
@@ -50,20 +60,23 @@
 .ancestor-info-container {
     width: 50%;
     margin-left: 15px;
-    background-color: red;
     display: flex;
-
-    flex-direction: column;
+    flex-direction: row;
 }
 
-.ancestor-name {
+.ancestor-info > h1 {
+    font-size: 64px;
+    color: white;
+}
+.ancestor-info h2 {
+    font-size: 40px;
     color: white;
 }
 
-.ancestor-dates {
-    color: white;
+.ancestor_image {
+    width: 75px;
+    height: 100px;
 }
-
 
 
 /*

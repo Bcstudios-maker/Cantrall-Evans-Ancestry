@@ -1,69 +1,60 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useEffect } from "react";
 
 import AncestorCard from "./AncestorCard";
 import SpouseCard from "./SpouseCard";
 import { buildTree } from "../utils/buildTree";
-import {  buildNodesAndEdges } from "../utils/buildNodes";
+import { buildNodesAndEdges } from "../utils/buildNodes";
 import { GetAncestorsInTree, getRelationships } from "../middleware/api";
 import { ReactFlow, Background, Controls } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useParams } from "react-router-dom";
 import { LoadSmallestAncestorId } from "../utils/LoadSmallestAncestorId";
+import { useLayout } from "../hooks/useLayout";
 
+const nodeTypes = {
+    ancestor: AncestorCard,
+    spouse: SpouseCard
+};
 
-function AncestryTree () {
+function AncestryTree() {
 
-    const [ rootAncestorId, setRootAncestorId] = useState(2);
-    const [ tree, setTree ] = useState(null);
-
-    const {tree_id: tree_id} = useParams();
+    const [tree, setTree] = useState(null);
+    const layout = useLayout();
+    const { tree_id: tree_id } = useParams();
 
     useEffect(() => {
         const loadTree = async () => {
-            try{
-                const data = tree_id ? await GetAncestorsInTree({tree_id: tree_id}) : await getRelationships();
+            try {
+                const data = tree_id ? await GetAncestorsInTree({ tree_id: tree_id }) : await getRelationships();
 
-  
+
                 const { ancestors, relationships } = data;
 
+                const ancestorId = LoadSmallestAncestorId({ data: ancestors });
+                setTree(buildTree(ancestorId, ancestors, relationships));
 
-                const ancestor_id = LoadSmallestAncestorId({data: ancestors});
-                setRootAncestorId(ancestor_id);
-
-                const build = buildTree(ancestor_id, ancestors, relationships);
-
-                setTree(build);
-               
-            } catch (err){
+            } catch (err) {
                 console.log(err);
             }
         }
         loadTree();
     }
-    , [rootAncestorId]);
+        , [tree_id]);
 
-    if(!tree) return (<p>LOADING...</p>);
 
-    const { nodes, edges } = buildNodesAndEdges(tree);
-    console.log('Nodes: ');
-    console.log(nodes);
-    console.log('Edges: ');
-    console.log(edges);
 
-    const nodeTypes = {
-        ancestor: AncestorCard,
-        spouse: SpouseCard
-    };
+    const { nodes, edges } = useMemo(() => (tree ? buildNodesAndEdges(tree, layout) : { nodes: [], edges: [] }), [tree, layout]);
 
+    if (!tree) return (<p>LOADING...</p>);
 
     return (
-        <div className="ancestry-tree" style={{width: '100%', height: '100%', backgroundColor: 'rgba(164, 121, 67, 0.15)'}}>
+        <div className="ancestry-tree" style={{ width: '100%', height: '100%', backgroundColor: 'rgba(164, 121, 67, 0.15)' }}>
             <ReactFlow nodeTypes={nodeTypes} nodes={nodes} edges={edges} fitView>
-         
+
             </ReactFlow>
         </div>
-        
+
     );
 
 }

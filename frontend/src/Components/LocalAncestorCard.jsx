@@ -42,7 +42,7 @@ function LocalAncestorCard({ ancestorData, relation_type, currentAncestorGender 
     }, [ancestorData])
 
     return (
-        <div className='local-ancestor-card' >
+        <div className='local-ancestor-card'>
             <p>{String(relation)} of</p>
             <h4>{ancestorData.first_name} {ancestorData.last_name}</h4>
         </div>
